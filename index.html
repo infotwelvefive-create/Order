@@ -1,0 +1,1382 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=Mitr:wght@400;500;600;700&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --pri:#6D28D9;--pri2:#7C3AED;--pri-l:#EDE9FE;--pri-ll:#F5F3FF;
+  --teal:#0D9488;--tl:#CCFBF1;
+  --amb:#D97706;--red:#DC2626;
+  --grn:#16A34A;--blu:#2563EB;
+  --g0:#F4F6F9;--g1:#F3F4F6;--g2:#E5E7EB;--g3:#D1D5DB;
+  --t1:#111827;--t2:#374151;--t3:#6B7280;--t4:#9CA3AF;
+  --white:#fff;--r:12px;--r2:16px;
+  --sh:0 1px 4px rgba(0,0,0,.07);--sh2:0 4px 20px rgba(0,0,0,.12);
+}
+body{font-family:'Sarabun',sans-serif;background:var(--g0);color:var(--t1);font-size:14px;min-height:100vh}
+.ls{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(160deg,#F0EDFF 0%,#E8F4FD 55%,#E8FBF5 100%);padding:20px}
+.lb{width:100%;max-width:420px;text-align:center}
+.logo-area{display:flex;flex-direction:column;align-items:center;margin-bottom:20px}
+.logo-img{width:80px;height:80px;border-radius:20px;object-fit:cover;box-shadow:0 4px 16px rgba(109,40,217,.25);cursor:pointer;border:3px solid var(--white);transition:.2s}
+.logo-img:hover{transform:scale(1.06)}
+.logo-ph{width:80px;height:80px;border-radius:20px;background:linear-gradient(135deg,var(--pri-l),#DDD6FE);display:flex;align-items:center;justify-content:center;font-size:36px;box-shadow:0 4px 16px rgba(109,40,217,.2);cursor:pointer;border:3px solid var(--white);position:relative;transition:.2s}
+.logo-ph:hover{transform:scale(1.06)}
+.logo-eb{position:absolute;bottom:-6px;right:-6px;background:var(--pri);color:#fff;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:11px;border:2px solid var(--white);pointer-events:none}
+.logo-hint{font-size:11px;color:var(--t4);margin-top:8px}
+.app-title{font-family:'Mitr',sans-serif;font-size:30px;font-weight:700;color:var(--pri)}
+.app-sub{font-size:13px;color:var(--t3);margin:4px 0 28px}
+.role-card{background:var(--white);border-radius:18px;border:1.5px solid var(--g2);padding:18px 20px;margin-bottom:12px;cursor:pointer;display:flex;align-items:center;gap:16px;transition:.2s;box-shadow:0 2px 8px rgba(0,0,0,.06);text-align:left}
+.role-card:hover{border-color:var(--pri);box-shadow:0 6px 24px rgba(109,40,217,.16);transform:translateY(-2px)}
+.role-card:active{transform:translateY(0) scale(.99)}
+.ri{font-size:40px;flex-shrink:0;width:56px;height:56px;display:flex;align-items:center;justify-content:center;border-radius:14px}
+.ri.admin{background:linear-gradient(135deg,#EDE9FE,#DDD6FE)}
+.ri.staff{background:linear-gradient(135deg,#E0F2FE,#BAE6FD)}
+.ri.report{background:linear-gradient(135deg,#D1FAE5,#A7F3D0)}
+.rn{font-family:'Mitr',sans-serif;font-size:17px;font-weight:600;color:var(--t1)}
+.rd{font-size:12px;color:var(--t3);margin-top:2px}
+.ps{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(160deg,#F0EDFF,#E8F4FD);padding:20px}
+.pb{background:var(--white);border-radius:22px;padding:32px 26px;max-width:320px;width:100%;text-align:center;box-shadow:var(--sh2)}
+.pt{font-family:'Mitr',sans-serif;font-size:19px;font-weight:600;color:var(--pri);margin-bottom:5px}
+.psub{font-size:13px;color:var(--t3);margin-bottom:20px}
+.pdots{display:flex;justify-content:center;gap:14px;margin-bottom:22px}
+.pdot{width:14px;height:14px;border-radius:50%;border:2px solid var(--g3);transition:.2s;background:var(--white)}
+.pdot.on{background:var(--pri);border-color:var(--pri);transform:scale(1.15)}
+.ppad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}
+.pk{background:var(--g1);border:none;border-radius:14px;padding:15px;font-size:22px;font-family:'Mitr',sans-serif;font-weight:600;cursor:pointer;transition:.12s;color:var(--t1)}
+.pk:hover{background:var(--g2)}
+.pk:active{transform:scale(.92);background:var(--pri-l);color:var(--pri)}
+.pk.del{background:#FEE2E2;color:#991B1B;font-size:15px}
+.pk.z{grid-column:2}
+.perr{color:var(--red);font-size:12px;min-height:18px;font-weight:600;margin-bottom:8px}
+.pback{font-size:12px;color:var(--t4);cursor:pointer;text-decoration:underline}
+.pback:hover{color:var(--pri)}
+.app-shell{display:flex;flex-direction:column;min-height:100vh}
+.topbar{background:var(--white);border-bottom:1px solid var(--g2);padding:0 16px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:200;height:52px}
+.brand{font-family:'Mitr',sans-serif;font-size:16px;font-weight:700;color:var(--pri);display:flex;align-items:center;gap:8px}
+.brand-logo{width:30px;height:30px;border-radius:8px;object-fit:cover}
+.brand-dot{width:7px;height:7px;background:var(--pri);border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.55)}}
+.rbadge{border-radius:20px;padding:3px 10px;font-size:11px;font-weight:700;white-space:nowrap}
+.rbadge.admin{background:#EDE9FE;color:#5B21B6}
+.rbadge.staff{background:#E0F2FE;color:#0369A1}
+.rbadge.report{background:#D1FAE5;color:#065F46}
+.spacer{flex:1}
+.logout-btn{background:none;border:1px solid var(--g2);border-radius:8px;padding:5px 10px;font-size:12px;color:var(--t3);cursor:pointer;font-family:'Sarabun',sans-serif}
+.logout-btn:hover{border-color:var(--red);color:var(--red)}
+.menu-bar{background:var(--white);border-bottom:1px solid var(--g2);padding:0 16px;display:flex;align-items:center;gap:6px;overflow-x:auto;height:44px;flex-shrink:0}
+.mgroup{display:flex;align-items:center;gap:1px;background:var(--g1);border-radius:8px;padding:3px}
+.msep{width:1px;height:26px;background:var(--g2);margin:0 4px;flex-shrink:0}
+.mgl{font-size:10px;font-weight:700;color:var(--t4);text-transform:uppercase;letter-spacing:.4px;padding:0 4px;white-space:nowrap}
+.mb{padding:5px 11px;border-radius:6px;font-size:12.5px;font-weight:500;color:var(--t3);border:none;background:none;cursor:pointer;white-space:nowrap;transition:.15s;font-family:'Sarabun',sans-serif}
+.mb:hover{background:var(--white);color:var(--t1)}
+.mb.active{background:var(--white);color:var(--pri);font-weight:700;box-shadow:var(--sh)}
+.main{flex:1;padding:16px;max-width:920px;margin:0 auto;width:100%}
+.card{background:var(--white);border-radius:var(--r2);border:1px solid var(--g2);padding:16px;margin-bottom:12px;box-shadow:var(--sh)}
+.card-title{font-family:'Mitr',sans-serif;font-size:15px;font-weight:500;margin-bottom:14px}
+.fg{margin-bottom:10px}
+.fg label{display:block;font-size:11px;font-weight:700;color:var(--t3);margin-bottom:4px;text-transform:uppercase;letter-spacing:.4px}
+.fg input,.fg select{width:100%;padding:9px 12px;border:1.5px solid var(--g2);border-radius:8px;font-size:14px;color:var(--t1);background:var(--white);outline:none;font-family:'Sarabun',sans-serif;transition:.15s}
+.fg input:focus,.fg select:focus{border-color:var(--pri);box-shadow:0 0 0 3px rgba(109,40,217,.1)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.btn{padding:9px 16px;border-radius:9px;font-size:13px;font-weight:600;cursor:pointer;border:none;transition:.15s;display:inline-flex;align-items:center;gap:6px;font-family:'Sarabun',sans-serif;white-space:nowrap}
+.btn:active{transform:scale(.97)}
+.bp{background:var(--pri);color:#fff}.bp:hover{background:var(--pri2)}
+.br{background:var(--red);color:#fff}.br:hover{opacity:.88}
+.bg{background:var(--g1);color:var(--t2)}.bg:hover{background:var(--g2)}
+.bsm{padding:6px 12px;font-size:12px}
+.bxs{padding:5px 10px;font-size:12px;border-radius:7px}
+.btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.badge{display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600}
+.bwait{background:#FEF3C7;color:#92400E}
+.bprod{background:#DBEAFE;color:#1E40AF}
+.bready{background:#DCFCE7;color:#166534}
+.bsent{background:#F3F4F6;color:#374151}
+.bissue{background:#FEE2E2;color:#991B1B}
+.tag{background:var(--g1);border-radius:6px;padding:3px 8px;font-size:12px;color:var(--t2)}
+.tmod{background:var(--pri-l);color:#5B21B6}
+.tqty{background:var(--tl);color:#0f766e;font-weight:700}
+.tcol{background:#FEF9C3;color:#854D0E}
+
+/* ลำดับรายการ */
+.item-num-badge{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:var(--pri);color:#fff;font-size:10px;font-weight:700;font-family:'Mitr',sans-serif;flex-shrink:0}
+.item-num-badge.sub{background:var(--teal)}
+
+/* ORDER ITEM */
+.oi{background:var(--white);border:1.5px solid var(--g2);border-radius:var(--r2);padding:14px;margin-bottom:10px;transition:.15s}
+.oi:hover{border-color:#C4B5FD}
+.oi-hd{display:flex;gap:12px;align-items:flex-start}
+.oi-thumb{width:76px;height:76px;border-radius:10px;object-fit:cover;border:1px solid var(--g2);cursor:pointer;flex-shrink:0;transition:.2s}
+.oi-thumb:hover{transform:scale(1.06)}
+.oi-ph{width:76px;height:76px;border-radius:10px;background:var(--g1);border:2px dashed var(--g3);display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer;transition:.15s;flex-direction:column;gap:2px}
+.oi-ph:hover{border-color:var(--pri);background:var(--pri-ll)}
+.oi-info{flex:1;min-width:0}
+.oi-name{font-family:'Mitr',sans-serif;font-weight:500;font-size:15px}
+.oi-meta{font-size:12px;color:var(--t3);margin:3px 0 7px}
+.oi-tags{display:flex;flex-wrap:wrap;gap:5px;align-items:center}
+.extra-imgs{display:flex;gap:5px;flex-wrap:wrap;margin-top:7px}
+.eimg{width:40px;height:40px;border-radius:6px;object-fit:cover;cursor:pointer;border:1px solid var(--g2);transition:.15s}
+.eimg:hover{transform:scale(1.1)}
+.oi-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+
+/* STEPS */
+.steps{display:flex;margin:10px 0}
+.step{flex:1;text-align:center;position:relative}
+.step::after{content:'';position:absolute;top:11px;left:50%;width:100%;height:2px;background:var(--g2);z-index:0}
+.step:last-child::after{display:none}
+.sdot{width:22px;height:22px;border-radius:50%;border:2px solid var(--g3);background:var(--white);display:flex;align-items:center;justify-content:center;margin:0 auto 4px;position:relative;z-index:1;font-size:9px;font-weight:700;color:var(--t4)}
+.sdot.done{background:var(--grn);border-color:var(--grn);color:#fff}
+.sdot.cur{background:var(--pri);border-color:var(--pri);color:#fff}
+.slbl{font-size:10px;color:var(--t4);line-height:1.2}
+.slbl.done{color:var(--grn)}
+.slbl.cur{color:var(--pri);font-weight:700}
+
+/* SUB ITEM */
+.sub-item{background:var(--g0);border:1.5px solid #A7F3D0;border-radius:var(--r2);padding:14px;margin-top:8px;position:relative}
+.sub-item:hover{border-color:var(--teal)}
+.sub-thumb{width:76px;height:76px;border-radius:10px;object-fit:cover;border:1px solid var(--g2);cursor:pointer;flex-shrink:0;transition:.2s}
+.sub-thumb:hover{transform:scale(1.06)}
+.sub-ph{width:76px;height:76px;border-radius:10px;background:var(--white);border:2px dashed var(--g3);display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer;transition:.15s;flex-direction:column;gap:2px}
+.sub-ph:hover{border-color:var(--teal);background:var(--tl)}
+
+/* สถานะ sub — select เล็ก */
+.sub-status-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;align-items:center;padding-top:8px;border-top:1px dashed var(--g2)}
+
+/* FORM */
+.order-block{background:var(--g0);border:1.5px solid var(--g2);border-radius:var(--r);padding:16px;margin-bottom:14px;position:relative;padding-top:22px}
+.obn{position:absolute;top:-10px;left:14px;background:var(--pri);color:#fff;border-radius:20px;padding:2px 12px;font-size:11px;font-weight:700;font-family:'Mitr',sans-serif}
+.ob-del-btn{position:absolute;top:-10px;right:10px;background:var(--red);color:#fff;border:none;border-radius:20px;padding:3px 10px;font-size:11px;font-weight:700;cursor:pointer;font-family:'Sarabun',sans-serif}
+.add-blk{border:2px dashed var(--g3);border-radius:var(--r);padding:14px;text-align:center;cursor:pointer;transition:.15s;color:var(--t3);font-size:13px;font-weight:600;background:none;width:100%;margin-top:4px;font-family:'Sarabun',sans-serif}
+.add-blk:hover{border-color:var(--pri);color:var(--pri);background:var(--pri-ll)}
+.sub-form-block{background:var(--white);border:1.5px solid #A7F3D0;border-radius:var(--r);padding:14px;margin-bottom:10px;position:relative;padding-top:22px}
+.sub-form-num{position:absolute;top:-9px;left:10px;background:var(--teal);color:#fff;border-radius:20px;padding:2px 10px;font-size:10px;font-weight:700;font-family:'Mitr',sans-serif}
+.sub-form-del{position:absolute;top:-9px;right:8px;background:var(--red);color:#fff;border:none;border-radius:20px;padding:2px 9px;font-size:10px;font-weight:700;cursor:pointer;font-family:'Sarabun',sans-serif}
+.sf label{display:block;font-size:11px;font-weight:700;color:var(--t3);margin-bottom:4px;text-transform:uppercase;letter-spacing:.4px}
+.sf input{width:100%;padding:9px 12px;border:1.5px solid var(--g2);border-radius:8px;font-size:14px;color:var(--t1);background:var(--white);outline:none;font-family:'Sarabun',sans-serif;transition:.15s}
+.sf input:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(13,148,136,.12)}
+.add-sub-btn{border:1.5px dashed #A7F3D0;border-radius:8px;padding:10px;text-align:center;cursor:pointer;transition:.15s;color:var(--teal);font-size:13px;font-weight:600;background:none;width:100%;font-family:'Sarabun',sans-serif;display:flex;align-items:center;justify-content:center;gap:6px}
+.add-sub-btn:hover{background:var(--tl);border-color:var(--teal)}
+.upzone{border:2px dashed var(--g3);border-radius:10px;padding:16px;text-align:center;cursor:pointer;transition:.15s;background:var(--g0)}
+.upzone:hover{border-color:var(--pri);background:var(--pri-ll)}
+.igrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(72px,1fr));gap:8px;margin-top:10px}
+.iwrap{position:relative}
+.iprev{width:100%;aspect-ratio:1;object-fit:cover;border-radius:8px;cursor:pointer;border:1px solid var(--g2)}
+.idel{position:absolute;top:-5px;right:-5px;width:18px;height:18px;background:var(--red);color:#fff;border:none;border-radius:50%;font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700}
+
+/* STATS */
+.sg{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:14px}
+.sc{background:var(--white);border:1px solid var(--g2);border-radius:var(--r);padding:14px;text-align:center}
+.sn{font-family:'Mitr',sans-serif;font-size:28px;font-weight:600;color:var(--pri)}
+.sl{font-size:11px;color:var(--t3);margin-top:2px}
+
+/* TABLE */
+.tbl{width:100%;border-collapse:collapse;font-size:13px}
+.tbl th{background:var(--g1);padding:8px 10px;text-align:left;font-weight:600;color:var(--t3);font-size:12px}
+.tbl td{padding:8px 10px;border-bottom:1px solid var(--g1);color:var(--t2)}
+.tbl tr:last-child td{border-bottom:none}
+.total-row td{font-weight:700;color:var(--t1);background:var(--pri-ll)}
+
+/* REPORT */
+.rep-img{width:100%;max-height:340px;object-fit:contain;border-radius:10px;border:1px solid var(--g2);background:#f8f8f8;cursor:pointer;margin-bottom:10px;display:block;transition:.2s}
+.rep-img:hover{transform:scale(1.01)}
+.rep-h{font-size:13px;font-weight:700;border-bottom:2px solid var(--pri-l);padding-bottom:6px;margin:16px 0 10px}
+.model-head{background:linear-gradient(135deg,var(--pri-ll),var(--tl));border-radius:var(--r2);padding:16px;display:flex;gap:14px;align-items:flex-start;margin-bottom:12px}
+.model-img{width:110px;height:110px;object-fit:cover;border-radius:10px;border:2px solid var(--white);cursor:pointer;flex-shrink:0;transition:.2s}
+.model-img:hover{transform:scale(1.04)}
+.model-img-ph{width:110px;height:110px;border-radius:10px;background:var(--white);border:2px dashed var(--g3);display:flex;align-items:center;justify-content:center;flex-direction:column;font-size:11px;color:var(--t4);flex-shrink:0;gap:4px}
+.rep-item{background:var(--white);border:1.5px solid var(--g2);border-radius:var(--r2);padding:14px;margin-bottom:10px;position:relative;padding-top:22px}
+.rep-item-num{position:absolute;top:-9px;left:12px;background:var(--pri);color:#fff;border-radius:20px;padding:2px 10px;font-size:10px;font-weight:700;font-family:'Mitr',sans-serif}
+
+/* สถานะ pill */
+.sp{display:inline-flex;align-items:center;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700;gap:4px}
+.sp-wait{background:#FEF3C7;color:#92400E}
+.sp-prod{background:#DBEAFE;color:#1E40AF}
+.sp-ready{background:#DCFCE7;color:#166534}
+.sp-sent{background:#F3F4F6;color:#374151}
+.sp-issue{background:#FEE2E2;color:#991B1B}
+
+.fbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;align-items:center}
+.sin{flex:1;min-width:160px;padding:8px 12px;border:1.5px solid var(--g2);border-radius:8px;font-size:13px;outline:none;font-family:'Sarabun',sans-serif}
+.sin:focus{border-color:var(--pri)}
+.modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:1000;display:flex;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(5px)}
+.modal-box{background:var(--white);border-radius:16px;overflow:hidden;max-width:560px;width:100%;max-height:90vh;overflow-y:auto}
+.modal-img-el{width:100%;max-height:65vh;object-fit:contain;background:#111;display:block}
+.modal-body{padding:14px}
+.toast{position:fixed;bottom:20px;right:20px;padding:10px 18px;border-radius:10px;font-size:13px;font-weight:600;z-index:3000;box-shadow:0 4px 16px rgba(0,0,0,.2);animation:sli .3s ease;color:#fff}
+.tok{background:var(--grn)}.terr{background:var(--red)}
+@keyframes sli{from{transform:translateY(16px);opacity:0}to{transform:translateY(0);opacity:1}}
+.empty{text-align:center;padding:40px 20px;color:var(--t3)}
+.empty-ico{font-size:44px;margin-bottom:10px}
+.pdfbtn{background:#DC2626;color:#fff;border:none;border-radius:10px;padding:11px 20px;font-size:13px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:8px;font-family:'Sarabun',sans-serif;box-shadow:0 2px 8px rgba(220,38,38,.3);transition:.15s}
+.pdfbtn:hover{background:#B91C1C;transform:translateY(-1px)}
+.pdfbtn:active{transform:scale(.97)}
+.imgbtn{background:#0D9488;color:#fff;border:none;border-radius:10px;padding:11px 20px;font-size:13px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:8px;font-family:'Sarabun',sans-serif;box-shadow:0 2px 8px rgba(13,148,136,.3);transition:.15s}
+.imgbtn:hover{background:#0f766e;transform:translateY(-1px)}
+.imgbtn:active{transform:scale(.97)}
+.export-bar{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;padding:14px;background:var(--white);border-radius:var(--r2);border:1px solid var(--g2);box-shadow:var(--sh)}
+
+@media(max-width:580px){.g2,.g3{grid-template-columns:1fr}.sg{grid-template-columns:repeat(2,1fr)}.mgl{display:none}.model-head{flex-direction:column}}
+::-webkit-scrollbar{width:4px;height:4px}::-webkit-scrollbar-thumb{background:var(--g3);border-radius:2px}
+</style>
+</head>
+<body>
+<div id="ls" class="ls">
+  <div class="lb">
+    <div class="logo-area">
+      <div id="logo-wrap" onclick="trigLogo()"></div>
+      <div class="logo-hint">กดโลโก้เพื่อเปลี่ยนรูป</div>
+      <input type="file" id="logo-inp" accept="image/*" style="display:none" onchange="handleLogo(event)">
+    </div>
+    <div class="app-title">OrderPro</div>
+    <div class="app-sub">เลือกบทบาทของคุณ</div>
+    <div class="role-card" onclick="selectRole('admin')"><div class="ri admin">👔</div><div><div class="rn">ผู้ดูแล</div><div class="rd">จัดการระบบ ดูสถิติ และรายงานเต็ม</div></div></div>
+    <div class="role-card" onclick="selectRole('staff')"><div class="ri staff">✏️</div><div><div class="rn">เพิ่ม / แก้ไขออเดอร์</div><div class="rd">บันทึก เพิ่ม และจัดการออเดอร์</div></div></div>
+    <div class="role-card" onclick="loginAs('report')"><div class="ri report">📊</div><div><div class="rn">รายงาน</div><div class="rd">ดูรายงานลูกค้าและคำสั่งผลิต</div></div></div>
+  </div>
+</div>
+<div id="ps" class="ps" style="display:none">
+  <div class="pb">
+    <div id="pt" class="pt"></div>
+    <div class="psub">กรอกรหัส 4 หลัก</div>
+    <div class="pdots" id="pdots"><div class="pdot" id="pd0"></div><div class="pdot" id="pd1"></div><div class="pdot" id="pd2"></div><div class="pdot" id="pd3"></div></div>
+    <div class="ppad">
+      <button class="pk" onclick="pKey('1')">1</button><button class="pk" onclick="pKey('2')">2</button><button class="pk" onclick="pKey('3')">3</button>
+      <button class="pk" onclick="pKey('4')">4</button><button class="pk" onclick="pKey('5')">5</button><button class="pk" onclick="pKey('6')">6</button>
+      <button class="pk" onclick="pKey('7')">7</button><button class="pk" onclick="pKey('8')">8</button><button class="pk" onclick="pKey('9')">9</button>
+      <button class="pk z" onclick="pKey('0')">0</button><button class="pk del" onclick="pDel()">⌫</button>
+    </div>
+    <div id="perr" class="perr"></div>
+    <span class="pback" onclick="backLogin()">← เลือกบทบาทอื่น</span>
+  </div>
+</div>
+<div id="app" style="display:none" class="app-shell">
+  <nav class="topbar">
+    <div class="brand"><div id="tbar-logo"></div><span class="brand-dot"></span>OrderPro</div>
+    <div id="rbadge" class="rbadge"></div>
+    <div class="spacer"></div>
+    <button class="logout-btn" onclick="logout()">ออกจากระบบ</button>
+  </nav>
+  <div id="menu-bar" class="menu-bar"></div>
+  <div class="main" id="main"></div>
+</div>
+<div id="img-modal" class="modal-ov" style="display:none" onclick="closeIM(event)">
+  <div class="modal-box">
+    <img id="modal-img-el" src="" class="modal-img-el" alt="">
+    <div class="modal-body">
+      <div id="modal-actions" style="display:flex;gap:8px;flex-wrap:wrap"></div>
+      <p id="modal-info" style="font-size:11px;color:var(--t3);margin-top:6px"></p>
+    </div>
+  </div>
+</div>
+<div id="toast" class="toast" style="display:none"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+const PINS={admin:'1168'};
+const ROLE_META={admin:{label:'ผู้ดูแล',icon:'👔',cls:'admin'},staff:{label:'เพิ่ม/แก้ไขออเดอร์',icon:'✏️',cls:'staff'},report:{label:'รายงาน',icon:'📊',cls:'report'}};
+const MENUS={
+  admin:[{g:'ออเดอร์',items:[{id:'orders',l:'📋 รายการ'},{id:'add',l:'➕ เพิ่ม'}]},{g:'รายงาน',items:[{id:'rep-cust',l:'👤 ลูกค้า'},{id:'rep-model',l:'👕 รุ่น'}]},{g:'ระบบ',items:[{id:'stats',l:'📊 สถิติ'}]}],
+  staff:[{g:'ออเดอร์',items:[{id:'orders',l:'📋 รายการ'},{id:'add',l:'➕ เพิ่ม'}]}],
+  report:[{g:'รายงาน',items:[{id:'rep-cust',l:'👤 ลูกค้า'},{id:'rep-model',l:'👕 รุ่น'}]}],
+};
+const SL={wait:{l:'รอผลิต',c:'bwait',sp:'sp-wait'},prod:{l:'กำลังผลิต',c:'bprod',sp:'sp-prod'},ready:{l:'พร้อมส่ง',c:'bready',sp:'sp-ready'},sent:{l:'ส่งแล้ว',c:'bsent',sp:'sp-sent'},issue:{l:'มีปัญหา',c:'bissue',sp:'sp-issue'}};
+const STEPS4=['wait','prod','ready','sent'];
+const CHNL=['LINE','Facebook','Instagram','TikTok','หน้าร้าน','อื่นๆ'];
+
+let orders=JSON.parse(localStorage.getItem('op11_orders')||'[]');
+let logoData=localStorage.getItem('op11_logo')||'';
+let curRole=null,curTab='orders',editId=null;
+let formImgs=[],modalCtx=null;
+let fSearch='',fStatus='all',pinVal='',pendingRole=null;
+let multiBlocks=null;
+
+function save(){localStorage.setItem('op11_orders',JSON.stringify(orders))}
+function saveLogo(d){localStorage.setItem('op11_logo',d);logoData=d}
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,5)}
+function newSub(){return{model:'',color:'',size:'',qty:'',status:'wait',imgs:[]};}
+function newMB(){return[{name:'',channel:'LINE',model:'',color:'',size:'',qty:'',date:new Date().toISOString().slice(0,10),note:'',issue:'',imgs:[],subs:[]}];}
+
+function spill(status){const s=SL[status]||SL.wait;return `<span class="sp ${s.sp}">${s.l}</span>`;}
+function stOpts(cur){return Object.entries(SL).map(([k,v])=>`<option value="${k}" ${k===cur?'selected':''}>${v.l}</option>`).join('');}
+
+function renderLogo(){const w=document.getElementById('logo-wrap');if(!w)return;w.innerHTML=logoData?`<img src="${logoData}" class="logo-img"><div class="logo-eb">✏️</div>`:`<div class="logo-ph"><span>🧵</span><div class="logo-eb">📷</div></div>`;}
+function trigLogo(){document.getElementById('logo-inp').click()}
+function handleLogo(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{saveLogo(ev.target.result);renderLogo();renderTbarLogo();toast('✅ เปลี่ยนโลโก้แล้ว');};r.readAsDataURL(f);}
+function renderTbarLogo(){const el=document.getElementById('tbar-logo');if(!el)return;el.innerHTML=logoData?`<img src="${logoData}" class="brand-logo">`:`<span style="font-size:18px">🧵</span>`;}
+function selectRole(role){if(PINS[role]){pendingRole=role;pinVal='';updateDots();document.getElementById('perr').textContent='';document.getElementById('pt').textContent=ROLE_META[role].icon+' '+ROLE_META[role].label;document.getElementById('ls').style.display='none';document.getElementById('ps').style.display='flex';}else loginAs(role);}
+function pKey(k){if(pinVal.length>=4)return;pinVal+=k;updateDots();if(pinVal.length===4)setTimeout(checkPin,140);}
+function pDel(){pinVal=pinVal.slice(0,-1);updateDots();document.getElementById('perr').textContent='';}
+function updateDots(){for(let i=0;i<4;i++)document.getElementById('pd'+i).classList.toggle('on',i<pinVal.length);}
+function checkPin(){if(pinVal===PINS[pendingRole])loginAs(pendingRole);else{document.getElementById('perr').textContent='❌ รหัสไม่ถูกต้อง';pinVal='';updateDots();}}
+function backLogin(){document.getElementById('ps').style.display='none';document.getElementById('ls').style.display='flex';pendingRole=null;pinVal='';}
+function loginAs(role){curRole=role;document.getElementById('ps').style.display='none';document.getElementById('ls').style.display='none';document.getElementById('app').style.display='flex';const m=ROLE_META[role];document.getElementById('rbadge').textContent=m.icon+' '+m.label;document.getElementById('rbadge').className='rbadge '+m.cls;renderTbarLogo();multiBlocks=newMB();const first=(MENUS[role]||[])[0]?.items[0]?.id||'orders';buildMenu(first);goTab(first);}
+function logout(){curRole=null;curTab='orders';editId=null;formImgs=[];multiBlocks=null;document.getElementById('app').style.display='none';document.getElementById('ls').style.display='flex';renderLogo();}
+function buildMenu(active){const groups=MENUS[curRole]||[];document.getElementById('menu-bar').innerHTML=groups.map((g,gi)=>`${gi>0?'<div class="msep"></div>':''}<div class="mgroup"><span class="mgl">${g.g}</span>${g.items.map(it=>`<button class="mb ${it.id===(active||curTab)?'active':''}" onclick="goTab('${it.id}')">${it.l}</button>`).join('')}</div>`).join('');}
+function goTab(t){curTab=t;buildMenu(t);render();}
+function render(){const el=document.getElementById('main');if(curTab==='orders')el.innerHTML=renderList();else if(curTab==='add')el.innerHTML=renderForm();else if(curTab==='rep-cust')el.innerHTML=renderRC();else if(curTab==='rep-model')el.innerHTML=renderRM();else if(curTab==='stats')el.innerHTML=renderStats();}
+
+/* ═══ LIST ═══ */
+function renderList(){
+  let list=[...orders];
+  if(fStatus!=='all')list=list.filter(o=>o.status===fStatus);
+  if(fSearch)list=list.filter(o=>(o.name||'').includes(fSearch)||(o.model||'').includes(fSearch)||(o.color||'').includes(fSearch));
+  const tQ=list.reduce((s,o)=>s+parseInt(o.qty||0),0);
+  const bf=Object.entries(SL).map(([k,v])=>`<button class="btn bxs ${fStatus===k?'bp':'bg'}" onclick="fStatus='${k}';render()">${v.l}</button>`).join('');
+  const canEdit=curRole==='admin'||curRole==='staff';
+  return `<div class="fbar"><input class="sin" placeholder="🔍 ค้นหา..." value="${fSearch}" oninput="fSearch=this.value;render()"><button class="btn bxs ${fStatus==='all'?'bp':'bg'}" onclick="fStatus='all';render()">ทั้งหมด</button>${bf}</div>
+  <div style="font-size:12px;color:var(--t3);margin-bottom:10px">${list.length} รายการ • รวม <strong>${tQ}</strong> ตัว</div>
+  ${list.length?list.map(o=>renderOI(o,canEdit)).join(''):`<div class="empty"><div class="empty-ico">📦</div><p>ยังไม่มีออเดอร์</p></div>`}`;
+}
+
+function renderOI(o,canEdit){
+  const st=SL[o.status]||SL.wait,si4=STEPS4.indexOf(o.status);
+  const thumb=(o.imgs&&o.imgs[0])?`<img src="${o.imgs[0]}" class="oi-thumb" onclick="openIM('${o.id}',0,'main')">`:`<div class="oi-ph" onclick="trigAddImg('${o.id}')"><span style="font-size:22px">📷</span><span style="font-size:10px;color:var(--t4)">เพิ่มรูป</span></div>`;
+  const extra=(o.imgs||[]).slice(1).map((img,i)=>`<img src="${img}" class="eimg" onclick="openIM('${o.id}',${i+1},'main')">`).join('');
+  const steps=STEPS4.map((s,i)=>{const cl=i<si4?'done':i===si4?'cur':'';const lb={wait:'รอ',prod:'ผลิต',ready:'พร้อม',sent:'ส่ง'}[s];return`<div class="step"><div class="sdot ${cl}">${i<si4?'✓':i+1}</div><div class="slbl ${cl}">${lb}</div></div>`;}).join('');
+
+  /* ────── รายการที่ 1 (ออเดอร์หลัก) + รายการที่ 2,3... (subs) ────── */
+  // wrapper ของออเดอร์หลัก + subs ทั้งหมด
+  const subs=(o.subs||[]);
+
+  // sub items
+  const subItems=subs.map((s,si2)=>{
+    const subSt=SL[s.status||o.status]||SL.wait;
+    const sThumb=(s.imgs&&s.imgs[0])?`<img src="${s.imgs[0]}" class="sub-thumb" onclick="openIM('${o.id}',0,'sub',${si2})">`:`<div class="sub-ph"><span style="font-size:22px">📷</span><span style="font-size:10px;color:var(--t4)">ไม่มีรูป</span></div>`;
+    const sExtra=(s.imgs||[]).slice(1).map((img,ii)=>`<img src="${img}" class="eimg" onclick="openIM('${o.id}',${ii+1},'sub',${si2})">`).join('');
+    return `<div class="sub-item">
+      <div class="oi-hd">
+        ${sThumb}
+        <div class="oi-info">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px">
+            <span class="item-num-badge sub">${si2+2}</span>
+            <span class="oi-name" style="font-size:14px">รายการที่ ${si2+2}</span>
+          </div>
+          <div class="oi-meta">${o.name} • ${o.channel||''}</div>
+          <div class="oi-tags">
+            ${s.model?`<span class="tag tmod">👕 ${s.model}</span>`:''}
+            ${s.color?`<span class="tag tcol">🎨 ${s.color}</span>`:''}
+            ${s.size?`<span class="tag">📏 ${s.size}</span>`:''}
+            ${s.qty?`<span class="tag tqty">×${s.qty} ตัว</span>`:''}
+            ${spill(s.status||o.status)}
+          </div>
+          ${sExtra?`<div class="extra-imgs">${sExtra}</div>`:''}
+        </div>
+      </div>
+      ${canEdit?`<div class="sub-status-row">
+        <span style="font-size:11px;color:var(--t3);font-weight:600">อัปเดทสถานะ:</span>
+        <select class="btn bg bxs" style="border:1px solid var(--g2);font-size:11px;padding:4px 8px" onchange="updSubSt('${o.id}',${si2},this.value)">${stOpts(s.status||o.status)}</select>
+        <label class="btn bg bxs" style="cursor:pointer;font-size:11px;padding:4px 8px">📷 เพิ่มรูป<input type="file" accept="image/*" multiple style="display:none" onchange="addSubImg('${o.id}',${si2},event)"></label>
+        <button class="btn br bxs" style="font-size:11px;padding:4px 8px" onclick="delSub('${o.id}',${si2})">🗑 ลบ</button>
+      </div>`:''}
+    </div>`;
+  }).join('');
+
+  return `<div class="oi" id="oi-${o.id}">
+    <!-- รายการที่ 1 -->
+    <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px">
+      <span class="item-num-badge">1</span>
+      <span style="font-size:12px;font-weight:700;color:var(--t3)">รายการที่ 1</span>
+    </div>
+    <div class="oi-hd">
+      ${thumb}
+      <div class="oi-info">
+        <div class="oi-name">${o.name}</div>
+        <div class="oi-meta">📱 ${o.channel||''} • 📅 ${o.date||''}</div>
+        <div class="oi-tags">
+          <span class="tag tmod">👕 ${o.model}</span>
+          ${o.color?`<span class="tag tcol">🎨 ${o.color}</span>`:''}
+          ${o.size?`<span class="tag">📏 ${o.size}</span>`:''}
+          <span class="tag tqty">×${o.qty} ตัว</span>
+          <span class="badge ${st.c}">${st.l}</span>
+        </div>
+        ${extra?`<div class="extra-imgs">${extra}</div>`:''}
+        ${o.note?`<div style="font-size:12px;color:var(--t3);margin-top:5px">📝 ${o.note}</div>`:''}
+        ${o.issue?`<div style="font-size:12px;color:var(--red);margin-top:4px;font-weight:500">⚠️ ${o.issue}</div>`:''}
+      </div>
+    </div>
+    <div class="steps">${steps}</div>
+    ${canEdit?`<div class="oi-actions">
+      <select class="btn bg bxs" style="border:1px solid var(--g2)" onchange="updSt('${o.id}',this.value)">${stOpts(o.status)}</select>
+      <button class="btn bg bxs" onclick="startEdit('${o.id}')">✏️ แก้ไข</button>
+      <label class="btn bg bxs" style="cursor:pointer">📷 เพิ่มรูป<input type="file" accept="image/*" multiple style="display:none" onchange="addImgs('${o.id}',event)"></label>
+      <button class="btn bg bxs" onclick="addSubInline('${o.id}')">➕ เพิ่มรายการ</button>
+      <button class="btn br bxs" onclick="delOrd('${o.id}')">🗑</button>
+    </div>`:''}
+    ${subItems}
+  </div>`;
+}
+
+/* อัปเดทสถานะ sub */
+function updSubSt(oid,si,status){
+  const o=orders.find(x=>x.id===oid);
+  if(o&&o.subs[si]){o.subs[si].status=status;save();toast('✅ อัปเดทสถานะรายการที่ '+(si+2));render();}
+}
+
+function addSubInline(oid){const o=orders.find(x=>x.id===oid);if(!o.subs)o.subs=[];o.subs.push(newSub());save();render();}
+function addSubImg(oid,si,e){const o=orders.find(x=>x.id===oid);if(!o||!o.subs[si])return;if(!o.subs[si].imgs)o.subs[si].imgs=[];Array.from(e.target.files).forEach(f=>{const r=new FileReader();r.onload=ev=>{o.subs[si].imgs.push(ev.target.result);save();render();};r.readAsDataURL(f);});}
+function delSub(oid,si){if(!confirm('ลบรายการนี้?'))return;const o=orders.find(x=>x.id===oid);o.subs.splice(si,1);save();toast('🗑 ลบแล้ว');render();}
+
+/* FORM */
+function renderForm(){
+  if(editId){
+    const o=orders.find(x=>x.id===editId);
+    return `<div class="card"><div class="card-title">✏️ แก้ไขออเดอร์ — ${o.name}</div>
+      ${mainFields(o,'f_')}
+      <div class="fg"><label>รูปภาพ</label><label class="upzone" style="display:block;cursor:pointer"><div style="font-size:26px">📷</div><div style="font-size:12px;color:var(--t3);margin-top:4px">อัปโหลดหรือถ่ายภาพ</div><input type="file" accept="image/*" multiple capture="environment" style="display:none" onchange="handleFImgs(event)"></label><div class="igrid" id="fimg-grid">${formImgs.map((img,i)=>`<div class="iwrap"><img src="${img}" class="iprev" onclick="bigImg('${img}')"><button class="idel" onclick="rmFImg(${i})">✕</button></div>`).join('')}</div></div>
+      <div class="btn-row"><button class="btn bp" onclick="saveEdit()">💾 บันทึกการแก้ไข</button><button class="btn bg" onclick="cancelEdit()">ยกเลิก</button></div></div>`;
+  }
+  const blocks=multiBlocks.map((b,bi)=>`
+    <div class="order-block" id="blk-${bi}">
+      <div class="obn">ออเดอร์ที่ ${bi+1}</div>
+      ${bi>0?`<button class="ob-del-btn" onclick="rmBlock(${bi})">✕ ลบ</button>`:''}
+      ${mainFields(b,'b'+bi+'_')}
+      <div class="fg"><label>รูปภาพ</label><label class="upzone" style="display:block;cursor:pointer"><div style="font-size:22px">📷</div><div style="font-size:12px;color:var(--t3);margin-top:2px">อัปโหลดหรือถ่ายภาพ</div><input type="file" accept="image/*" multiple capture="environment" style="display:none" onchange="handleBI(${bi},event)"></label><div class="igrid" id="bimg-${bi}">${(b.imgs||[]).map((img,ii)=>`<div class="iwrap"><img src="${img}" class="iprev" onclick="bigImg('${img}')"><button class="idel" onclick="rmBI(${bi},${ii})">✕</button></div>`).join('')}</div></div>
+      <div style="margin-top:14px;padding-top:14px;border-top:1.5px dashed var(--g3)">
+        <div style="font-size:11px;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:.4px;margin-bottom:10px">➕ เพิ่มรายการ</div>
+        <div id="sub-list-${bi}">${(b.subs||[]).map((s,si)=>renderSubForm(bi,si,s,bi)).join('')}</div>
+        <button class="add-sub-btn" onclick="addSubBlock(${bi})">➕ เพิ่มรายการ</button>
+      </div>
+    </div>`).join('');
+  return `<div class="card"><div class="card-title">➕ เพิ่มออเดอร์ใหม่</div>
+    <div style="font-size:12px;color:var(--t3);margin-bottom:14px">เพิ่มได้หลายออเดอร์พร้อมกัน</div>
+    <div id="blks">${blocks}</div>
+    <button class="add-blk" onclick="addBlock()">＋ เพิ่มออเดอร์อีก 1 รายการ</button>
+    <div class="btn-row"><button class="btn bp" onclick="saveMulti()">💾 บันทึกทั้งหมด (${multiBlocks.length} ออเดอร์)</button><button class="btn bg" onclick="clearAllBlocks()">🔄 ล้างทั้งหมด</button></div></div>`;
+}
+function renderSubForm(bi,si,s){
+  return `<div class="sub-form-block" id="sub-${bi}-${si}">
+    <div class="sub-form-num">รายการที่ ${si+2}</div>
+    <button class="sub-form-del" onclick="rmSubBlock(${bi},${si})">✕ ลบ</button>
+    <div class="g2" style="margin-bottom:8px;margin-top:4px">
+      <div class="sf"><label>รุ่นเสื้อ</label><input id="s${bi}_${si}_mod" placeholder="ทิวลิป..." value="${s.model||''}"></div>
+      <div class="sf"><label>สี</label><input id="s${bi}_${si}_col" placeholder="สีเอ..." value="${s.color||''}"></div>
+    </div>
+    <div class="g2" style="margin-bottom:8px">
+      <div class="sf"><label>ไซส์</label><input id="s${bi}_${si}_sz" placeholder="M/L/XL" value="${s.size||''}"></div>
+      <div class="sf"><label>จำนวน (ตัว)</label><input id="s${bi}_${si}_qty" type="number" min="1" placeholder="0" value="${s.qty||''}"></div>
+    </div>
+    <label class="upzone" style="display:block;cursor:pointer;padding:10px"><div style="font-size:18px">📷</div><div style="font-size:11px;color:var(--t3)">อัปโหลดหรือถ่ายรูป</div><input type="file" accept="image/*" multiple capture="environment" style="display:none" onchange="handleSubBI(${bi},${si},event)"></label>
+    <div class="igrid" id="subimg-${bi}-${si}">${(s.imgs||[]).map((img,ii)=>`<div class="iwrap"><img src="${img}" class="iprev" onclick="bigImg('${img}')"><button class="idel" onclick="rmSubImg(${bi},${si},${ii})">✕</button></div>`).join('')}</div>
+  </div>`;
+}
+function syncDOM(){if(!multiBlocks)return;multiBlocks.forEach((b,bi)=>{const g=id=>(document.getElementById(id)||{}).value;b.name=g('b'+bi+'_name')??b.name;b.channel=g('b'+bi+'_ch')??b.channel;b.model=g('b'+bi+'_mod')??b.model;b.color=g('b'+bi+'_col')??b.color;b.size=g('b'+bi+'_sz')??b.size;b.qty=g('b'+bi+'_qty')??b.qty;b.date=g('b'+bi+'_dt')??b.date;b.note=g('b'+bi+'_note')??b.note;b.issue=g('b'+bi+'_iss')??b.issue;(b.subs||[]).forEach((s,si)=>{s.model=g('s'+bi+'_'+si+'_mod')??s.model;s.color=g('s'+bi+'_'+si+'_col')??s.color;s.size=g('s'+bi+'_'+si+'_sz')??s.size;s.qty=g('s'+bi+'_'+si+'_qty')??s.qty;});});}
+function addBlock(){syncDOM();multiBlocks.push({name:'',channel:'LINE',model:'',color:'',size:'',qty:'',date:new Date().toISOString().slice(0,10),note:'',issue:'',imgs:[],subs:[]});render();setTimeout(()=>document.getElementById('blks')?.lastElementChild?.scrollIntoView({behavior:'smooth'}),100);}
+function rmBlock(bi){syncDOM();multiBlocks.splice(bi,1);render();}
+function addSubBlock(bi){syncDOM();if(!multiBlocks[bi].subs)multiBlocks[bi].subs=[];multiBlocks[bi].subs.push(newSub());render();setTimeout(()=>document.getElementById(`sub-list-${bi}`)?.lastElementChild?.scrollIntoView({behavior:'smooth',block:'nearest'}),80);}
+function rmSubBlock(bi,si){syncDOM();multiBlocks[bi].subs.splice(si,1);render();}
+function clearAllBlocks(){multiBlocks=newMB();render();}
+function handleSubBI(bi,si,e){Array.from(e.target.files).forEach(f=>{const r=new FileReader();r.onload=ev=>{if(!multiBlocks[bi].subs[si].imgs)multiBlocks[bi].subs[si].imgs=[];multiBlocks[bi].subs[si].imgs.push(ev.target.result);const g=document.getElementById(`subimg-${bi}-${si}`);if(g)g.innerHTML=(multiBlocks[bi].subs[si].imgs||[]).map((img,ii)=>`<div class="iwrap"><img src="${img}" class="iprev" onclick="bigImg('${img}')"><button class="idel" onclick="rmSubImg(${bi},${si},${ii})">✕</button></div>`).join('');};r.readAsDataURL(f);});}
+function rmSubImg(bi,si,ii){multiBlocks[bi].subs[si].imgs.splice(ii,1);const g=document.getElementById(`subimg-${bi}-${si}`);if(g)g.innerHTML=(multiBlocks[bi].subs[si].imgs||[]).map((img,iix)=>`<div class="iwrap"><img src="${img}" class="iprev" onclick="bigImg('${img}')"><button class="idel" onclick="rmSubImg(${bi},${si},${iix})">✕</button></div>`).join('');}
+function mainFields(o,p){return `<div class="g2" style="margin-bottom:10px"><div class="fg"><label>ชื่อลูกค้า *</label><input id="${p}name" placeholder="ชื่อลูกค้า" value="${o.name||''}"></div><div class="fg"><label>ช่องทาง</label><select id="${p}ch">${CHNL.map(c=>`<option ${o.channel===c?'selected':''}>${c}</option>`).join('')}</select></div></div><div class="g3" style="margin-bottom:10px"><div class="fg"><label>รุ่นเสื้อ *</label><input id="${p}mod" placeholder="ทิวลิป..." value="${o.model||''}"></div><div class="fg"><label>สี</label><input id="${p}col" placeholder="สีเอ..." value="${o.color||''}"></div><div class="fg"><label>ไซส์</label><input id="${p}sz" placeholder="M/L/XL" value="${o.size||''}"></div></div><div class="g2" style="margin-bottom:10px"><div class="fg"><label>จำนวน *</label><input id="${p}qty" type="number" min="1" value="${o.qty||''}"></div><div class="fg"><label>วันที่</label><input id="${p}dt" type="date" value="${o.date||new Date().toISOString().slice(0,10)}"></div></div><div class="fg"><label>หมายเหตุ</label><input id="${p}note" value="${o.note||''}"></div><div class="fg"><label>แจ้งปัญหา</label><input id="${p}iss" value="${o.issue||''}"></div>`;}
+function readFields(p){const g=id=>(document.getElementById(p+id)||{}).value||'';return{name:g('name').trim(),channel:g('ch'),model:g('mod').trim(),color:g('col'),size:g('sz'),qty:parseInt(g('qty'))||0,date:g('dt'),note:g('note'),issue:g('iss')};}
+function readSubFields(bi,si){const g=id=>(document.getElementById(id)||{}).value||'';return{model:g(`s${bi}_${si}_mod`).trim(),color:g(`s${bi}_${si}_col`),size:g(`s${bi}_${si}_sz`),qty:parseInt(g(`s${bi}_${si}_qty`))||0,status:'wait',imgs:[...(multiBlocks[bi].subs[si].imgs||[])]};}
+function handleFImgs(e){Array.from(e.target.files).forEach(f=>{const r=new FileReader();r.onload=ev=>{formImgs.push(ev.target.result);const g=document.getElementById('fimg-grid');if(g)g.innerHTML=formImgs.map((img,i)=>`<div class="iwrap"><img src="${img}" class="iprev" onclick="bigImg('${img}')"><button class="idel" onclick="rmFImg(${i})">✕</button></div>`).join('');};r.readAsDataURL(f);});}
+function rmFImg(i){formImgs.splice(i,1);const g=document.getElementById('fimg-grid');if(g)g.innerHTML=formImgs.map((img,ix)=>`<div class="iwrap"><img src="${img}" class="iprev" onclick="bigImg('${img}')"><button class="idel" onclick="rmFImg(${ix})">✕</button></div>`).join('');}
+function handleBI(bi,e){Array.from(e.target.files).forEach(f=>{const r=new FileReader();r.onload=ev=>{if(!multiBlocks[bi].imgs)multiBlocks[bi].imgs=[];multiBlocks[bi].imgs.push(ev.target.result);const g=document.getElementById('bimg-'+bi);if(g)g.innerHTML=(multiBlocks[bi].imgs||[]).map((img,ii)=>`<div class="iwrap"><img src="${img}" class="iprev" onclick="bigImg('${img}')"><button class="idel" onclick="rmBI(${bi},${ii})">✕</button></div>`).join('');};r.readAsDataURL(f);});}
+function rmBI(bi,ii){multiBlocks[bi].imgs.splice(ii,1);const g=document.getElementById('bimg-'+bi);if(g)g.innerHTML=(multiBlocks[bi].imgs||[]).map((img,iix)=>`<div class="iwrap"><img src="${img}" class="iprev" onclick="bigImg('${img}')"><button class="idel" onclick="rmBI(${bi},${iix})">✕</button></div>`).join('');}
+function saveMulti(){syncDOM();for(let bi=0;bi<multiBlocks.length;bi++){const d=readFields('b'+bi+'_');if(!d.name||!d.model||!d.qty){toast(`⚠️ ออเดอร์ที่ ${bi+1}: กรอกชื่อ รุ่น จำนวน`,false);return;}const subs=(multiBlocks[bi].subs||[]).map((_,si)=>readSubFields(bi,si));orders.unshift({id:uid(),status:'wait',subs,...d,imgs:[...(multiBlocks[bi].imgs||[])]});}save();toast(`✅ บันทึก ${multiBlocks.length} ออเดอร์`);multiBlocks=newMB();goTab('orders');}
+function startEdit(id){editId=id;const o=orders.find(x=>x.id===id);formImgs=[...(o.imgs||[])];goTab('add');}
+function cancelEdit(){editId=null;formImgs=[];goTab('orders');}
+function saveEdit(){const d=readFields('f_');if(!d.name||!d.model||!d.qty){toast('⚠️ กรอกชื่อ รุ่น จำนวน',false);return;}const idx=orders.findIndex(x=>x.id===editId);orders[idx]={...orders[idx],...d,imgs:formImgs.length?[...formImgs]:orders[idx].imgs||[]};save();toast('✅ แก้ไขสำเร็จ');editId=null;formImgs=[];goTab('orders');}
+function delOrd(id){if(!confirm('ยืนยันลบออเดอร์?'))return;orders=orders.filter(x=>x.id!==id);save();toast('🗑 ลบแล้ว');render();}
+function updSt(id,s){const o=orders.find(x=>x.id===id);if(o){o.status=s;save();toast('✅ อัปเดทสถานะ');render();}}
+function addImgs(id,e){const o=orders.find(x=>x.id===id);if(!o.imgs)o.imgs=[];Array.from(e.target.files).forEach(f=>{const r=new FileReader();r.onload=ev=>{o.imgs.push(ev.target.result);save();render();};r.readAsDataURL(f);});}
+function trigAddImg(id){const i=document.createElement('input');i.type='file';i.accept='image/*';i.multiple=true;i.onchange=e=>addImgs(id,e);i.click();}
+
+/* IMG MODAL */
+function openIM(oid,idx,type,subIdx){modalCtx={oid,idx,type,subIdx};const o=orders.find(x=>x.id===oid);let src,total,name;if(type==='sub'){const s=o.subs[subIdx];src=s&&s.imgs&&s.imgs[idx];total=(s&&s.imgs||[]).length;name=o.name+' รายการที่ '+(subIdx+2);}else{src=o&&o.imgs&&o.imgs[idx];total=(o&&o.imgs||[]).length;name=o.name+' รายการที่ 1';}if(!src)return;document.getElementById('modal-img-el').src=src;document.getElementById('modal-info').textContent=`รูปที่ ${idx+1}/${total} | ${name}`;const ce=curRole==='admin'||curRole==='staff';document.getElementById('modal-actions').innerHTML=ce?`<label class="btn bg bsm" style="cursor:pointer">📷 เปลี่ยนรูป<input type="file" accept="image/*" style="display:none" onchange="changeIM(event)"></label><button class="btn br bsm" onclick="deleteIM()">🗑 ลบรูป</button><button class="btn bg bsm" onclick="closeIML()">✕ ปิด</button>`:`<button class="btn bg bsm" onclick="closeIML()">✕ ปิด</button>`;document.getElementById('img-modal').style.display='flex';}
+function bigImg(src){modalCtx=null;document.getElementById('modal-img-el').src=src;document.getElementById('modal-info').textContent='';document.getElementById('modal-actions').innerHTML=`<button class="btn bg bsm" onclick="closeIML()">✕ ปิด</button>`;document.getElementById('img-modal').style.display='flex';}
+function closeIML(){document.getElementById('img-modal').style.display='none';}
+function closeIM(e){if(!e||e.target.id==='img-modal')closeIML();}
+function changeIM(e){if(!modalCtx)return;const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{const o=orders.find(x=>x.id===modalCtx.oid);if(modalCtx.type==='sub')o.subs[modalCtx.subIdx].imgs[modalCtx.idx]=ev.target.result;else o.imgs[modalCtx.idx]=ev.target.result;save();toast('✅ เปลี่ยนรูปแล้ว');document.getElementById('modal-img-el').src=ev.target.result;render();};r.readAsDataURL(f);}
+function deleteIM(){if(!modalCtx||!confirm('ลบรูปนี้?'))return;const o=orders.find(x=>x.id===modalCtx.oid);if(modalCtx.type==='sub')o.subs[modalCtx.subIdx].imgs.splice(modalCtx.idx,1);else o.imgs.splice(modalCtx.idx,1);save();toast('🗑 ลบรูปแล้ว');closeIML();render();}
+
+/* ═══ REPORT CUSTOMER ═══ */
+function renderRC(){
+  const custs=[...new Set(orders.map(o=>o.name))].sort();
+  if(!custs.length)return`<div class="empty"><div class="empty-ico">👤</div><p>ยังไม่มีลูกค้า</p></div>`;
+  const sel=window._rc||custs[0];
+  const cos=orders.filter(o=>o.name===sel);
+  const totQ=cos.reduce((s,o)=>s+o.qty+((o.subs||[]).reduce((ss,sb)=>ss+(parseInt(sb.qty)||0),0)),0);
+  const mb={};cos.forEach(o=>{const k=`${o.model}||${o.color||''}`;if(!mb[k])mb[k]={model:o.model,color:o.color,qty:0};mb[k].qty+=o.qty;(o.subs||[]).forEach(s=>{const sk=`${s.model||o.model}||${s.color||''}`;if(!mb[sk])mb[sk]={model:s.model||o.model,color:s.color,qty:0};mb[sk].qty+=(parseInt(s.qty)||0);});});
+  const ce=curRole==='admin'||curRole==='staff';
+  let itemNum=0;
+  const allItems=cos.map(o=>{
+    const st=SL[o.status]||SL.wait;
+    itemNum++;const num=itemNum;
+    const imgs=o.imgs||[];
+    const imgSection=imgs.length?imgs.map((img,ii)=>`<img src="${img}" class="rep-img" onclick="openIM('${o.id}',${ii},'main')">`).join(''):`<div style="background:var(--g1);border-radius:10px;height:140px;display:flex;align-items:center;justify-content:center;color:var(--t3);font-size:13px;margin-bottom:10px">ยังไม่มีรูปภาพ</div>`;
+    const table=`<table class="tbl" style="margin-top:8px">
+      <tr><td style="color:var(--t3);width:120px">ลูกค้า</td><td><strong>${o.name}</strong></td></tr>
+      <tr><td style="color:var(--t3)">รุ่น</td><td><strong>${o.model}</strong></td></tr>
+      ${o.color?`<tr><td style="color:var(--t3)">สี</td><td>${o.color}</td></tr>`:''}
+      ${o.size?`<tr><td style="color:var(--t3)">ไซส์</td><td>${o.size}</td></tr>`:''}
+      <tr><td style="color:var(--t3)">จำนวน</td><td><strong style="color:var(--pri);font-size:16px">${o.qty} ตัว</strong></td></tr>
+      <tr><td style="color:var(--t3)">สถานะ</td><td>${spill(o.status)}</td></tr>
+      ${o.note?`<tr><td style="color:var(--t3)">หมายเหตุ</td><td>${o.note}</td></tr>`:''}
+      ${o.issue?`<tr><td style="color:var(--red)">ปัญหา</td><td style="color:var(--red)">${o.issue}</td></tr>`:''}
+    </table>`;
+    const subHTML=(o.subs||[]).map((s,si2)=>{
+      itemNum++;const snum=itemNum;
+      const sImgs=(s.imgs||[]);
+      const sImgSection=sImgs.length?sImgs.map((img,ii)=>`<img src="${img}" class="rep-img" onclick="openIM('${o.id}',${ii},'sub',${si2})">`).join(''):`<div style="background:var(--g1);border-radius:10px;height:140px;display:flex;align-items:center;justify-content:center;color:var(--t3);font-size:13px;margin-bottom:10px">ยังไม่มีรูปภาพ</div>`;
+      return `<div class="rep-item" style="border-left:3px solid var(--teal)">
+        <div class="rep-item-num" style="background:var(--teal)">${snum}</div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:6px">
+          <span style="font-family:'Mitr',sans-serif;font-size:14px;font-weight:500">รายการที่ ${snum} — ${s.model||'-'}${s.color?' / '+s.color:''}</span>
+          ${spill(s.status||o.status)}
+        </div>
+        ${sImgSection}
+        <table class="tbl">
+          <tr><td style="color:var(--t3);width:120px">ลูกค้า</td><td><strong>${o.name}</strong></td></tr>
+          <tr><td style="color:var(--t3)">รุ่น</td><td><strong>${s.model||'-'}</strong></td></tr>
+          ${s.color?`<tr><td style="color:var(--t3)">สี</td><td>${s.color}</td></tr>`:''}
+          ${s.size?`<tr><td style="color:var(--t3)">ไซส์</td><td>${s.size}</td></tr>`:''}
+          <tr><td style="color:var(--t3)">จำนวน</td><td><strong style="color:var(--pri);font-size:16px">${s.qty||0} ตัว</strong></td></tr>
+          <tr><td style="color:var(--t3)">สถานะ</td><td>${spill(s.status||o.status)}</td></tr>
+        </table>
+      </div>`;
+    }).join('');
+    return `<div class="rep-item" style="border-left:3px solid var(--pri)">
+      <div class="rep-item-num">${num}</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:6px">
+        <span style="font-family:'Mitr',sans-serif;font-size:14px;font-weight:500">รายการที่ ${num} — ${o.model}${o.color?' / '+o.color:''}</span>
+        <div style="display:flex;gap:6px;align-items:center">${spill(o.status)}${ce?`<button class="btn bg bxs" onclick="startEdit('${o.id}')">✏️</button><label class="btn bg bxs" style="cursor:pointer">📷<input type="file" accept="image/*" style="display:none" onchange="addImgs('${o.id}',event)"></label>`:''}</div>
+      </div>
+      ${imgSection}${table}
+    </div>${subHTML}`;
+  }).join('');
+  return `<div class="card"><div class="card-title">👤 รายงานลูกค้ารายบุคคล</div>
+    <div class="fg" style="margin-bottom:0"><label>เลือกลูกค้า</label><select style="max-width:260px" onchange="window._rc=this.value;render()">${custs.map(c=>`<option ${c===sel?'selected':''}>${c}</option>`).join('')}</select></div></div>
+  <div id="pdf-cust">
+  <div class="card" style="border-left:4px solid var(--pri)">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px">
+      <div><div style="font-family:'Mitr',sans-serif;font-size:20px;font-weight:600">${sel}</div><div style="font-size:13px;color:var(--t3)">${cos.length} ออเดอร์ • รวม ${totQ} ตัว</div></div>
+      <div style="text-align:right"><div style="font-family:'Mitr',sans-serif;font-size:32px;font-weight:700;color:var(--pri)">${totQ}</div><div style="font-size:12px;color:var(--t3)">ตัวทั้งหมด</div></div>
+    </div>
+    <div class="rep-h">สรุปรายการสั่งซื้อ</div>
+    <table class="tbl"><tr><th>รุ่น</th><th>สี</th><th>จำนวน</th></tr>${Object.values(mb).map(m=>`<tr><td>${m.model}</td><td>${m.color||'-'}</td><td><strong>${m.qty} ตัว</strong></td></tr>`).join('')}<tr class="total-row"><td colspan="2">รวมทั้งหมด</td><td>${totQ} ตัว</td></tr></table>
+  </div>${allItems}</div>
+  <div class="export-bar"><button class="pdfbtn" onclick="doExportPDF('pdf-cust','รายงาน_${sel}')">📄 ส่งออก PDF</button><button class="imgbtn" onclick="doExportImg('pdf-cust','รายงาน_${sel}')">🖼️ บันทึกรูป</button></div>`;
+}
+
+/* ═══════════════════════════════════════════
+   REPORT MODEL — FIX: ดึงรูปจาก sub ด้วย
+   + แสดงสถานะทุกรายการ
+═══════════════════════════════════════════ */
+function getAllModels(){
+  const s=new Set();
+  orders.forEach(o=>{if(o.model)s.add(o.model);(o.subs||[]).forEach(sub=>{if(sub.model)s.add(sub.model);});});
+  return [...s].sort();
+}
+
+function renderRM(){
+  const mdls=getAllModels();
+  if(!mdls.length)return`<div class="empty"><div class="empty-ico">👕</div><p>ยังไม่มีข้อมูลรุ่น</p></div>`;
+  const sel=window._rm||mdls[0];
+  const rows=[];
+  orders.forEach(o=>{
+    if(o.model===sel)rows.push({name:o.name,color:o.color||'',size:o.size||'',qty:parseInt(o.qty)||0,status:o.status,imgs:o.imgs||[],from:'main',orderId:o.id});
+    (o.subs||[]).forEach((s,si)=>{if(s.model===sel)rows.push({name:o.name,color:s.color||'',size:s.size||'',qty:parseInt(s.qty)||0,status:s.status||o.status,imgs:s.imgs||[],from:'sub',orderId:o.id,subIdx:si});});
+  });
+  const grandT=rows.reduce((s,r)=>s+(r.qty||0),0);
+
+  // ดึงรูปจากทุกที่ — ออเดอร์หลักก่อน ถ้าไม่มีดูจาก sub
+  let heroImg=null;
+  for(const r of rows){if(r.imgs&&r.imgs[0]){heroImg=r.imgs[0];break;}}
+
+  const cg={};
+  rows.forEach(r=>{
+    const ck=`${r.color||'ไม่ระบุสี'}__${r.size||'-'}`;
+    if(!cg[ck])cg[ck]={color:r.color||'ไม่ระบุสี',size:r.size||'-',rows:[],total:0};
+    const ex=cg[ck].rows.find(x=>x.name===r.name);
+    if(ex){ex.qty+=r.qty;// สถานะ: ถ้ามีหลายสถานะให้แสดงล่าสุด
+    if(r.status)ex.status=r.status;}
+    else cg[ck].rows.push({name:r.name,qty:r.qty,status:r.status});
+    cg[ck].total+=r.qty;
+  });
+
+  const ct=Object.values(cg).map(c=>`<div style="margin-bottom:18px">
+    <div style="font-weight:700;font-size:13px;margin-bottom:6px">
+      🎨 ${c.color}${c.size&&c.size!=='-'?' • 📏 '+c.size:''} — <span style="color:var(--pri)">${c.total} ตัว</span>
+    </div>
+    <table class="tbl">
+      <tr><th>ลูกค้า</th><th>จำนวน</th><th>สถานะ</th></tr>
+      ${c.rows.map(r=>`<tr><td><strong>${r.name}</strong></td><td><strong>${r.qty} ตัว</strong></td><td>${spill(r.status)}</td></tr>`).join('')}
+      <tr class="total-row"><td>รวม</td><td>${c.total} ตัว</td><td></td></tr>
+    </table>
+  </div>`).join('');
+
+  const ce=curRole==='admin'||curRole==='staff';
+  const custCount=[...new Set(rows.map(r=>r.name))].length;
+
+  return `<div class="card"><div class="card-title">👕 รายงานรุ่นเสื้อ</div>
+    <div class="fg" style="margin-bottom:0"><label>เลือกรุ่น (${mdls.length} รุ่นทั้งหมด)</label>
+    <select style="max-width:300px" onchange="window._rm=this.value;render()">${mdls.map(m=>`<option ${m===sel?'selected':''}>${m}</option>`).join('')}</select></div></div>
+  <div id="pdf-model">
+  <div class="model-head">
+    ${heroImg
+      ?`<img src="${heroImg}" class="model-img" onclick="bigImg('${heroImg}')">`
+      :`<div class="model-img-ph"><span style="font-size:28px">📷</span><span>ไม่มีรูป</span></div>`}
+    <div style="flex:1">
+      <div style="font-family:'Mitr',sans-serif;font-size:22px;font-weight:700;color:var(--pri)">${sel}</div>
+      <div style="font-size:13px;color:var(--t2);margin:4px 0">${custCount} ลูกค้า • ${rows.length} รายการ</div>
+      <div style="font-family:'Mitr',sans-serif;font-size:44px;font-weight:700;color:var(--pri);line-height:1">${grandT}</div>
+      <div style="font-size:13px;color:var(--t3)">ตัวรวมทั้งหมด</div>
+      ${ce?`<label class="btn bg bxs" style="cursor:pointer;margin-top:8px;display:inline-flex">📷 เปลี่ยนรูปรุ่น<input type="file" accept="image/*" style="display:none" onchange="repMImg('${sel}',event)"></label>`:''}
+    </div>
+  </div>
+  <div class="card">
+    <div class="rep-h">รายละเอียดแยกตามสี ไซส์ และลูกค้า — รวมทุกออเดอร์</div>
+    ${ct||'<p style="color:var(--t3)">ไม่มีข้อมูล</p>'}
+    <div style="background:var(--pri-ll);border-radius:10px;padding:14px;text-align:center;border:1px solid var(--pri-l);margin-top:12px">
+      <div style="font-size:13px;color:var(--t3)">ยอดผลิตรวม — รุ่น ${sel}</div>
+      <div style="font-family:'Mitr',sans-serif;font-size:44px;font-weight:700;color:var(--pri)">${grandT} <span style="font-size:18px">ตัว</span></div>
+      <div style="font-size:13px;color:var(--t3)">จาก ${custCount} ลูกค้า</div>
+    </div>
+  </div></div>
+  <div class="export-bar">
+    <button class="pdfbtn" onclick="doExportPDF('pdf-model','คำสั่งผลิต_${sel}')">📄 ส่งออก PDF</button>
+    <button class="imgbtn" onclick="doExportImg('pdf-model','คำสั่งผลิต_${sel}')">🖼️ บันทึกรูป</button>
+  </div>`;
+}
+
+function repMImg(model,e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{
+  // หาออเดอร์หลักที่ตรงรุ่น หรือ sub ที่ตรงรุ่น
+  let found=false;
+  for(const o of orders){
+    if(o.model===model){if(!o.imgs)o.imgs=[];o.imgs[0]=ev.target.result;found=true;break;}
+    for(const s of (o.subs||[])){if(s.model===model){if(!s.imgs)s.imgs=[];s.imgs[0]=ev.target.result;found=true;break;}}
+    if(found)break;
+  }
+  if(found){save();toast('✅ เปลี่ยนรูปแล้ว');render();}
+};r.readAsDataURL(f);}
+
+/* STATS */
+function renderStats(){
+  const tO=orders.length,tQ=orders.reduce((s,o)=>s+o.qty,0);
+  const tS=orders.filter(o=>o.status==='sent').reduce((s,o)=>s+o.qty,0);
+  const tR=orders.filter(o=>o.status==='ready').reduce((s,o)=>s+o.qty,0);
+  const tP=orders.filter(o=>o.status==='prod').reduce((s,o)=>s+o.qty,0);
+  const tI=orders.filter(o=>o.status==='issue').length;
+  const byM={};
+  orders.forEach(o=>{if(!byM[o.model])byM[o.model]={qty:0,sent:0,cnt:0};byM[o.model].qty+=o.qty;byM[o.model].cnt++;if(o.status==='sent')byM[o.model].sent+=o.qty;(o.subs||[]).forEach(s=>{if(s.model){if(!byM[s.model])byM[s.model]={qty:0,sent:0,cnt:0};byM[s.model].qty+=(parseInt(s.qty)||0);if(s.status==='sent')byM[s.model].sent+=(parseInt(s.qty)||0);}});});
+  const mR=Object.entries(byM).sort((a,b)=>b[1].qty-a[1].qty);const mQ=Math.max(...mR.map(([,v])=>v.qty),1);
+  return `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px"><div style="font-family:'Mitr',sans-serif;font-size:16px;font-weight:500">📊 สถิติการผลิต</div><div style="display:flex;gap:8px"><button class="pdfbtn bsm" onclick="doExportPDF('sa','สถิติ')">📄 PDF</button><button class="imgbtn bsm" onclick="doExportImg('sa','สถิติ')">🖼️ รูป</button></div></div>
+  <div id="sa">
+  <div class="sg"><div class="sc"><div class="sn">${tO}</div><div class="sl">ออเดอร์รวม</div></div><div class="sc"><div class="sn" style="color:var(--amb)">${tQ}</div><div class="sl">ตัวทั้งหมด</div></div><div class="sc"><div class="sn" style="color:var(--teal)">${tP}</div><div class="sl">กำลังผลิต</div></div><div class="sc"><div class="sn" style="color:var(--blu)">${tR}</div><div class="sl">พร้อมส่ง</div></div><div class="sc"><div class="sn" style="color:var(--grn)">${tS}</div><div class="sl">ส่งแล้ว</div></div><div class="sc"><div class="sn" style="color:var(--red)">${tI}</div><div class="sl">มีปัญหา</div></div></div>
+  <div class="card"><div class="card-title">สถิติรายรุ่น (รวมทุกรุ่นจากทุกออเดอร์)</div>${mR.length?mR.map(([m,v])=>`<div style="margin-bottom:14px"><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px"><strong>${m}</strong><span style="color:var(--t3)">ส่งแล้ว ${v.sent}/${v.qty}</span></div><div style="background:var(--g1);border-radius:6px;height:10px;overflow:hidden"><div style="background:var(--pri);height:100%;width:${Math.round(v.qty/mQ*100)}%;border-radius:6px"></div></div><div style="font-size:11px;color:var(--t3);margin-top:3px">ยอดผลิต: <strong style="color:var(--t1)">${v.qty} ตัว</strong> • ส่งแล้ว: <strong style="color:var(--grn)">${v.sent} ตัว</strong></div></div>`).join(''):'<p style="color:var(--t3)">ยังไม่มีข้อมูล</p>'}</div>
+  <div class="card"><div class="card-title">🔍 ตรวจสอบ</div><table class="tbl"><tr><th>รายการ</th><th>จำนวน</th></tr><tr><td>ส่งผลิตทั้งหมด</td><td>${tQ} ตัว</td></tr><tr><td>ผลิตเสร็จ+พร้อมส่ง</td><td>${tR+tS} ตัว</td></tr><tr><td>ยังค้างอยู่</td><td>${tQ-tR-tS} ตัว</td></tr><tr class="total-row"><td>ส่งแล้วจริง</td><td>${tS} ตัว</td></tr></table></div>
+  </div>`;
+}
+
+/* EXPORT */
+async function doExportPDF(areaId,fname){
+  const el=document.getElementById(areaId);if(!el){toast('❌ ไม่พบข้อมูล',false);return;}
+  toast('⏳ กำลังสร้าง PDF...');
+  try{await new Promise(r=>setTimeout(r,300));const c=await html2canvas(el,{scale:2,useCORS:true,backgroundColor:'#ffffff',logging:false,allowTaint:true});const imgData=c.toDataURL('image/jpeg',0.92);const{jsPDF}=window.jspdf;const pdf=new jsPDF({orientation:c.width>c.height?'landscape':'portrait',unit:'px',format:[c.width/2,c.height/2]});pdf.addImage(imgData,'JPEG',0,0,c.width/2,c.height/2);pdf.save(fname+'.pdf');toast('✅ PDF บันทึกแล้ว');}catch(err){toast('❌ '+err.message,false);}
+}
+async function doExportImg(areaId,fname){
+  const el=document.getElementById(areaId);if(!el){toast('❌ ไม่พบข้อมูล',false);return;}
+  toast('⏳ กำลังสร้างรูป...');
+  try{await new Promise(r=>setTimeout(r,300));const c=await html2canvas(el,{scale:2,useCORS:true,backgroundColor:'#ffffff',logging:false,allowTaint:true});const a=document.createElement('a');a.download=fname+'.png';a.href=c.toDataURL('image/png');document.body.appendChild(a);a.click();document.body.removeChild(a);toast('✅ รูปบันทึกแล้ว');}catch(err){toast('❌ '+err.message,false);}
+}
+function toast(msg,ok=true){const t=document.getElementById('toast');t.textContent=msg;t.className='toast '+(ok?'tok':'terr');t.style.display='block';setTimeout(()=>t.style.display='none',3000);}
+renderLogo();
+</script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=Mitr:wght@400;500;600;700&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --pri:#6D28D9;--pri2:#7C3AED;--pri-l:#EDE9FE;--pri-ll:#F5F3FF;
+  --teal:#0D9488;--tl:#CCFBF1;
+  --amb:#D97706;--red:#DC2626;
+  --grn:#16A34A;--blu:#2563EB;
+  --g0:#F4F6F9;--g1:#F3F4F6;--g2:#E5E7EB;--g3:#D1D5DB;
+  --t1:#111827;--t2:#374151;--t3:#6B7280;--t4:#9CA3AF;
+  --white:#fff;--r:12px;--r2:16px;
+  --sh:0 1px 4px rgba(0,0,0,.07);--sh2:0 4px 20px rgba(0,0,0,.12);
+}
+body{font-family:'Sarabun',sans-serif;background:var(--g0);color:var(--t1);font-size:14px;min-height:100vh}
+.ls{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(160deg,#F0EDFF 0%,#E8F4FD 55%,#E8FBF5 100%);padding:20px}
+.lb{width:100%;max-width:420px;text-align:center}
+.logo-area{display:flex;flex-direction:column;align-items:center;margin-bottom:20px}
+.logo-img{width:80px;height:80px;border-radius:20px;object-fit:cover;box-shadow:0 4px 16px rgba(109,40,217,.25);cursor:pointer;border:3px solid var(--white);transition:.2s}
+.logo-img:hover{transform:scale(1.06)}
+.logo-ph{width:80px;height:80px;border-radius:20px;background:linear-gradient(135deg,var(--pri-l),#DDD6FE);display:flex;align-items:center;justify-content:center;font-size:36px;box-shadow:0 4px 16px rgba(109,40,217,.2);cursor:pointer;border:3px solid var(--white);position:relative;transition:.2s}
+.logo-ph:hover{transform:scale(1.06)}
+.logo-eb{position:absolute;bottom:-6px;right:-6px;background:var(--pri);color:#fff;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:11px;border:2px solid var(--white);pointer-events:none}
+.logo-hint{font-size:11px;color:var(--t4);margin-top:8px}
+.app-title{font-family:'Mitr',sans-serif;font-size:30px;font-weight:700;color:var(--pri)}
+.app-sub{font-size:13px;color:var(--t3);margin:4px 0 28px}
+.role-card{background:var(--white);border-radius:18px;border:1.5px solid var(--g2);padding:18px 20px;margin-bottom:12px;cursor:pointer;display:flex;align-items:center;gap:16px;transition:.2s;box-shadow:0 2px 8px rgba(0,0,0,.06);text-align:left}
+.role-card:hover{border-color:var(--pri);box-shadow:0 6px 24px rgba(109,40,217,.16);transform:translateY(-2px)}
+.role-card:active{transform:translateY(0) scale(.99)}
+.ri{font-size:40px;flex-shrink:0;width:56px;height:56px;display:flex;align-items:center;justify-content:center;border-radius:14px}
+.ri.admin{background:linear-gradient(135deg,#EDE9FE,#DDD6FE)}
+.ri.staff{background:linear-gradient(135deg,#E0F2FE,#BAE6FD)}
+.ri.report{background:linear-gradient(135deg,#D1FAE5,#A7F3D0)}
+.rn{font-family:'Mitr',sans-serif;font-size:17px;font-weight:600;color:var(--t1)}
+.rd{font-size:12px;color:var(--t3);margin-top:2px}
+.ps{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(160deg,#F0EDFF,#E8F4FD);padding:20px}
+.pb{background:var(--white);border-radius:22px;padding:32px 26px;max-width:320px;width:100%;text-align:center;box-shadow:var(--sh2)}
+.pt{font-family:'Mitr',sans-serif;font-size:19px;font-weight:600;color:var(--pri);margin-bottom:5px}
+.psub{font-size:13px;color:var(--t3);margin-bottom:20px}
+.pdots{display:flex;justify-content:center;gap:14px;margin-bottom:22px}
+.pdot{width:14px;height:14px;border-radius:50%;border:2px solid var(--g3);transition:.2s;background:var(--white)}
+.pdot.on{background:var(--pri);border-color:var(--pri);transform:scale(1.15)}
+.ppad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}
+.pk{background:var(--g1);border:none;border-radius:14px;padding:15px;font-size:22px;font-family:'Mitr',sans-serif;font-weight:600;cursor:pointer;transition:.12s;color:var(--t1)}
+.pk:hover{background:var(--g2)}
+.pk:active{transform:scale(.92);background:var(--pri-l);color:var(--pri)}
+.pk.del{background:#FEE2E2;color:#991B1B;font-size:15px}
+.pk.z{grid-column:2}
+.perr{color:var(--red);font-size:12px;min-height:18px;font-weight:600;margin-bottom:8px}
+.pback{font-size:12px;color:var(--t4);cursor:pointer;text-decoration:underline}
+.pback:hover{color:var(--pri)}
+.app-shell{display:flex;flex-direction:column;min-height:100vh}
+.topbar{background:var(--white);border-bottom:1px solid var(--g2);padding:0 16px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:200;height:52px}
+.brand{font-family:'Mitr',sans-serif;font-size:16px;font-weight:700;color:var(--pri);display:flex;align-items:center;gap:8px}
+.brand-logo{width:30px;height:30px;border-radius:8px;object-fit:cover}
+.brand-dot{width:7px;height:7px;background:var(--pri);border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.35;transform:scale(.55)}}
+.rbadge{border-radius:20px;padding:3px 10px;font-size:11px;font-weight:700;white-space:nowrap}
+.rbadge.admin{background:#EDE9FE;color:#5B21B6}
+.rbadge.staff{background:#E0F2FE;color:#0369A1}
+.rbadge.report{background:#D1FAE5;color:#065F46}
+.spacer{flex:1}
+.logout-btn{background:none;border:1px solid var(--g2);border-radius:8px;padding:5px 10px;font-size:12px;color:var(--t3);cursor:pointer;font-family:'Sarabun',sans-serif}
+.logout-btn:hover{border-color:var(--red);color:var(--red)}
+.menu-bar{background:var(--white);border-bottom:1px solid var(--g2);padding:0 16px;display:flex;align-items:center;gap:6px;overflow-x:auto;height:44px;flex-shrink:0}
+.mgroup{display:flex;align-items:center;gap:1px;background:var(--g1);border-radius:8px;padding:3px}
+.msep{width:1px;height:26px;background:var(--g2);margin:0 4px;flex-shrink:0}
+.mgl{font-size:10px;font-weight:700;color:var(--t4);text-transform:uppercase;letter-spacing:.4px;padding:0 4px;white-space:nowrap}
+.mb{padding:5px 11px;border-radius:6px;font-size:12.5px;font-weight:500;color:var(--t3);border:none;background:none;cursor:pointer;white-space:nowrap;transition:.15s;font-family:'Sarabun',sans-serif}
+.mb:hover{background:var(--white);color:var(--t1)}
+.mb.active{background:var(--white);color:var(--pri);font-weight:700;box-shadow:var(--sh)}
+.main{flex:1;padding:16px;max-width:920px;margin:0 auto;width:100%}
+.card{background:var(--white);border-radius:var(--r2);border:1px solid var(--g2);padding:16px;margin-bottom:12px;box-shadow:var(--sh)}
+.card-title{font-family:'Mitr',sans-serif;font-size:15px;font-weight:500;margin-bottom:14px}
+.fg{margin-bottom:10px}
+.fg label{display:block;font-size:11px;font-weight:700;color:var(--t3);margin-bottom:4px;text-transform:uppercase;letter-spacing:.4px}
+.fg input,.fg select{width:100%;padding:9px 12px;border:1.5px solid var(--g2);border-radius:8px;font-size:14px;color:var(--t1);background:var(--white);outline:none;font-family:'Sarabun',sans-serif;transition:.15s}
+.fg input:focus,.fg select:focus{border-color:var(--pri);box-shadow:0 0 0 3px rgba(109,40,217,.1)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.btn{padding:9px 16px;border-radius:9px;font-size:13px;font-weight:600;cursor:pointer;border:none;transition:.15s;display:inline-flex;align-items:center;gap:6px;font-family:'Sarabun',sans-serif;white-space:nowrap}
+.btn:active{transform:scale(.97)}
+.bp{background:var(--pri);color:#fff}.bp:hover{background:var(--pri2)}
+.br{background:var(--red);color:#fff}.br:hover{opacity:.88}
+.bg{background:var(--g1);color:var(--t2)}.bg:hover{background:var(--g2)}
+.bsm{padding:6px 12px;font-size:12px}
+.bxs{padding:5px 10px;font-size:12px;border-radius:7px}
+.btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.badge{display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600}
+.bwait{background:#FEF3C7;color:#92400E}
+.bprod{background:#DBEAFE;color:#1E40AF}
+.bready{background:#DCFCE7;color:#166534}
+.bsent{background:#F3F4F6;color:#374151}
+.bissue{background:#FEE2E2;color:#991B1B}
+.tag{background:var(--g1);border-radius:6px;padding:3px 8px;font-size:12px;color:var(--t2)}
+.tmod{background:var(--pri-l);color:#5B21B6}
+.tqty{background:var(--tl);color:#0f766e;font-weight:700}
+.tcol{background:#FEF9C3;color:#854D0E}
+
+/* ลำดับรายการ */
+.item-num-badge{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:var(--pri);color:#fff;font-size:10px;font-weight:700;font-family:'Mitr',sans-serif;flex-shrink:0}
+.item-num-badge.sub{background:var(--teal)}
+
+/* ORDER ITEM */
+.oi{background:var(--white);border:1.5px solid var(--g2);border-radius:var(--r2);padding:14px;margin-bottom:10px;transition:.15s}
+.oi:hover{border-color:#C4B5FD}
+.oi-hd{display:flex;gap:12px;align-items:flex-start}
+.oi-thumb{width:76px;height:76px;border-radius:10px;object-fit:cover;border:1px solid var(--g2);cursor:pointer;flex-shrink:0;transition:.2s}
+.oi-thumb:hover{transform:scale(1.06)}
+.oi-ph{width:76px;height:76px;border-radius:10px;background:var(--g1);border:2px dashed var(--g3);display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer;transition:.15s;flex-direction:column;gap:2px}
+.oi-ph:hover{border-color:var(--pri);background:var(--pri-ll)}
+.oi-info{flex:1;min-width:0}
+.oi-name{font-family:'Mitr',sans-serif;font-weight:500;font-size:15px}
+.oi-meta{font-size:12px;color:var(--t3);margin:3px 0 7px}
+.oi-tags{display:flex;flex-wrap:wrap;gap:5px;align-items:center}
+.extra-imgs{display:flex;gap:5px;flex-wrap:wrap;margin-top:7px}
+.eimg{width:40px;height:40px;border-radius:6px;object-fit:cover;cursor:pointer;border:1px solid var(--g2);transition:.15s}
+.eimg:hover{transform:scale(1.1)}
+.oi-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+
+/* STEPS */
+.steps{display:flex;margin:10px 0}
+.step{flex:1;text-align:center;position:relative}
+.step::after{content:'';position:absolute;top:11px;left:50%;width:100%;height:2px;background:var(--g2);z-index:0}
+.step:last-child::after{display:none}
+.sdot{width:22px;height:22px;border-radius:50%;border:2px solid var(--g3);background:var(--white);display:flex;align-items:center;justify-content:center;margin:0 auto 4px;position:relative;z-index:1;font-size:9px;font-weight:700;color:var(--t4)}
+.sdot.done{background:var(--grn);border-color:var(--grn);color:#fff}
+.sdot.cur{background:var(--pri);border-color:var(--pri);color:#fff}
+.slbl{font-size:10px;color:var(--t4);line-height:1.2}
+.slbl.done{color:var(--grn)}
+.slbl.cur{color:var(--pri);font-weight:700}
+
+/* SUB ITEM */
+.sub-item{background:var(--g0);border:1.5px solid #A7F3D0;border-radius:var(--r2);padding:14px;margin-top:8px;position:relative}
+.sub-item:hover{border-color:var(--teal)}
+.sub-thumb{width:76px;height:76px;border-radius:10px;object-fit:cover;border:1px solid var(--g2);cursor:pointer;flex-shrink:0;transition:.2s}
+.sub-thumb:hover{transform:scale(1.06)}
+.sub-ph{width:76px;height:76px;border-radius:10px;background:var(--white);border:2px dashed var(--g3);display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer;transition:.15s;flex-direction:column;gap:2px}
+.sub-ph:hover{border-color:var(--teal);background:var(--tl)}
+
+/* สถานะ sub — select เล็ก */
+.sub-status-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;align-items:center;padding-top:8px;border-top:1px dashed var(--g2)}
+
+/* FORM */
+.order-block{background:var(--g0);border:1.5px solid var(--g2);border-radius:var(--r);padding:16px;margin-bottom:14px;position:relative;padding-top:22px}
+.obn{position:absolute;top:-10px;left:14px;background:var(--pri);color:#fff;border-radius:20px;padding:2px 12px;font-size:11px;font-weight:700;font-family:'Mitr',sans-serif}
+.ob-del-btn{position:absolute;top:-10px;right:10px;background:var(--red);color:#fff;border:none;border-radius:20px;padding:3px 10px;font-size:11px;font-weight:700;cursor:pointer;font-family:'Sarabun',sans-serif}
+.add-blk{border:2px dashed var(--g3);border-radius:var(--r);padding:14px;text-align:center;cursor:pointer;transition:.15s;color:var(--t3);font-size:13px;font-weight:600;background:none;width:100%;margin-top:4px;font-family:'Sarabun',sans-serif}
+.add-blk:hover{border-color:var(--pri);color:var(--pri);background:var(--pri-ll)}
+.sub-form-block{background:var(--white);border:1.5px solid #A7F3D0;border-radius:var(--r);padding:14px;margin-bottom:10px;position:relative;padding-top:22px}
+.sub-form-num{position:absolute;top:-9px;left:10px;background:var(--teal);color:#fff;border-radius:20px;padding:2px 10px;font-size:10px;font-weight:700;font-family:'Mitr',sans-serif}
+.sub-form-del{position:absolute;top:-9px;right:8px;background:var(--red);color:#fff;border:none;border-radius:20px;padding:2px 9px;font-size:10px;font-weight:700;cursor:pointer;font-family:'Sarabun',sans-serif}
+.sf label{display:block;font-size:11px;font-weight:700;color:var(--t3);margin-bottom:4px;text-transform:uppercase;letter-spacing:.4px}
+.sf input{width:100%;padding:9px 12px;border:1.5px solid var(--g2);border-radius:8px;font-size:14px;color:var(--t1);background:var(--white);outline:none;font-family:'Sarabun',sans-serif;transition:.15s}
+.sf input:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(13,148,136,.12)}
+.add-sub-btn{border:1.5px dashed #A7F3D0;border-radius:8px;padding:10px;text-align:center;cursor:pointer;transition:.15s;color:var(--teal);font-size:13px;font-weight:600;background:none;width:100%;font-family:'Sarabun',sans-serif;display:flex;align-items:center;justify-content:center;gap:6px}
+.add-sub-btn:hover{background:var(--tl);border-color:var(--teal)}
+.upzone{border:2px dashed var(--g3);border-radius:10px;padding:16px;text-align:center;cursor:pointer;transition:.15s;background:var(--g0)}
+.upzone:hover{border-color:var(--pri);background:var(--pri-ll)}
+.igrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(72px,1fr));gap:8px;margin-top:10px}
+.iwrap{position:relative}
+.iprev{width:100%;aspect-ratio:1;object-fit:cover;border-radius:8px;cursor:pointer;border:1px solid var(--g2)}
+.idel{position:absolute;top:-5px;right:-5px;width:18px;height:18px;background:var(--red);color:#fff;border:none;border-radius:50%;font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700}
+
+/* STATS */
+.sg{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:14px}
+.sc{background:var(--white);border:1px solid var(--g2);border-radius:var(--r);padding:14px;text-align:center}
+.sn{font-family:'Mitr',sans-serif;font-size:28px;font-weight:600;color:var(--pri)}
+.sl{font-size:11px;color:var(--t3);margin-top:2px}
+
+/* TABLE */
+.tbl{width:100%;border-collapse:collapse;font-size:13px}
+.tbl th{background:var(--g1);padding:8px 10px;text-align:left;font-weight:600;color:var(--t3);font-size:12px}
+.tbl td{padding:8px 10px;border-bottom:1px solid var(--g1);color:var(--t2)}
+.tbl tr:last-child td{border-bottom:none}
+.total-row td{font-weight:700;color:var(--t1);background:var(--pri-ll)}
+
+/* REPORT */
+.rep-img{width:100%;max-height:340px;object-fit:contain;border-radius:10px;border:1px solid var(--g2);background:#f8f8f8;cursor:pointer;margin-bottom:10px;display:block;transition:.2s}
+.rep-img:hover{transform:scale(1.01)}
+.rep-h{font-size:13px;font-weight:700;border-bottom:2px solid var(--pri-l);padding-bottom:6px;margin:16px 0 10px}
+.model-head{background:linear-gradient(135deg,var(--pri-ll),var(--tl));border-radius:var(--r2);padding:16px;display:flex;gap:14px;align-items:flex-start;margin-bottom:12px}
+.model-img{width:110px;height:110px;object-fit:cover;border-radius:10px;border:2px solid var(--white);cursor:pointer;flex-shrink:0;transition:.2s}
+.model-img:hover{transform:scale(1.04)}
+.model-img-ph{width:110px;height:110px;border-radius:10px;background:var(--white);border:2px dashed var(--g3);display:flex;align-items:center;justify-content:center;flex-direction:column;font-size:11px;color:var(--t4);flex-shrink:0;gap:4px}
+.rep-item{background:var(--white);border:1.5px solid var(--g2);border-radius:var(--r2);padding:14px;margin-bottom:10px;position:relative;padding-top:22px}
+.rep-item-num{position:absolute;top:-9px;left:12px;background:var(--pri);color:#fff;border-radius:20px;padding:2px 10px;font-size:10px;font-weight:700;font-family:'Mitr',sans-serif}
+
+/* สถานะ pill */
+.sp{display:inline-flex;align-items:center;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700;gap:4px}
+.sp-wait{background:#FEF3C7;color:#92400E}
+.sp-prod{background:#DBEAFE;color:#1E40AF}
+.sp-ready{background:#DCFCE7;color:#166534}
+.sp-sent{background:#F3F4F6;color:#374151}
+.sp-issue{background:#FEE2E2;color:#991B1B}
+
+.fbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;align-items:center}
+.sin{flex:1;min-width:160px;padding:8px 12px;border:1.5px solid var(--g2);border-radius:8px;font-size:13px;outline:none;font-family:'Sarabun',sans-serif}
+.sin:focus{border-color:var(--pri)}
+.modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:1000;display:flex;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(5px)}
+.modal-box{background:var(--white);border-radius:16px;overflow:hidden;max-width:560px;width:100%;max-height:90vh;overflow-y:auto}
+.modal-img-el{width:100%;max-height:65vh;object-fit:contain;background:#111;display:block}
+.modal-body{padding:14px}
+.toast{position:fixed;bottom:20px;right:20px;padding:10px 18px;border-radius:10px;font-size:13px;font-weight:600;z-index:3000;box-shadow:0 4px 16px rgba(0,0,0,.2);animation:sli .3s ease;color:#fff}
+.tok{background:var(--grn)}.terr{background:var(--red)}
+@keyframes sli{from{transform:translateY(16px);opacity:0}to{transform:translateY(0);opacity:1}}
+.empty{text-align:center;padding:40px 20px;color:var(--t3)}
+.empty-ico{font-size:44px;margin-bottom:10px}
+.pdfbtn{background:#DC2626;color:#fff;border:none;border-radius:10px;padding:11px 20px;font-size:13px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:8px;font-family:'Sarabun',sans-serif;box-shadow:0 2px 8px rgba(220,38,38,.3);transition:.15s}
+.pdfbtn:hover{background:#B91C1C;transform:translateY(-1px)}
+.pdfbtn:active{transform:scale(.97)}
+.imgbtn{background:#0D9488;color:#fff;border:none;border-radius:10px;padding:11px 20px;font-size:13px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:8px;font-family:'Sarabun',sans-serif;box-shadow:0 2px 8px rgba(13,148,136,.3);transition:.15s}
+.imgbtn:hover{background:#0f766e;transform:translateY(-1px)}
+.imgbtn:active{transform:scale(.97)}
+.export-bar{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;padding:14px;background:var(--white);border-radius:var(--r2);border:1px solid var(--g2);box-shadow:var(--sh)}
+
+@media(max-width:580px){.g2,.g3{grid-template-columns:1fr}.sg{grid-template-columns:repeat(2,1fr)}.mgl{display:none}.model-head{flex-direction:column}}
+::-webkit-scrollbar{width:4px;height:4px}::-webkit-scrollbar-thumb{background:var(--g3);border-radius:2px}
+</style>
+</head>
+<body>
+<div id="ls" class="ls">
+  <div class="lb">
+    <div class="logo-area">
+      <div id="logo-wrap" onclick="trigLogo()"></div>
+      <div class="logo-hint">กดโลโก้เพื่อเปลี่ยนรูป</div>
+      <input type="file" id="logo-inp" accept="image/*" style="display:none" onchange="handleLogo(event)">
+    </div>
+    <div class="app-title">OrderPro</div>
+    <div class="app-sub">เลือกบทบาทของคุณ</div>
+    <div class="role-card" onclick="selectRole('admin')"><div class="ri admin">👔</div><div><div class="rn">ผู้ดูแล</div><div class="rd">จัดการระบบ ดูสถิติ และรายงานเต็ม</div></div></div>
+    <div class="role-card" onclick="selectRole('staff')"><div class="ri staff">✏️</div><div><div class="rn">เพิ่ม / แก้ไขออเดอร์</div><div class="rd">บันทึก เพิ่ม และจัดการออเดอร์</div></div></div>
+    <div class="role-card" onclick="loginAs('report')"><div class="ri report">📊</div><div><div class="rn">รายงาน</div><div class="rd">ดูรายงานลูกค้าและคำสั่งผลิต</div></div></div>
+  </div>
+</div>
+<div id="ps" class="ps" style="display:none">
+  <div class="pb">
+    <div id="pt" class="pt"></div>
+    <div class="psub">กรอกรหัส 4 หลัก</div>
+    <div class="pdots" id="pdots"><div class="pdot" id="pd0"></div><div class="pdot" id="pd1"></div><div class="pdot" id="pd2"></div><div class="pdot" id="pd3"></div></div>
+    <div class="ppad">
+      <button class="pk" onclick="pKey('1')">1</button><button class="pk" onclick="pKey('2')">2</button><button class="pk" onclick="pKey('3')">3</button>
+      <button class="pk" onclick="pKey('4')">4</button><button class="pk" onclick="pKey('5')">5</button><button class="pk" onclick="pKey('6')">6</button>
+      <button class="pk" onclick="pKey('7')">7</button><button class="pk" onclick="pKey('8')">8</button><button class="pk" onclick="pKey('9')">9</button>
+      <button class="pk z" onclick="pKey('0')">0</button><button class="pk del" onclick="pDel()">⌫</button>
+    </div>
+    <div id="perr" class="perr"></div>
+    <span class="pback" onclick="backLogin()">← เลือกบทบาทอื่น</span>
+  </div>
+</div>
+<div id="app" style="display:none" class="app-shell">
+  <nav class="topbar">
+    <div class="brand"><div id="tbar-logo"></div><span class="brand-dot"></span>OrderPro</div>
+    <div id="rbadge" class="rbadge"></div>
+    <div class="spacer"></div>
+    <button class="logout-btn" onclick="logout()">ออกจากระบบ</button>
+  </nav>
+  <div id="menu-bar" class="menu-bar"></div>
+  <div class="main" id="main"></div>
+</div>
+<div id="img-modal" class="modal-ov" style="display:none" onclick="closeIM(event)">
+  <div class="modal-box">
+    <img id="modal-img-el" src="" class="modal-img-el" alt="">
+    <div class="modal-body">
+      <div id="modal-actions" style="display:flex;gap:8px;flex-wrap:wrap"></div>
+      <p id="modal-info" style="font-size:11px;color:var(--t3);margin-top:6px"></p>
+    </div>
+  </div>
+</div>
+<div id="toast" class="toast" style="display:none"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+const PINS={admin:'1168'};
+const ROLE_META={admin:{label:'ผู้ดูแล',icon:'👔',cls:'admin'},staff:{label:'เพิ่ม/แก้ไขออเดอร์',icon:'✏️',cls:'staff'},report:{label:'รายงาน',icon:'📊',cls:'report'}};
+const MENUS={
+  admin:[{g:'ออเดอร์',items:[{id:'orders',l:'📋 รายการ'},{id:'add',l:'➕ เพิ่ม'}]},{g:'รายงาน',items:[{id:'rep-cust',l:'👤 ลูกค้า'},{id:'rep-model',l:'👕 รุ่น'}]},{g:'ระบบ',items:[{id:'stats',l:'📊 สถิติ'}]}],
+  staff:[{g:'ออเดอร์',items:[{id:'orders',l:'📋 รายการ'},{id:'add',l:'➕ เพิ่ม'}]}],
+  report:[{g:'รายงาน',items:[{id:'rep-cust',l:'👤 ลูกค้า'},{id:'rep-model',l:'👕 รุ่น'}]}],
+};
+const SL={wait:{l:'รอผลิต',c:'bwait',sp:'sp-wait'},prod:{l:'กำลังผลิต',c:'bprod',sp:'sp-prod'},ready:{l:'พร้อมส่ง',c:'bready',sp:'sp-ready'},sent:{l:'ส่งแล้ว',c:'bsent',sp:'sp-sent'},issue:{l:'มีปัญหา',c:'bissue',sp:'sp-issue'}};
+const STEPS4=['wait','prod','ready','sent'];
+const CHNL=['LINE','Facebook','Instagram','TikTok','หน้าร้าน','อื่นๆ'];
+
+let orders=JSON.parse(localStorage.getItem('op11_orders')||'[]');
+let logoData=localStorage.getItem('op11_logo')||'';
+let curRole=null,curTab='orders',editId=null;
+let formImgs=[],modalCtx=null;
+let fSearch='',fStatus='all',pinVal='',pendingRole=null;
+let multiBlocks=null;
+
+function save(){localStorage.setItem('op11_orders',JSON.stringify(orders))}
+function saveLogo(d){localStorage.setItem('op11_logo',d);logoData=d}
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,5)}
+function newSub(){return{model:'',color:'',size:'',qty:'',status:'wait',imgs:[]};}
+function newMB(){return[{name:'',channel:'LINE',model:'',color:'',size:'',qty:'',date:new Date().toISOString().slice(0,10),note:'',issue:'',imgs:[],subs:[]}];}
+
+function spill(status){const s=SL[status]||SL.wait;return `<span class="sp ${s.sp}">${s.l}</span>`;}
+function stOpts(cur){return Object.entries(SL).map(([k,v])=>`<option value="${k}" ${k===cur?'selected':''}>${v.l}</option>`).join('');}
+
+function renderLogo(){const w=document.getElementById('logo-wrap');if(!w)return;w.innerHTML=logoData?`<img src="${logoData}" class="logo-img"><div class="logo-eb">✏️</div>`:`<div class="logo-ph"><span>🧵</span><div class="logo-eb">📷</div></div>`;}
+function trigLogo(){document.getElementById('logo-inp').click()}
+function handleLogo(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{saveLogo(ev.target.result);renderLogo();renderTbarLogo();toast('✅ เปลี่ยนโลโก้แล้ว');};r.readAsDataURL(f);}
+function renderTbarLogo(){const el=document.getElementById('tbar-logo');if(!el)return;el.innerHTML=logoData?`<img src="${logoData}" class="brand-logo">`:`<span style="font-size:18px">🧵</span>`;}
+function selectRole(role){if(PINS[role]){pendingRole=role;pinVal='';updateDots();document.getElementById('perr').textContent='';document.getElementById('pt').textContent=ROLE_META[role].icon+' '+ROLE_META[role].label;document.getElementById('ls').style.display='none';document.getElementById('ps').style.display='flex';}else loginAs(role);}
+function pKey(k){if(pinVal.length>=4)return;pinVal+=k;updateDots();if(pinVal.length===4)setTimeout(checkPin,140);}
+function pDel(){pinVal=pinVal.slice(0,-1);updateDots();document.getElementById('perr').textContent='';}
+function updateDots(){for(let i=0;i<4;i++)document.getElementById('pd'+i).classList.toggle('on',i<pinVal.length);}
+function checkPin(){if(pinVal===PINS[pendingRole])loginAs(pendingRole);else{document.getElementById('perr').textContent='❌ รหัสไม่ถูกต้อง';pinVal='';updateDots();}}
+function backLogin(){document.getElementById('ps').style.display='none';document.getElementById('ls').style.display='flex';pendingRole=null;pinVal='';}
+function loginAs(role){curRole=role;document.getElementById('ps').style.display='none';document.getElementById('ls').style.display='none';document.getElementById('app').style.display='flex';const m=ROLE_META[role];document.getElementById('rbadge').textContent=m.icon+' '+m.label;document.getElementById('rbadge').className='rbadge '+m.cls;renderTbarLogo();multiBlocks=newMB();const first=(MENUS[role]||[])[0]?.items[0]?.id||'orders';buildMenu(first);goTab(first);}
+function logout(){curRole=null;curTab='orders';editId=null;formImgs=[];multiBlocks=null;document.getElementById('app').style.display='none';document.getElementById('ls').style.display='flex';renderLogo();}
+function buildMenu(active){const groups=MENUS[curRole]||[];document.getElementById('menu-bar').innerHTML=groups.map((g,gi)=>`${gi>0?'<div class="msep"></div>':''}<div class="mgroup"><span class="mgl">${g.g}</span>${g.items.map(it=>`<button class="mb ${it.id===(active||curTab)?'active':''}" onclick="goTab('${it.id}')">${it.l}</button>`).join('')}</div>`).join('');}
+function goTab(t){curTab=t;buildMenu(t);render();}
+function render(){const el=document.getElementById('main');if(curTab==='orders')el.innerHTML=renderList();else if(curTab==='add')el.innerHTML=renderForm();else if(curTab==='rep-cust')el.innerHTML=renderRC();else if(curTab==='rep-model')el.innerHTML=renderRM();else if(curTab==='stats')el.innerHTML=renderStats();}
+
+/* ═══ LIST ═══ */
+function renderList(){
+  let list=[...orders];
+  if(fStatus!=='all')list=list.filter(o=>o.status===fStatus);
+  if(fSearch)list=list.filter(o=>(o.name||'').includes(fSearch)||(o.model||'').includes(fSearch)||(o.color||'').includes(fSearch));
+  const tQ=list.reduce((s,o)=>s+parseInt(o.qty||0),0);
+  const bf=Object.entries(SL).map(([k,v])=>`<button class="btn bxs ${fStatus===k?'bp':'bg'}" onclick="fStatus='${k}';render()">${v.l}</button>`).join('');
+  const canEdit=curRole==='admin'||curRole==='staff';
+  return `<div class="fbar"><input class="sin" placeholder="🔍 ค้นหา..." value="${fSearch}" oninput="fSearch=this.value;render()"><button class="btn bxs ${fStatus==='all'?'bp':'bg'}" onclick="fStatus='all';render()">ทั้งหมด</button>${bf}</div>
+  <div style="font-size:12px;color:var(--t3);margin-bottom:10px">${list.length} รายการ • รวม <strong>${tQ}</strong> ตัว</div>
+  ${list.length?list.map(o=>renderOI(o,canEdit)).join(''):`<div class="empty"><div class="empty-ico">📦</div><p>ยังไม่มีออเดอร์</p></div>`}`;
+}
+
+function renderOI(o,canEdit){
+  const st=SL[o.status]||SL.wait,si4=STEPS4.indexOf(o.status);
+  const thumb=(o.imgs&&o.imgs[0])?`<img src="${o.imgs[0]}" class="oi-thumb" onclick="openIM('${o.id}',0,'main')">`:`<div class="oi-ph" onclick="trigAddImg('${o.id}')"><span style="font-size:22px">📷</span><span style="font-size:10px;color:var(--t4)">เพิ่มรูป</span></div>`;
+  const extra=(o.imgs||[]).slice(1).map((img,i)=>`<img src="${img}" class="eimg" onclick="openIM('${o.id}',${i+1},'main')">`).join('');
+  const steps=STEPS4.map((s,i)=>{const cl=i<si4?'done':i===si4?'cur':'';const lb={wait:'รอ',prod:'ผลิต',ready:'พร้อม',sent:'ส่ง'}[s];return`<div class="step"><div class="sdot ${cl}">${i<si4?'✓':i+1}</div><div class="slbl ${cl}">${lb}</div></div>`;}).join('');
+
+  /* ────── รายการที่ 1 (ออเดอร์หลัก) + รายการที่ 2,3... (subs) ────── */
+  // wrapper ของออเดอร์หลัก + subs ทั้งหมด
+  const subs=(o.subs||[]);
+
+  // sub items
+  const subItems=subs.map((s,si2)=>{
+    const subSt=SL[s.status||o.status]||SL.wait;
+    const sThumb=(s.imgs&&s.imgs[0])?`<img src="${s.imgs[0]}" class="sub-thumb" onclick="openIM('${o.id}',0,'sub',${si2})">`:`<div class="sub-ph"><span style="font-size:22px">📷</span><span style="font-size:10px;color:var(--t4)">ไม่มีรูป</span></div>`;
+    const sExtra=(s.imgs||[]).slice(1).map((img,ii)=>`<img src="${img}" class="eimg" onclick="openIM('${o.id}',${ii+1},'sub',${si2})">`).join('');
+    return `<div class="sub-item">
+      <div class="oi-hd">
+        ${sThumb}
+        <div class="oi-info">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px">
+            <span class="item-num-badge sub">${si2+2}</span>
+            <span class="oi-name" style="font-size:14px">รายการที่ ${si2+2}</span>
+          </div>
+          <div class="oi-meta">${o.name} • ${o.channel||''}</div>
+          <div class="oi-tags">
+            ${s.model?`<span class="tag tmod">👕 ${s.model}</span>`:''}
+            ${s.color?`<span class="tag tcol">🎨 ${s.color}</span>`:''}
+            ${s.size?`<span class="tag">📏 ${s.size}</span>`:''}
+            ${s.qty?`<span class="tag tqty">×${s.qty} ตัว</span>`:''}
+            ${spill(s.status||o.status)}
+          </div>
+          ${sExtra?`<div class="extra-imgs">${sExtra}</div>`:''}
+        </div>
+      </div>
+      ${canEdit?`<div class="sub-status-row">
+        <span style="font-size:11px;color:var(--t3);font-weight:600">อัปเดทสถานะ:</span>
+        <select class="btn bg bxs" style="border:1px solid var(--g2);font-size:11px;padding:4px 8px" onchange="updSubSt('${o.id}',${si2},this.value)">${stOpts(s.status||o.status)}</select>
+        <label class="btn bg bxs" style="cursor:pointer;font-size:11px;padding:4px 8px">📷 เพิ่มรูป<input type="file" accept="image/*" multiple style="display:none" onchange="addSubImg('${o.id}',${si2},event)"></label>
+        <button class="btn br bxs" style="font-size:11px;padding:4px 8px" onclick="delSub('${o.id}',${si2})">🗑 ลบ</button>
+      </div>`:''}
+    </div>`;
+  }).join('');
+
+  return `<div class="oi" id="oi-${o.id}">
+    <!-- รายการที่ 1 -->
+    <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px">
+      <span class="item-num-badge">1</span>
+      <span style="font-size:12px;font-weight:700;color:var(--t3)">รายการที่ 1</span>
+    </div>
+    <div class="oi-hd">
+      ${thumb}
+      <div class="oi-info">
+        <div class="oi-name">${o.name}</div>
+        <div class="oi-meta">📱 ${o.channel||''} • 📅 ${o.date||''}</div>
+        <div class="oi-tags">
+          <span class="tag tmod">👕 ${o.model}</span>
+          ${o.color?`<span class="tag tcol">🎨 ${o.color}</span>`:''}
+          ${o.size?`<span class="tag">📏 ${o.size}</span>`:''}
+          <span class="tag tqty">×${o.qty} ตัว</span>
+          <span class="badge ${st.c}">${st.l}</span>
+        </div>
+        ${extra?`<div class="extra-imgs">${extra}</div>`:''}
+        ${o.note?`<div style="font-size:12px;color:var(--t3);margin-top:5px">📝 ${o.note}</div>`:''}
+        ${o.issue?`<div style="font-size:12px;color:var(--red);margin-top:4px;font-weight:500">⚠️ ${o.issue}</div>`:''}
+      </div>
+    </div>
+    <div class="steps">${steps}</div>
+    ${canEdit?`<div class="oi-actions">
+      <select class="btn bg bxs" style="border:1px solid var(--g2)" onchange="updSt('${o.id}',this.value)">${stOpts(o.status)}</select>
+      <button class="btn bg bxs" onclick="startEdit('${o.id}')">✏️ แก้ไข</button>
+      <label class="btn bg bxs" style="cursor:pointer">📷 เพิ่มรูป<input type="file" accept="image/*" multiple style="display:none" onchange="addImgs('${o.id}',event)"></label>
+      <button class="btn bg bxs" onclick="addSubInline('${o.id}')">➕ เพิ่มรายการ</button>
+      <button class="btn br bxs" onclick="delOrd('${o.id}')">🗑</button>
+    </div>`:''}
+    ${subItems}
+  </div>`;
+}
+
+/* อัปเดทสถานะ sub */
+function updSubSt(oid,si,status){
+  const o=orders.find(x=>x.id===oid);
+  if(o&&o.subs[si]){o.subs[si].status=status;save();toast('✅ อัปเดทสถานะรายการที่ '+(si+2));render();}
+}
+
+function addSubInline(oid){const o=orders.find(x=>x.id===oid);if(!o.subs)o.subs=[];o.subs.push(newSub());save();render();}
+function addSubImg(oid,si,e){const o=orders.find(x=>x.id===oid);if(!o||!o.subs[si])return;if(!o.subs[si].imgs)o.subs[si].imgs=[];Array.from(e.target.files).forEach(f=>{const r=new FileReader();r.onload=ev=>{o.subs[si].imgs.push(ev.target.result);save();render();};r.readAsDataURL(f);});}
+function delSub(oid,si){if(!confirm('ลบรายการนี้?'))return;const o=orders.find(x=>x.id===oid);o.subs.splice(si,1);save();toast('🗑 ลบแล้ว');render();}
+
+/* FORM */
+function renderForm(){
+  if(editId){
+    const o=orders.find(x=>x.id===editId);
+    return `<div class="card"><div class="card-title">✏️ แก้ไขออเดอร์ — ${o.name}</div>
+      ${mainFields(o,'f_')}
+      <div class="fg"><label>รูปภาพ</label><label class="upzone" style="display:block;cursor:pointer"><div style="font-size:26px">📷</div><div style="font-size:12px;color:var(--t3);margin-top:4px">อัปโหลดหรือถ่ายภาพ</div><input type="file" accept="image/*" multiple capture="environment" style="display:none" onchange="handleFImgs(event)"></label><div class="igrid" id="fimg-grid">${formImgs.map((img,i)=>`<div class="iwrap"><img src="${img}" class="iprev" onclick="bigImg('${img}')"><button class="idel" onclick="rmFImg(${i})">✕</button></div>`).join('')}</div></div>
+      <div class="btn-row"><button class="btn bp" onclick="saveEdit()">💾 บันทึกการแก้ไข</button><button class="btn bg" onclick="cancelEdit()">ยกเลิก</button></div></div>`;
+  }
+  const blocks=multiBlocks.map((b,bi)=>`
+    <div class="order-block" id="blk-${bi}">
+      <div class="obn">ออเดอร์ที่ ${bi+1}</div>
+      ${bi>0?`<button class="ob-del-btn" onclick="rmBlock(${bi})">✕ ลบ</button>`:''}
+      ${mainFields(b,'b'+bi+'_')}
+      <div class="fg"><label>รูปภาพ</label><label class="upzone" style="display:block;cursor:pointer"><div style="font-size:22px">📷</div><div style="font-size:12px;color:var(--t3);margin-top:2px">อัปโหลดหรือถ่ายภาพ</div><input type="file" accept="image/*" multiple capture="environment" style="display:none" onchange="handleBI(${bi},event)"></label><div class="igrid" id="bimg-${bi}">${(b.imgs||[]).map((img,ii)=>`<div class="iwrap"><img src="${img}" class="iprev" onclick="bigImg('${img}')"><button class="idel" onclick="rmBI(${bi},${ii})">✕</button></div>`).join('')}</div></div>
+      <div style="margin-top:14px;padding-top:14px;border-top:1.5px dashed var(--g3)">
+        <div style="font-size:11px;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:.4px;margin-bottom:10px">➕ เพิ่มรายการ</div>
+        <div id="sub-list-${bi}">${(b.subs||[]).map((s,si)=>renderSubForm(bi,si,s,bi)).join('')}</div>
+        <button class="add-sub-btn" onclick="addSubBlock(${bi})">➕ เพิ่มรายการ</button>
+      </div>
+    </div>`).join('');
+  return `<div class="card"><div class="card-title">➕ เพิ่มออเดอร์ใหม่</div>
+    <div style="font-size:12px;color:var(--t3);margin-bottom:14px">เพิ่มได้หลายออเดอร์พร้อมกัน</div>
+    <div id="blks">${blocks}</div>
+    <button class="add-blk" onclick="addBlock()">＋ เพิ่มออเดอร์อีก 1 รายการ</button>
+    <div class="btn-row"><button class="btn bp" onclick="saveMulti()">💾 บันทึกทั้งหมด (${multiBlocks.length} ออเดอร์)</button><button class="btn bg" onclick="clearAllBlocks()">🔄 ล้างทั้งหมด</button></div></div>`;
+}
+function renderSubForm(bi,si,s){
+  return `<div class="sub-form-block" id="sub-${bi}-${si}">
+    <div class="sub-form-num">รายการที่ ${si+2}</div>
+    <button class="sub-form-del" onclick="rmSubBlock(${bi},${si})">✕ ลบ</button>
+    <div class="g2" style="margin-bottom:8px;margin-top:4px">
+      <div class="sf"><label>รุ่นเสื้อ</label><input id="s${bi}_${si}_mod" placeholder="ทิวลิป..." value="${s.model||''}"></div>
+      <div class="sf"><label>สี</label><input id="s${bi}_${si}_col" placeholder="สีเอ..." value="${s.color||''}"></div>
+    </div>
+    <div class="g2" style="margin-bottom:8px">
+      <div class="sf"><label>ไซส์</label><input id="s${bi}_${si}_sz" placeholder="M/L/XL" value="${s.size||''}"></div>
+      <div class="sf"><label>จำนวน (ตัว)</label><input id="s${bi}_${si}_qty" type="number" min="1" placeholder="0" value="${s.qty||''}"></div>
+    </div>
+    <label class="upzone" style="display:block;cursor:pointer;padding:10px"><div style="font-size:18px">📷</div><div style="font-size:11px;color:var(--t3)">อัปโหลดหรือถ่ายรูป</div><input type="file" accept="image/*" multiple capture="environment" style="display:none" onchange="handleSubBI(${bi},${si},event)"></label>
+    <div class="igrid" id="subimg-${bi}-${si}">${(s.imgs||[]).map((img,ii)=>`<div class="iwrap"><img src="${img}" class="iprev" onclick="bigImg('${img}')"><button class="idel" onclick="rmSubImg(${bi},${si},${ii})">✕</button></div>`).join('')}</div>
+  </div>`;
+}
+function syncDOM(){if(!multiBlocks)return;multiBlocks.forEach((b,bi)=>{const g=id=>(document.getElementById(id)||{}).value;b.name=g('b'+bi+'_name')??b.name;b.channel=g('b'+bi+'_ch')??b.channel;b.model=g('b'+bi+'_mod')??b.model;b.color=g('b'+bi+'_col')??b.color;b.size=g('b'+bi+'_sz')??b.size;b.qty=g('b'+bi+'_qty')??b.qty;b.date=g('b'+bi+'_dt')??b.date;b.note=g('b'+bi+'_note')??b.note;b.issue=g('b'+bi+'_iss')??b.issue;(b.subs||[]).forEach((s,si)=>{s.model=g('s'+bi+'_'+si+'_mod')??s.model;s.color=g('s'+bi+'_'+si+'_col')??s.color;s.size=g('s'+bi+'_'+si+'_sz')??s.size;s.qty=g('s'+bi+'_'+si+'_qty')??s.qty;});});}
+function addBlock(){syncDOM();multiBlocks.push({name:'',channel:'LINE',model:'',color:'',size:'',qty:'',date:new Date().toISOString().slice(0,10),note:'',issue:'',imgs:[],subs:[]});render();setTimeout(()=>document.getElementById('blks')?.lastElementChild?.scrollIntoView({behavior:'smooth'}),100);}
+function rmBlock(bi){syncDOM();multiBlocks.splice(bi,1);render();}
+function addSubBlock(bi){syncDOM();if(!multiBlocks[bi].subs)multiBlocks[bi].subs=[];multiBlocks[bi].subs.push(newSub());render();setTimeout(()=>document.getElementById(`sub-list-${bi}`)?.lastElementChild?.scrollIntoView({behavior:'smooth',block:'nearest'}),80);}
+function rmSubBlock(bi,si){syncDOM();multiBlocks[bi].subs.splice(si,1);render();}
+function clearAllBlocks(){multiBlocks=newMB();render();}
+function handleSubBI(bi,si,e){Array.from(e.target.files).forEach(f=>{const r=new FileReader();r.onload=ev=>{if(!multiBlocks[bi].subs[si].imgs)multiBlocks[bi].subs[si].imgs=[];multiBlocks[bi].subs[si].imgs.push(ev.target.result);const g=document.getElementById(`subimg-${bi}-${si}`);if(g)g.innerHTML=(multiBlocks[bi].subs[si].imgs||[]).map((img,ii)=>`<div class="iwrap"><img src="${img}" class="iprev" onclick="bigImg('${img}')"><button class="idel" onclick="rmSubImg(${bi},${si},${ii})">✕</button></div>`).join('');};r.readAsDataURL(f);});}
+function rmSubImg(bi,si,ii){multiBlocks[bi].subs[si].imgs.splice(ii,1);const g=document.getElementById(`subimg-${bi}-${si}`);if(g)g.innerHTML=(multiBlocks[bi].subs[si].imgs||[]).map((img,iix)=>`<div class="iwrap"><img src="${img}" class="iprev" onclick="bigImg('${img}')"><button class="idel" onclick="rmSubImg(${bi},${si},${iix})">✕</button></div>`).join('');}
+function mainFields(o,p){return `<div class="g2" style="margin-bottom:10px"><div class="fg"><label>ชื่อลูกค้า *</label><input id="${p}name" placeholder="ชื่อลูกค้า" value="${o.name||''}"></div><div class="fg"><label>ช่องทาง</label><select id="${p}ch">${CHNL.map(c=>`<option ${o.channel===c?'selected':''}>${c}</option>`).join('')}</select></div></div><div class="g3" style="margin-bottom:10px"><div class="fg"><label>รุ่นเสื้อ *</label><input id="${p}mod" placeholder="ทิวลิป..." value="${o.model||''}"></div><div class="fg"><label>สี</label><input id="${p}col" placeholder="สีเอ..." value="${o.color||''}"></div><div class="fg"><label>ไซส์</label><input id="${p}sz" placeholder="M/L/XL" value="${o.size||''}"></div></div><div class="g2" style="margin-bottom:10px"><div class="fg"><label>จำนวน *</label><input id="${p}qty" type="number" min="1" value="${o.qty||''}"></div><div class="fg"><label>วันที่</label><input id="${p}dt" type="date" value="${o.date||new Date().toISOString().slice(0,10)}"></div></div><div class="fg"><label>หมายเหตุ</label><input id="${p}note" value="${o.note||''}"></div><div class="fg"><label>แจ้งปัญหา</label><input id="${p}iss" value="${o.issue||''}"></div>`;}
+function readFields(p){const g=id=>(document.getElementById(p+id)||{}).value||'';return{name:g('name').trim(),channel:g('ch'),model:g('mod').trim(),color:g('col'),size:g('sz'),qty:parseInt(g('qty'))||0,date:g('dt'),note:g('note'),issue:g('iss')};}
+function readSubFields(bi,si){const g=id=>(document.getElementById(id)||{}).value||'';return{model:g(`s${bi}_${si}_mod`).trim(),color:g(`s${bi}_${si}_col`),size:g(`s${bi}_${si}_sz`),qty:parseInt(g(`s${bi}_${si}_qty`))||0,status:'wait',imgs:[...(multiBlocks[bi].subs[si].imgs||[])]};}
+function handleFImgs(e){Array.from(e.target.files).forEach(f=>{const r=new FileReader();r.onload=ev=>{formImgs.push(ev.target.result);const g=document.getElementById('fimg-grid');if(g)g.innerHTML=formImgs.map((img,i)=>`<div class="iwrap"><img src="${img}" class="iprev" onclick="bigImg('${img}')"><button class="idel" onclick="rmFImg(${i})">✕</button></div>`).join('');};r.readAsDataURL(f);});}
+function rmFImg(i){formImgs.splice(i,1);const g=document.getElementById('fimg-grid');if(g)g.innerHTML=formImgs.map((img,ix)=>`<div class="iwrap"><img src="${img}" class="iprev" onclick="bigImg('${img}')"><button class="idel" onclick="rmFImg(${ix})">✕</button></div>`).join('');}
+function handleBI(bi,e){Array.from(e.target.files).forEach(f=>{const r=new FileReader();r.onload=ev=>{if(!multiBlocks[bi].imgs)multiBlocks[bi].imgs=[];multiBlocks[bi].imgs.push(ev.target.result);const g=document.getElementById('bimg-'+bi);if(g)g.innerHTML=(multiBlocks[bi].imgs||[]).map((img,ii)=>`<div class="iwrap"><img src="${img}" class="iprev" onclick="bigImg('${img}')"><button class="idel" onclick="rmBI(${bi},${ii})">✕</button></div>`).join('');};r.readAsDataURL(f);});}
+function rmBI(bi,ii){multiBlocks[bi].imgs.splice(ii,1);const g=document.getElementById('bimg-'+bi);if(g)g.innerHTML=(multiBlocks[bi].imgs||[]).map((img,iix)=>`<div class="iwrap"><img src="${img}" class="iprev" onclick="bigImg('${img}')"><button class="idel" onclick="rmBI(${bi},${iix})">✕</button></div>`).join('');}
+function saveMulti(){syncDOM();for(let bi=0;bi<multiBlocks.length;bi++){const d=readFields('b'+bi+'_');if(!d.name||!d.model||!d.qty){toast(`⚠️ ออเดอร์ที่ ${bi+1}: กรอกชื่อ รุ่น จำนวน`,false);return;}const subs=(multiBlocks[bi].subs||[]).map((_,si)=>readSubFields(bi,si));orders.unshift({id:uid(),status:'wait',subs,...d,imgs:[...(multiBlocks[bi].imgs||[])]});}save();toast(`✅ บันทึก ${multiBlocks.length} ออเดอร์`);multiBlocks=newMB();goTab('orders');}
+function startEdit(id){editId=id;const o=orders.find(x=>x.id===id);formImgs=[...(o.imgs||[])];goTab('add');}
+function cancelEdit(){editId=null;formImgs=[];goTab('orders');}
+function saveEdit(){const d=readFields('f_');if(!d.name||!d.model||!d.qty){toast('⚠️ กรอกชื่อ รุ่น จำนวน',false);return;}const idx=orders.findIndex(x=>x.id===editId);orders[idx]={...orders[idx],...d,imgs:formImgs.length?[...formImgs]:orders[idx].imgs||[]};save();toast('✅ แก้ไขสำเร็จ');editId=null;formImgs=[];goTab('orders');}
+function delOrd(id){if(!confirm('ยืนยันลบออเดอร์?'))return;orders=orders.filter(x=>x.id!==id);save();toast('🗑 ลบแล้ว');render();}
+function updSt(id,s){const o=orders.find(x=>x.id===id);if(o){o.status=s;save();toast('✅ อัปเดทสถานะ');render();}}
+function addImgs(id,e){const o=orders.find(x=>x.id===id);if(!o.imgs)o.imgs=[];Array.from(e.target.files).forEach(f=>{const r=new FileReader();r.onload=ev=>{o.imgs.push(ev.target.result);save();render();};r.readAsDataURL(f);});}
+function trigAddImg(id){const i=document.createElement('input');i.type='file';i.accept='image/*';i.multiple=true;i.onchange=e=>addImgs(id,e);i.click();}
+
+/* IMG MODAL */
+function openIM(oid,idx,type,subIdx){modalCtx={oid,idx,type,subIdx};const o=orders.find(x=>x.id===oid);let src,total,name;if(type==='sub'){const s=o.subs[subIdx];src=s&&s.imgs&&s.imgs[idx];total=(s&&s.imgs||[]).length;name=o.name+' รายการที่ '+(subIdx+2);}else{src=o&&o.imgs&&o.imgs[idx];total=(o&&o.imgs||[]).length;name=o.name+' รายการที่ 1';}if(!src)return;document.getElementById('modal-img-el').src=src;document.getElementById('modal-info').textContent=`รูปที่ ${idx+1}/${total} | ${name}`;const ce=curRole==='admin'||curRole==='staff';document.getElementById('modal-actions').innerHTML=ce?`<label class="btn bg bsm" style="cursor:pointer">📷 เปลี่ยนรูป<input type="file" accept="image/*" style="display:none" onchange="changeIM(event)"></label><button class="btn br bsm" onclick="deleteIM()">🗑 ลบรูป</button><button class="btn bg bsm" onclick="closeIML()">✕ ปิด</button>`:`<button class="btn bg bsm" onclick="closeIML()">✕ ปิด</button>`;document.getElementById('img-modal').style.display='flex';}
+function bigImg(src){modalCtx=null;document.getElementById('modal-img-el').src=src;document.getElementById('modal-info').textContent='';document.getElementById('modal-actions').innerHTML=`<button class="btn bg bsm" onclick="closeIML()">✕ ปิด</button>`;document.getElementById('img-modal').style.display='flex';}
+function closeIML(){document.getElementById('img-modal').style.display='none';}
+function closeIM(e){if(!e||e.target.id==='img-modal')closeIML();}
+function changeIM(e){if(!modalCtx)return;const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{const o=orders.find(x=>x.id===modalCtx.oid);if(modalCtx.type==='sub')o.subs[modalCtx.subIdx].imgs[modalCtx.idx]=ev.target.result;else o.imgs[modalCtx.idx]=ev.target.result;save();toast('✅ เปลี่ยนรูปแล้ว');document.getElementById('modal-img-el').src=ev.target.result;render();};r.readAsDataURL(f);}
+function deleteIM(){if(!modalCtx||!confirm('ลบรูปนี้?'))return;const o=orders.find(x=>x.id===modalCtx.oid);if(modalCtx.type==='sub')o.subs[modalCtx.subIdx].imgs.splice(modalCtx.idx,1);else o.imgs.splice(modalCtx.idx,1);save();toast('🗑 ลบรูปแล้ว');closeIML();render();}
+
+/* ═══ REPORT CUSTOMER ═══ */
+function renderRC(){
+  const custs=[...new Set(orders.map(o=>o.name))].sort();
+  if(!custs.length)return`<div class="empty"><div class="empty-ico">👤</div><p>ยังไม่มีลูกค้า</p></div>`;
+  const sel=window._rc||custs[0];
+  const cos=orders.filter(o=>o.name===sel);
+  const totQ=cos.reduce((s,o)=>s+o.qty+((o.subs||[]).reduce((ss,sb)=>ss+(parseInt(sb.qty)||0),0)),0);
+  const mb={};cos.forEach(o=>{const k=`${o.model}||${o.color||''}`;if(!mb[k])mb[k]={model:o.model,color:o.color,qty:0};mb[k].qty+=o.qty;(o.subs||[]).forEach(s=>{const sk=`${s.model||o.model}||${s.color||''}`;if(!mb[sk])mb[sk]={model:s.model||o.model,color:s.color,qty:0};mb[sk].qty+=(parseInt(s.qty)||0);});});
+  const ce=curRole==='admin'||curRole==='staff';
+  let itemNum=0;
+  const allItems=cos.map(o=>{
+    const st=SL[o.status]||SL.wait;
+    itemNum++;const num=itemNum;
+    const imgs=o.imgs||[];
+    const imgSection=imgs.length?imgs.map((img,ii)=>`<img src="${img}" class="rep-img" onclick="openIM('${o.id}',${ii},'main')">`).join(''):`<div style="background:var(--g1);border-radius:10px;height:140px;display:flex;align-items:center;justify-content:center;color:var(--t3);font-size:13px;margin-bottom:10px">ยังไม่มีรูปภาพ</div>`;
+    const table=`<table class="tbl" style="margin-top:8px">
+      <tr><td style="color:var(--t3);width:120px">ลูกค้า</td><td><strong>${o.name}</strong></td></tr>
+      <tr><td style="color:var(--t3)">รุ่น</td><td><strong>${o.model}</strong></td></tr>
+      ${o.color?`<tr><td style="color:var(--t3)">สี</td><td>${o.color}</td></tr>`:''}
+      ${o.size?`<tr><td style="color:var(--t3)">ไซส์</td><td>${o.size}</td></tr>`:''}
+      <tr><td style="color:var(--t3)">จำนวน</td><td><strong style="color:var(--pri);font-size:16px">${o.qty} ตัว</strong></td></tr>
+      <tr><td style="color:var(--t3)">สถานะ</td><td>${spill(o.status)}</td></tr>
+      ${o.note?`<tr><td style="color:var(--t3)">หมายเหตุ</td><td>${o.note}</td></tr>`:''}
+      ${o.issue?`<tr><td style="color:var(--red)">ปัญหา</td><td style="color:var(--red)">${o.issue}</td></tr>`:''}
+    </table>`;
+    const subHTML=(o.subs||[]).map((s,si2)=>{
+      itemNum++;const snum=itemNum;
+      const sImgs=(s.imgs||[]);
+      const sImgSection=sImgs.length?sImgs.map((img,ii)=>`<img src="${img}" class="rep-img" onclick="openIM('${o.id}',${ii},'sub',${si2})">`).join(''):`<div style="background:var(--g1);border-radius:10px;height:140px;display:flex;align-items:center;justify-content:center;color:var(--t3);font-size:13px;margin-bottom:10px">ยังไม่มีรูปภาพ</div>`;
+      return `<div class="rep-item" style="border-left:3px solid var(--teal)">
+        <div class="rep-item-num" style="background:var(--teal)">${snum}</div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:6px">
+          <span style="font-family:'Mitr',sans-serif;font-size:14px;font-weight:500">รายการที่ ${snum} — ${s.model||'-'}${s.color?' / '+s.color:''}</span>
+          ${spill(s.status||o.status)}
+        </div>
+        ${sImgSection}
+        <table class="tbl">
+          <tr><td style="color:var(--t3);width:120px">ลูกค้า</td><td><strong>${o.name}</strong></td></tr>
+          <tr><td style="color:var(--t3)">รุ่น</td><td><strong>${s.model||'-'}</strong></td></tr>
+          ${s.color?`<tr><td style="color:var(--t3)">สี</td><td>${s.color}</td></tr>`:''}
+          ${s.size?`<tr><td style="color:var(--t3)">ไซส์</td><td>${s.size}</td></tr>`:''}
+          <tr><td style="color:var(--t3)">จำนวน</td><td><strong style="color:var(--pri);font-size:16px">${s.qty||0} ตัว</strong></td></tr>
+          <tr><td style="color:var(--t3)">สถานะ</td><td>${spill(s.status||o.status)}</td></tr>
+        </table>
+      </div>`;
+    }).join('');
+    return `<div class="rep-item" style="border-left:3px solid var(--pri)">
+      <div class="rep-item-num">${num}</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:6px">
+        <span style="font-family:'Mitr',sans-serif;font-size:14px;font-weight:500">รายการที่ ${num} — ${o.model}${o.color?' / '+o.color:''}</span>
+        <div style="display:flex;gap:6px;align-items:center">${spill(o.status)}${ce?`<button class="btn bg bxs" onclick="startEdit('${o.id}')">✏️</button><label class="btn bg bxs" style="cursor:pointer">📷<input type="file" accept="image/*" style="display:none" onchange="addImgs('${o.id}',event)"></label>`:''}</div>
+      </div>
+      ${imgSection}${table}
+    </div>${subHTML}`;
+  }).join('');
+  return `<div class="card"><div class="card-title">👤 รายงานลูกค้ารายบุคคล</div>
+    <div class="fg" style="margin-bottom:0"><label>เลือกลูกค้า</label><select style="max-width:260px" onchange="window._rc=this.value;render()">${custs.map(c=>`<option ${c===sel?'selected':''}>${c}</option>`).join('')}</select></div></div>
+  <div id="pdf-cust">
+  <div class="card" style="border-left:4px solid var(--pri)">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px">
+      <div><div style="font-family:'Mitr',sans-serif;font-size:20px;font-weight:600">${sel}</div><div style="font-size:13px;color:var(--t3)">${cos.length} ออเดอร์ • รวม ${totQ} ตัว</div></div>
+      <div style="text-align:right"><div style="font-family:'Mitr',sans-serif;font-size:32px;font-weight:700;color:var(--pri)">${totQ}</div><div style="font-size:12px;color:var(--t3)">ตัวทั้งหมด</div></div>
+    </div>
+    <div class="rep-h">สรุปรายการสั่งซื้อ</div>
+    <table class="tbl"><tr><th>รุ่น</th><th>สี</th><th>จำนวน</th></tr>${Object.values(mb).map(m=>`<tr><td>${m.model}</td><td>${m.color||'-'}</td><td><strong>${m.qty} ตัว</strong></td></tr>`).join('')}<tr class="total-row"><td colspan="2">รวมทั้งหมด</td><td>${totQ} ตัว</td></tr></table>
+  </div>${allItems}</div>
+  <div class="export-bar"><button class="pdfbtn" onclick="doExportPDF('pdf-cust','รายงาน_${sel}')">📄 ส่งออก PDF</button><button class="imgbtn" onclick="doExportImg('pdf-cust','รายงาน_${sel}')">🖼️ บันทึกรูป</button></div>`;
+}
+
+/* ═══════════════════════════════════════════
+   REPORT MODEL — FIX: ดึงรูปจาก sub ด้วย
+   + แสดงสถานะทุกรายการ
+═══════════════════════════════════════════ */
+function getAllModels(){
+  const s=new Set();
+  orders.forEach(o=>{if(o.model)s.add(o.model);(o.subs||[]).forEach(sub=>{if(sub.model)s.add(sub.model);});});
+  return [...s].sort();
+}
+
+function renderRM(){
+  const mdls=getAllModels();
+  if(!mdls.length)return`<div class="empty"><div class="empty-ico">👕</div><p>ยังไม่มีข้อมูลรุ่น</p></div>`;
+  const sel=window._rm||mdls[0];
+  const rows=[];
+  orders.forEach(o=>{
+    if(o.model===sel)rows.push({name:o.name,color:o.color||'',size:o.size||'',qty:parseInt(o.qty)||0,status:o.status,imgs:o.imgs||[],from:'main',orderId:o.id});
+    (o.subs||[]).forEach((s,si)=>{if(s.model===sel)rows.push({name:o.name,color:s.color||'',size:s.size||'',qty:parseInt(s.qty)||0,status:s.status||o.status,imgs:s.imgs||[],from:'sub',orderId:o.id,subIdx:si});});
+  });
+  const grandT=rows.reduce((s,r)=>s+(r.qty||0),0);
+
+  // ดึงรูปจากทุกที่ — ออเดอร์หลักก่อน ถ้าไม่มีดูจาก sub
+  let heroImg=null;
+  for(const r of rows){if(r.imgs&&r.imgs[0]){heroImg=r.imgs[0];break;}}
+
+  const cg={};
+  rows.forEach(r=>{
+    const ck=`${r.color||'ไม่ระบุสี'}__${r.size||'-'}`;
+    if(!cg[ck])cg[ck]={color:r.color||'ไม่ระบุสี',size:r.size||'-',rows:[],total:0};
+    const ex=cg[ck].rows.find(x=>x.name===r.name);
+    if(ex){ex.qty+=r.qty;// สถานะ: ถ้ามีหลายสถานะให้แสดงล่าสุด
+    if(r.status)ex.status=r.status;}
+    else cg[ck].rows.push({name:r.name,qty:r.qty,status:r.status});
+    cg[ck].total+=r.qty;
+  });
+
+  const ct=Object.values(cg).map(c=>`<div style="margin-bottom:18px">
+    <div style="font-weight:700;font-size:13px;margin-bottom:6px">
+      🎨 ${c.color}${c.size&&c.size!=='-'?' • 📏 '+c.size:''} — <span style="color:var(--pri)">${c.total} ตัว</span>
+    </div>
+    <table class="tbl">
+      <tr><th>ลูกค้า</th><th>จำนวน</th><th>สถานะ</th></tr>
+      ${c.rows.map(r=>`<tr><td><strong>${r.name}</strong></td><td><strong>${r.qty} ตัว</strong></td><td>${spill(r.status)}</td></tr>`).join('')}
+      <tr class="total-row"><td>รวม</td><td>${c.total} ตัว</td><td></td></tr>
+    </table>
+  </div>`).join('');
+
+  const ce=curRole==='admin'||curRole==='staff';
+  const custCount=[...new Set(rows.map(r=>r.name))].length;
+
+  return `<div class="card"><div class="card-title">👕 รายงานรุ่นเสื้อ</div>
+    <div class="fg" style="margin-bottom:0"><label>เลือกรุ่น (${mdls.length} รุ่นทั้งหมด)</label>
+    <select style="max-width:300px" onchange="window._rm=this.value;render()">${mdls.map(m=>`<option ${m===sel?'selected':''}>${m}</option>`).join('')}</select></div></div>
+  <div id="pdf-model">
+  <div class="model-head">
+    ${heroImg
+      ?`<img src="${heroImg}" class="model-img" onclick="bigImg('${heroImg}')">`
+      :`<div class="model-img-ph"><span style="font-size:28px">📷</span><span>ไม่มีรูป</span></div>`}
+    <div style="flex:1">
+      <div style="font-family:'Mitr',sans-serif;font-size:22px;font-weight:700;color:var(--pri)">${sel}</div>
+      <div style="font-size:13px;color:var(--t2);margin:4px 0">${custCount} ลูกค้า • ${rows.length} รายการ</div>
+      <div style="font-family:'Mitr',sans-serif;font-size:44px;font-weight:700;color:var(--pri);line-height:1">${grandT}</div>
+      <div style="font-size:13px;color:var(--t3)">ตัวรวมทั้งหมด</div>
+      ${ce?`<label class="btn bg bxs" style="cursor:pointer;margin-top:8px;display:inline-flex">📷 เปลี่ยนรูปรุ่น<input type="file" accept="image/*" style="display:none" onchange="repMImg('${sel}',event)"></label>`:''}
+    </div>
+  </div>
+  <div class="card">
+    <div class="rep-h">รายละเอียดแยกตามสี ไซส์ และลูกค้า — รวมทุกออเดอร์</div>
+    ${ct||'<p style="color:var(--t3)">ไม่มีข้อมูล</p>'}
+    <div style="background:var(--pri-ll);border-radius:10px;padding:14px;text-align:center;border:1px solid var(--pri-l);margin-top:12px">
+      <div style="font-size:13px;color:var(--t3)">ยอดผลิตรวม — รุ่น ${sel}</div>
+      <div style="font-family:'Mitr',sans-serif;font-size:44px;font-weight:700;color:var(--pri)">${grandT} <span style="font-size:18px">ตัว</span></div>
+      <div style="font-size:13px;color:var(--t3)">จาก ${custCount} ลูกค้า</div>
+    </div>
+  </div></div>
+  <div class="export-bar">
+    <button class="pdfbtn" onclick="doExportPDF('pdf-model','คำสั่งผลิต_${sel}')">📄 ส่งออก PDF</button>
+    <button class="imgbtn" onclick="doExportImg('pdf-model','คำสั่งผลิต_${sel}')">🖼️ บันทึกรูป</button>
+  </div>`;
+}
+
+function repMImg(model,e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{
+  // หาออเดอร์หลักที่ตรงรุ่น หรือ sub ที่ตรงรุ่น
+  let found=false;
+  for(const o of orders){
+    if(o.model===model){if(!o.imgs)o.imgs=[];o.imgs[0]=ev.target.result;found=true;break;}
+    for(const s of (o.subs||[])){if(s.model===model){if(!s.imgs)s.imgs=[];s.imgs[0]=ev.target.result;found=true;break;}}
+    if(found)break;
+  }
+  if(found){save();toast('✅ เปลี่ยนรูปแล้ว');render();}
+};r.readAsDataURL(f);}
+
+/* STATS */
+function renderStats(){
+  const tO=orders.length,tQ=orders.reduce((s,o)=>s+o.qty,0);
+  const tS=orders.filter(o=>o.status==='sent').reduce((s,o)=>s+o.qty,0);
+  const tR=orders.filter(o=>o.status==='ready').reduce((s,o)=>s+o.qty,0);
+  const tP=orders.filter(o=>o.status==='prod').reduce((s,o)=>s+o.qty,0);
+  const tI=orders.filter(o=>o.status==='issue').length;
+  const byM={};
+  orders.forEach(o=>{if(!byM[o.model])byM[o.model]={qty:0,sent:0,cnt:0};byM[o.model].qty+=o.qty;byM[o.model].cnt++;if(o.status==='sent')byM[o.model].sent+=o.qty;(o.subs||[]).forEach(s=>{if(s.model){if(!byM[s.model])byM[s.model]={qty:0,sent:0,cnt:0};byM[s.model].qty+=(parseInt(s.qty)||0);if(s.status==='sent')byM[s.model].sent+=(parseInt(s.qty)||0);}});});
+  const mR=Object.entries(byM).sort((a,b)=>b[1].qty-a[1].qty);const mQ=Math.max(...mR.map(([,v])=>v.qty),1);
+  return `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px"><div style="font-family:'Mitr',sans-serif;font-size:16px;font-weight:500">📊 สถิติการผลิต</div><div style="display:flex;gap:8px"><button class="pdfbtn bsm" onclick="doExportPDF('sa','สถิติ')">📄 PDF</button><button class="imgbtn bsm" onclick="doExportImg('sa','สถิติ')">🖼️ รูป</button></div></div>
+  <div id="sa">
+  <div class="sg"><div class="sc"><div class="sn">${tO}</div><div class="sl">ออเดอร์รวม</div></div><div class="sc"><div class="sn" style="color:var(--amb)">${tQ}</div><div class="sl">ตัวทั้งหมด</div></div><div class="sc"><div class="sn" style="color:var(--teal)">${tP}</div><div class="sl">กำลังผลิต</div></div><div class="sc"><div class="sn" style="color:var(--blu)">${tR}</div><div class="sl">พร้อมส่ง</div></div><div class="sc"><div class="sn" style="color:var(--grn)">${tS}</div><div class="sl">ส่งแล้ว</div></div><div class="sc"><div class="sn" style="color:var(--red)">${tI}</div><div class="sl">มีปัญหา</div></div></div>
+  <div class="card"><div class="card-title">สถิติรายรุ่น (รวมทุกรุ่นจากทุกออเดอร์)</div>${mR.length?mR.map(([m,v])=>`<div style="margin-bottom:14px"><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px"><strong>${m}</strong><span style="color:var(--t3)">ส่งแล้ว ${v.sent}/${v.qty}</span></div><div style="background:var(--g1);border-radius:6px;height:10px;overflow:hidden"><div style="background:var(--pri);height:100%;width:${Math.round(v.qty/mQ*100)}%;border-radius:6px"></div></div><div style="font-size:11px;color:var(--t3);margin-top:3px">ยอดผลิต: <strong style="color:var(--t1)">${v.qty} ตัว</strong> • ส่งแล้ว: <strong style="color:var(--grn)">${v.sent} ตัว</strong></div></div>`).join(''):'<p style="color:var(--t3)">ยังไม่มีข้อมูล</p>'}</div>
+  <div class="card"><div class="card-title">🔍 ตรวจสอบ</div><table class="tbl"><tr><th>รายการ</th><th>จำนวน</th></tr><tr><td>ส่งผลิตทั้งหมด</td><td>${tQ} ตัว</td></tr><tr><td>ผลิตเสร็จ+พร้อมส่ง</td><td>${tR+tS} ตัว</td></tr><tr><td>ยังค้างอยู่</td><td>${tQ-tR-tS} ตัว</td></tr><tr class="total-row"><td>ส่งแล้วจริง</td><td>${tS} ตัว</td></tr></table></div>
+  </div>`;
+}
+
+/* EXPORT */
+async function doExportPDF(areaId,fname){
+  const el=document.getElementById(areaId);if(!el){toast('❌ ไม่พบข้อมูล',false);return;}
+  toast('⏳ กำลังสร้าง PDF...');
+  try{await new Promise(r=>setTimeout(r,300));const c=await html2canvas(el,{scale:2,useCORS:true,backgroundColor:'#ffffff',logging:false,allowTaint:true});const imgData=c.toDataURL('image/jpeg',0.92);const{jsPDF}=window.jspdf;const pdf=new jsPDF({orientation:c.width>c.height?'landscape':'portrait',unit:'px',format:[c.width/2,c.height/2]});pdf.addImage(imgData,'JPEG',0,0,c.width/2,c.height/2);pdf.save(fname+'.pdf');toast('✅ PDF บันทึกแล้ว');}catch(err){toast('❌ '+err.message,false);}
+}
+async function doExportImg(areaId,fname){
+  const el=document.getElementById(areaId);if(!el){toast('❌ ไม่พบข้อมูล',false);return;}
+  toast('⏳ กำลังสร้างรูป...');
+  try{await new Promise(r=>setTimeout(r,300));const c=await html2canvas(el,{scale:2,useCORS:true,backgroundColor:'#ffffff',logging:false,allowTaint:true});const a=document.createElement('a');a.download=fname+'.png';a.href=c.toDataURL('image/png');document.body.appendChild(a);a.click();document.body.removeChild(a);toast('✅ รูปบันทึกแล้ว');}catch(err){toast('❌ '+err.message,false);}
+}
+function toast(msg,ok=true){const t=document.getElementById('toast');t.textContent=msg;t.className='toast '+(ok?'tok':'terr');t.style.display='block';setTimeout(()=>t.style.display='none',3000);}
+renderLogo();
+</script>
+</body>
+</html>
