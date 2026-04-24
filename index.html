@@ -113,31 +113,25 @@ body{font-family:'Sarabun',sans-serif;background:var(--g0);color:var(--t1);font-
 .sp-issue{background:#FEE2E2;color:#991B1B}
 .pay-paid{background:#DCFCE7;color:#166534;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700}
 .pay-unpaid{background:#FEE2E2;color:#991B1B;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700}
-.due-date-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:8px;font-size:11px;font-weight:700;background:#FEF3C7;color:#92400E;border:1px solid #FDE68A}
-.due-date-badge.urgent{background:#FEE2E2;color:#991B1B;border-color:#FCA5A5}
-.due-date-badge.ok{background:#DCFCE7;color:#166534;border-color:#86EFAC}
-
-/* ── ALERT BANNER ── */
+.due-ok{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:8px;font-size:11px;font-weight:700;background:#DCFCE7;color:#166534;border:1px solid #86EFAC}
+.due-warn{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:8px;font-size:11px;font-weight:700;background:#FEF3C7;color:#92400E;border:1px solid #FDE68A}
+.due-over{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:8px;font-size:11px;font-weight:700;background:#FEE2E2;color:#991B1B;border:1px solid #FCA5A5}
+/* ALERT BANNER */
 .alert-banner{background:linear-gradient(135deg,#FEF3C7,#FEE2E2);border-bottom:2px solid #FDE68A;padding:10px 16px}
 .alert-banner-inner{max-width:920px;margin:0 auto}
 .alert-title{font-family:'Mitr',sans-serif;font-size:13px;font-weight:700;color:#92400E;display:flex;align-items:center;gap:6px;margin-bottom:6px}
-.alert-item{display:flex;align-items:center;gap:8px;padding:6px 10px;background:rgba(255,255,255,.7);border-radius:8px;margin-bottom:4px;cursor:pointer;transition:.15s;border:1px solid rgba(220,38,38,.15)}
-.alert-item:hover{background:rgba(255,255,255,.95);transform:translateX(2px)}
+.alert-item{display:flex;align-items:center;gap:8px;padding:6px 10px;background:rgba(255,255,255,.7);border-radius:8px;margin-bottom:4px;cursor:pointer;transition:.15s;border:1px solid rgba(220,38,38,.15);flex-wrap:wrap}
+.alert-item:hover{background:rgba(255,255,255,.95)}
 .alert-item.overdue{border-color:rgba(220,38,38,.4);background:#FFF5F5}
 .alert-item.urgent{border-color:rgba(217,119,6,.4);background:#FFFBEB}
 .alert-days{font-size:11px;font-weight:700;padding:2px 7px;border-radius:12px;white-space:nowrap}
 .alert-days.overdue{background:#FEE2E2;color:#991B1B}
 .alert-days.urgent{background:#FEF3C7;color:#92400E}
-.alert-days.soon{background:#DBEAFE;color:#1E40AF}
-.alert-dismiss{margin-left:auto;background:none;border:none;font-size:18px;cursor:pointer;color:var(--t4);padding:0 4px;line-height:1}
-.alert-dismiss:hover{color:var(--red)}
-
-/* ── BRANCH MANAGER (settings panel) ── */
+/* BRANCH PANEL */
 .branch-panel{background:var(--white);border-radius:var(--r2);border:1px solid var(--g2);padding:16px;margin-bottom:12px;box-shadow:var(--sh)}
 .branch-tag{display:inline-flex;align-items:center;gap:6px;background:#E0F2FE;color:#0369A1;border-radius:20px;padding:4px 12px;font-size:13px;font-weight:600;margin:3px}
 .branch-tag-del{background:none;border:none;cursor:pointer;color:#0369A1;font-size:14px;line-height:1;padding:0 2px}
 .branch-tag-del:hover{color:var(--red)}
-
 .oi{background:var(--white);border:1.5px solid var(--g2);border-radius:var(--r2);padding:14px;margin-bottom:12px;transition:.15s}
 .oi:hover{border-color:#C4B5FD}
 .oi-hd{display:flex;gap:12px;align-items:flex-start}
@@ -203,12 +197,10 @@ body{font-family:'Sarabun',sans-serif;background:var(--g0);color:var(--t1);font-
 .tbl td{padding:8px 10px;border-bottom:1px solid var(--g1);color:var(--t2);vertical-align:middle}
 .tbl tr:last-child td{border-bottom:none}
 .total-row td{font-weight:700;color:var(--t1);background:var(--pri-ll)}
-.rep-img{width:100%;max-height:320px;object-fit:contain;border-radius:10px;border:1px solid var(--g2);background:#f8f8f8;cursor:pointer;margin-bottom:10px;display:block;transition:.2s}
-.rep-img:hover{transform:scale(1.01)}
+.rep-img{width:100%;max-height:320px;object-fit:contain;border-radius:10px;border:1px solid var(--g2);background:#f8f8f8;cursor:pointer;margin-bottom:10px;display:block}
 .rep-h{font-size:13px;font-weight:700;border-bottom:2px solid var(--pri-l);padding-bottom:6px;margin:14px 0 10px}
 .model-head{background:linear-gradient(135deg,var(--pri-ll),var(--tl));border-radius:var(--r2);padding:16px;display:flex;gap:14px;align-items:flex-start;margin-bottom:12px}
-.model-img{width:110px;height:110px;object-fit:cover;border-radius:10px;border:2px solid var(--white);cursor:pointer;flex-shrink:0;transition:.2s}
-.model-img:hover{transform:scale(1.04)}
+.model-img{width:110px;height:110px;object-fit:cover;border-radius:10px;border:2px solid var(--white);cursor:pointer;flex-shrink:0}
 .model-img-ph{width:110px;height:110px;border-radius:10px;background:var(--white);border:2px dashed var(--g3);display:flex;align-items:center;justify-content:center;flex-direction:column;font-size:11px;color:var(--t4);flex-shrink:0;gap:4px}
 .rep-item{background:var(--white);border:1.5px solid var(--g2);border-radius:var(--r2);padding:14px;margin-bottom:10px;position:relative;padding-top:22px}
 .rep-item-num{position:absolute;top:-9px;left:12px;background:var(--pri);color:#fff;border-radius:20px;padding:2px 10px;font-size:10px;font-weight:700;font-family:'Mitr',sans-serif}
@@ -224,9 +216,9 @@ body{font-family:'Sarabun',sans-serif;background:var(--g0);color:var(--t1);font-
 @keyframes sli{from{transform:translateY(16px);opacity:0}to{transform:translateY(0);opacity:1}}
 .empty{text-align:center;padding:40px 20px;color:var(--t3)}
 .empty-ico{font-size:44px;margin-bottom:10px}
-.pdfbtn{background:#DC2626;color:#fff;border:none;border-radius:10px;padding:11px 20px;font-size:13px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:8px;font-family:'Sarabun',sans-serif;box-shadow:0 2px 8px rgba(220,38,38,.3);transition:.15s}
+.pdfbtn{background:#DC2626;color:#fff;border:none;border-radius:10px;padding:11px 20px;font-size:13px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:8px;font-family:'Sarabun',sans-serif;transition:.15s}
 .pdfbtn:hover{background:#B91C1C}
-.imgbtn{background:#0D9488;color:#fff;border:none;border-radius:10px;padding:11px 20px;font-size:13px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:8px;font-family:'Sarabun',sans-serif;box-shadow:0 2px 8px rgba(13,148,136,.3);transition:.15s}
+.imgbtn{background:#0D9488;color:#fff;border:none;border-radius:10px;padding:11px 20px;font-size:13px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:8px;font-family:'Sarabun',sans-serif;transition:.15s}
 .imgbtn:hover{background:#0f766e}
 .export-bar{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;padding:14px;background:var(--white);border-radius:var(--r2);border:1px solid var(--g2);box-shadow:var(--sh)}
 .fb-loading{position:fixed;inset:0;background:rgba(255,255,255,.95);z-index:900;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px}
@@ -238,13 +230,10 @@ body{font-family:'Sarabun',sans-serif;background:var(--g0);color:var(--t1);font-
 </style>
 </head>
 <body>
-
 <div id="fb-loading" class="fb-loading">
   <div class="fb-spinner"></div>
   <p>กำลังเชื่อมต่อ Firebase...</p>
 </div>
-
-<!-- LOGIN -->
 <div id="ls" class="ls" style="display:none">
   <div class="lb">
     <div class="logo-area">
@@ -259,8 +248,6 @@ body{font-family:'Sarabun',sans-serif;background:var(--g0);color:var(--t1);font-
     <div class="role-card" onclick="loginAs('report')"><div class="ri report">📊</div><div><div class="rn">รายงาน</div><div class="rd">ดูรายงานลูกค้าและคำสั่งผลิต</div></div></div>
   </div>
 </div>
-
-<!-- PIN -->
 <div id="ps" class="ps" style="display:none">
   <div class="pb">
     <div id="pt" class="pt"></div>
@@ -276,8 +263,6 @@ body{font-family:'Sarabun',sans-serif;background:var(--g0);color:var(--t1);font-
     <span class="pback" onclick="backLogin()">← เลือกบทบาทอื่น</span>
   </div>
 </div>
-
-<!-- APP -->
 <div id="app" style="display:none" class="app-shell">
   <nav class="topbar">
     <div class="brand"><div id="tbar-logo"></div><span class="brand-dot" id="conn-dot"></span>OrderPro</div>
@@ -286,10 +271,9 @@ body{font-family:'Sarabun',sans-serif;background:var(--g0);color:var(--t1);font-
     <span id="sync-time" style="font-size:11px;color:var(--t4);margin-right:8px"></span>
     <button class="logout-btn" onclick="logout()">ออกจากระบบ</button>
   </nav>
-  <!-- ALERT BANNER -->
   <div id="alert-banner" class="alert-banner" style="display:none">
     <div class="alert-banner-inner">
-      <div class="alert-title">🔔 ออเดอร์ที่ถึงกำหนดส่งภายใน 3 วัน หรือเกินกำหนดแล้ว (ยังไม่ส่ง)</div>
+      <div class="alert-title">🔔 ออเดอร์ถึงกำหนดส่งภายใน 3 วัน หรือเกินกำหนดแล้ว (ยังไม่ส่ง)</div>
       <div id="alert-list"></div>
       <button onclick="dismissAlert()" style="margin-top:6px;background:none;border:1px solid #D97706;border-radius:8px;padding:4px 12px;font-size:12px;color:#92400E;cursor:pointer;font-family:'Sarabun',sans-serif;font-weight:600">ซ่อนชั่วคราว ✕</button>
     </div>
@@ -297,8 +281,6 @@ body{font-family:'Sarabun',sans-serif;background:var(--g0);color:var(--t1);font-
   <div id="menu-bar" class="menu-bar"></div>
   <div class="main" id="main"></div>
 </div>
-
-<!-- IMG MODAL -->
 <div id="img-modal" class="modal-ov" style="display:none" onclick="closeIM(event)">
   <div class="modal-box">
     <img id="modal-img-el" src="" class="modal-img-el" alt="">
@@ -310,12 +292,13 @@ body{font-family:'Sarabun',sans-serif;background:var(--g0);color:var(--t1);font-
 </div>
 <div id="toast" class="toast" style="display:none"></div>
 
-<!-- Firebase SDK -->
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getDatabase, ref, onValue, set, remove }
-  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
-
+<!-- ✅ Firebase compat SDK — ไม่ใช้ type=module ทำให้ onclick ทำงานได้ -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/10.7.1/firebase-app-compat.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/10.7.1/firebase-database-compat.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+// ── Firebase init (compat — ทำงานกับ onclick ได้) ──
 const firebaseConfig = {
   apiKey: "AIzaSyBBdB88C5ADhTXG7X44CXJxk47uTEiPrFw",
   authDomain: "orderpro-app.firebaseapp.com",
@@ -325,55 +308,123 @@ const firebaseConfig = {
   messagingSenderId: "868986973931",
   appId: "1:868986973931:web:4f88bd8495c8e4c443d8ae"
 };
+// Safety check
+if (typeof firebase === 'undefined') {
+  document.getElementById('fb-loading').innerHTML = '<div style="text-align:center;padding:20px"><div style="font-size:48px">⚠️</div><p style="font-family:sans-serif;color:#DC2626;font-size:16px;margin-top:12px">Firebase โหลดไม่ได้<br>กรุณาตรวจสอบการเชื่อมต่ออินเทอร์เน็ต<br>แล้วรีเฟรชหน้าเว็บ</p><button onclick="location.reload()" style="margin-top:14px;padding:10px 24px;background:#6D28D9;color:#fff;border:none;border-radius:8px;font-size:14px;cursor:pointer">🔄 รีเฟรช</button></div>';
+  throw new Error('Firebase not loaded');
+}
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
 
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
-window._db = db;
-window._dbRef = ref;
-window._dbSet = set;
-window._dbRemove = remove;
+// ── Global state ──
+let _orders = [];
+let _branches = ['สาขาหลัก'];
+let _logoData = '';
+let _appReady = false;
+let _alertDismissed = false;
+const ALERT_DAYS = 3;
 
-// Listen orders
-const ordersRef = ref(db, 'orders');
-onValue(ordersRef, (snap) => {
+// ── Firebase listeners ──
+db.ref('orders').on('value', snap => {
   const data = snap.val();
-  window._orders = data
-    ? Object.entries(data).map(([id,val])=>({...val,id})).sort((a,b)=>(b.createdAt||0)-(a.createdAt||0))
+  _orders = data
+    ? Object.entries(data).map(([id,v])=>({...v,id})).sort((a,b)=>(b.createdAt||0)-(a.createdAt||0))
     : [];
-  if (window._appReady) { window._render(); window._renderAlerts(); window._updateSyncTime(); }
-}, ()=>{ document.getElementById('conn-dot').classList.add('offline'); });
+  if (_appReady) { render(); renderAlerts(); updateSyncTime(); }
+}, () => { document.getElementById('conn-dot').classList.add('offline'); });
 
-// Listen logo
-onValue(ref(db,'logo'), (snap) => {
+db.ref('logo').on('value', snap => {
   const logo = snap.val();
-  if (logo) { window._logoData = logo; window._renderLogo&&window._renderLogo(); window._renderTbarLogo&&window._renderTbarLogo(); }
+  if (logo) { _logoData = logo; renderLogoEl(); renderTbarLogo(); }
 });
 
-// Listen branches
-onValue(ref(db,'branches'), (snap) => {
+db.ref('branches').on('value', snap => {
   const data = snap.val();
-  window._branches = data ? (Array.isArray(data) ? data.filter(Boolean) : Object.values(data)) : ['สาขาหลัก'];
-  if (window._appReady) window._render();
+  _branches = data
+    ? (Array.isArray(data) ? data.filter(Boolean) : Object.values(data).filter(Boolean))
+    : ['สาขาหลัก'];
+  if (_appReady) render();
 });
 
+// แสดง login หลัง Firebase เชื่อมต่อ
 setTimeout(() => {
   document.getElementById('fb-loading').style.display = 'none';
   document.getElementById('ls').style.display = 'flex';
-  window._initApp();
+  renderLogoEl();
 }, 1500);
-</script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script>
-// ── Global ──
-window._orders = [];
-window._logoData = '';
-window._appReady = false;
-window._branches = ['สาขาหลัก'];
-let _alertDismissed = false;
-const ALERT_DAYS = 3; // แจ้งเตือนก่อนกำหนด 3 วัน
+// ── Firebase save helpers ──
+function fbSave(o) { return db.ref('orders/' + o.id).set({...o}); }
+function fbDel(id) { return db.ref('orders/' + id).remove(); }
+function fbSaveLogo(d) { return db.ref('logo').set(d); }
+function fbSaveBranches(arr) { return db.ref('branches').set(arr); }
 
+// ── Helpers ──
+function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2,5); }
+function stOpts(cur) { return Object.entries(SL).map(([k,v])=>`<option value="${k}" ${k===cur?'selected':''}>${v.l}</option>`).join(''); }
+function spill(s) { const x=SL[s]||SL.wait; return `<span class="sp ${x.sp}">${x.l}</span>`; }
+function newSub() { return {model:'',color:'',size:'',qty:'',status:'wait',imgs:[],delivery:{},payment:{paid:false}}; }
+function newMB() { return [{name:'',channel:'LINE',branch:'',model:'',color:'',size:'',qty:'',date:new Date().toISOString().slice(0,10),dueDate:'',deliveryDate:'',note:'',issue:'',imgs:[],subs:[],delivery:{},payment:{paid:false}}]; }
+function dueDateBadge(d) {
+  if (!d) return '';
+  const diff = Math.ceil((new Date(d) - new Date()) / 86400000);
+  if (diff < 0)  return `<span class="due-over">🔴 เกินกำหนด ${Math.abs(diff)} วัน</span>`;
+  if (diff === 0) return `<span class="due-over">🔴 วันนี้!</span>`;
+  if (diff <= 3)  return `<span class="due-warn">⚠️ ส่ง ${d} (อีก ${diff} วัน)</span>`;
+  return `<span class="due-ok">✅ ส่ง ${d}</span>`;
+}
+function updateSyncTime() {
+  const el = document.getElementById('sync-time');
+  if (el) el.textContent = 'ซิงค์: ' + new Date().toLocaleTimeString('th-TH',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+}
+
+// ── Alert ──
+function renderAlerts() {
+  if (_alertDismissed) return;
+  const now = new Date(); now.setHours(0,0,0,0);
+  const alerts = [];
+  _orders.forEach(o => {
+    if (o.status === 'sent') return;
+    const d = o.deliveryDate || o.dueDate;
+    if (!d) return;
+    const dd = new Date(d); dd.setHours(0,0,0,0);
+    const diff = Math.ceil((dd - now) / 86400000);
+    if (diff <= ALERT_DAYS) alerts.push({id:o.id, name:o.name, model:o.model, branch:o.branch||'', status:o.status, diff, date:d});
+  });
+  const banner = document.getElementById('alert-banner');
+  const list = document.getElementById('alert-list');
+  if (!alerts.length) { banner.style.display = 'none'; return; }
+  alerts.sort((a,b) => a.diff - b.diff);
+  list.innerHTML = alerts.map(a => {
+    const cls = a.diff < 0 ? 'overdue' : 'urgent';
+    const daysTxt = a.diff < 0 ? `เกินกำหนด ${Math.abs(a.diff)} วัน` : a.diff === 0 ? 'วันนี้!' : `อีก ${a.diff} วัน`;
+    const st = SL[a.status] || SL.wait;
+    return `<div class="alert-item ${cls}" onclick="goToOrder('${a.id}')">
+      <span class="alert-days ${cls}">${daysTxt}</span>
+      <strong style="font-size:13px">${a.name}</strong>
+      <span class="tag tmod" style="font-size:11px">👕 ${a.model}</span>
+      ${a.branch ? `<span class="tag tbranch" style="font-size:11px">🏪 ${a.branch}</span>` : ''}
+      <span class="sp ${st.sp}" style="font-size:10px">${st.l}</span>
+      <span style="font-size:11px;color:var(--t3)">📅 ${a.date}</span>
+    </div>`;
+  }).join('');
+  banner.style.display = 'block';
+}
+function dismissAlert() { _alertDismissed = true; document.getElementById('alert-banner').style.display = 'none'; }
+function goToOrder(id) { fSearch = ''; fStatus = 'all'; goTab('orders'); setTimeout(() => { const el = document.getElementById('oi-' + id); if (el) el.scrollIntoView({behavior:'smooth', block:'center'}); }, 300); }
+
+// ── Logo ──
+function renderLogoEl() {
+  const w = document.getElementById('logo-wrap'); if (!w) return;
+  w.innerHTML = _logoData
+    ? `<img src="${_logoData}" class="logo-img"><div class="logo-eb">✏️</div>`
+    : `<div class="logo-ph"><span>🧵</span><div class="logo-eb">📷</div></div>`;
+}
+function trigLogo() { document.getElementById('logo-inp').click(); }
+function handleLogo(e) { const f=e.target.files[0]; if(!f) return; const r=new FileReader(); r.onload=ev=>{ fbSaveLogo(ev.target.result); toast('✅ เปลี่ยนโลโก้แล้ว'); }; r.readAsDataURL(f); }
+function renderTbarLogo() { const el=document.getElementById('tbar-logo'); if(!el) return; el.innerHTML=_logoData?`<img src="${_logoData}" class="brand-logo">`:`<span style="font-size:18px">🧵</span>`; }
+
+// ── Constants ──
 const PINS = { admin: '1168' };
 const ROLE_META = {
   admin:{label:'ผู้ดูแล',icon:'👔',cls:'admin'},
@@ -395,155 +446,111 @@ const SL = {
 const STEPS4 = ['wait','prod','ready','sent'];
 const CHNL = ['LINE','Facebook','Instagram','TikTok','หน้าร้าน','อื่นๆ'];
 
-let curRole=null,curTab='orders',editId=null;
-let formImgs=[],modalCtx=null;
-let fSearch='',fStatus='all',pinVal='',pendingRole=null;
+let curRole=null, curTab='orders', editId=null;
+let formImgs=[], modalCtx=null;
+let fSearch='', fStatus='all', pinVal='', pendingRole=null;
 let multiBlocks=null;
 
-function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,5);}
-function stOpts(cur){return Object.entries(SL).map(([k,v])=>`<option value="${k}" ${k===cur?'selected':''}>${v.l}</option>`).join('');}
-function spill(s){const x=SL[s]||SL.wait;return`<span class="sp ${x.sp}">${x.l}</span>`;}
-function newSub(){return{model:'',color:'',size:'',qty:'',status:'wait',imgs:[],delivery:{},payment:{paid:false}};}
-function newMB(){return[{name:'',channel:'LINE',branch:'',model:'',color:'',size:'',qty:'',date:new Date().toISOString().slice(0,10),dueDate:'',deliveryDate:'',note:'',issue:'',imgs:[],subs:[],delivery:{},payment:{paid:false}}];}
-function dueDateBadge(d){if(!d)return'';const diff=Math.ceil((new Date(d)-new Date())/86400000);let cls='due-date-badge',ic='📅';if(diff<0){cls+=' urgent';ic='🔴';}else if(diff<=3){cls+=' urgent';ic='⚠️';}else{cls+=' ok';ic='✅';}return`<span class="${cls}">${ic} ส่ง ${d}</span>`;}
-
-// ── Firebase helpers ──
-async function fbSave(o){if(!window._db)return;await window._dbSet(window._dbRef(window._db,'orders/'+o.id),{...o});}
-async function fbDel(id){if(!window._db)return;await window._dbRemove(window._dbRef(window._db,'orders/'+id));}
-async function fbSaveLogo(d){if(!window._db)return;await window._dbSet(window._dbRef(window._db,'logo'),d);}
-async function fbSaveBranches(arr){if(!window._db)return;await window._dbSet(window._dbRef(window._db,'branches'),arr);}
-
-// ── ALERT SYSTEM ──
-window._renderAlerts = function(){
-  if(_alertDismissed)return;
-  const now=new Date(); now.setHours(0,0,0,0);
-  const alerts=[];
-  window._orders.forEach(o=>{
-    if(o.status==='sent')return;
-    const d=o.deliveryDate||o.dueDate;
-    if(!d)return;
-    const dd=new Date(d); dd.setHours(0,0,0,0);
-    const diff=Math.ceil((dd-now)/86400000);
-    if(diff<=ALERT_DAYS){
-      alerts.push({id:o.id,name:o.name,model:o.model,branch:o.branch||'',status:o.status,diff,date:d});
-    }
-  });
-  const banner=document.getElementById('alert-banner');
-  const list=document.getElementById('alert-list');
-  if(!alerts.length){banner.style.display='none';return;}
-  alerts.sort((a,b)=>a.diff-b.diff);
-  list.innerHTML=alerts.map(a=>{
-    const cls=a.diff<0?'overdue':a.diff<=3?'urgent':'soon';
-    const daysTxt=a.diff<0?`เกินกำหนด ${Math.abs(a.diff)} วัน`:a.diff===0?'วันนี้!':`อีก ${a.diff} วัน`;
-    const st=SL[a.status]||SL.wait;
-    return`<div class="alert-item ${cls}" onclick="goTab('orders');fSearch='${a.name}';render()">
-      <span class="alert-days ${cls}">${daysTxt}</span>
-      <span style="font-weight:700;font-size:13px">${a.name}</span>
-      <span class="tag tmod" style="font-size:11px">👕 ${a.model}</span>
-      ${a.branch?`<span class="tag tbranch" style="font-size:11px">🏪 ${a.branch}</span>`:''}
-      <span class="sp ${st.sp}" style="font-size:10px">${st.l}</span>
-      <span style="font-size:11px;color:var(--t3)">📅 ${a.date}</span>
-    </div>`;
-  }).join('');
-  banner.style.display='block';
-};
-function dismissAlert(){_alertDismissed=true;document.getElementById('alert-banner').style.display='none';}
-
-// ── Logo ──
-window._renderLogo=function(){const w=document.getElementById('logo-wrap');if(!w)return;const d=window._logoData;w.innerHTML=d?`<img src="${d}" class="logo-img"><div class="logo-eb">✏️</div>`:`<div class="logo-ph"><span>🧵</span><div class="logo-eb">📷</div></div>`;};
-function trigLogo(){document.getElementById('logo-inp').click();}
-function handleLogo(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{fbSaveLogo(ev.target.result);toast('✅ เปลี่ยนโลโก้แล้ว');};r.readAsDataURL(f);}
-window._renderTbarLogo=function(){const el=document.getElementById('tbar-logo');if(!el)return;el.innerHTML=window._logoData?`<img src="${window._logoData}" class="brand-logo">`:`<span style="font-size:18px">🧵</span>`;};
-window._updateSyncTime=function(){const el=document.getElementById('sync-time');if(el)el.textContent='ซิงค์: '+new Date().toLocaleTimeString('th-TH',{hour:'2-digit',minute:'2-digit',second:'2-digit'});};
-
 // ── Auth ──
-function selectRole(role){if(PINS[role]){pendingRole=role;pinVal='';updateDots();document.getElementById('perr').textContent='';document.getElementById('pt').textContent=ROLE_META[role].icon+' '+ROLE_META[role].label;document.getElementById('ls').style.display='none';document.getElementById('ps').style.display='flex';}else loginAs(role);}
-function pKey(k){if(pinVal.length>=4)return;pinVal+=k;updateDots();if(pinVal.length===4)setTimeout(checkPin,140);}
-function pDel(){pinVal=pinVal.slice(0,-1);updateDots();document.getElementById('perr').textContent='';}
-function updateDots(){for(let i=0;i<4;i++)document.getElementById('pd'+i).classList.toggle('on',i<pinVal.length);}
-function checkPin(){if(pinVal===PINS[pendingRole])loginAs(pendingRole);else{document.getElementById('perr').textContent='❌ รหัสไม่ถูกต้อง';pinVal='';updateDots();}}
-function backLogin(){document.getElementById('ps').style.display='none';document.getElementById('ls').style.display='flex';pendingRole=null;pinVal='';}
-function loginAs(role){
-  curRole=role;window._appReady=true;
-  document.getElementById('ps').style.display='none';document.getElementById('ls').style.display='none';document.getElementById('app').style.display='flex';
-  const m=ROLE_META[role];document.getElementById('rbadge').textContent=m.icon+' '+m.label;document.getElementById('rbadge').className='rbadge '+m.cls;
-  window._renderTbarLogo();multiBlocks=newMB();_alertDismissed=false;
-  const first=(MENUS[role]||[])[0]?.items[0]?.id||'orders';buildMenu(first);goTab(first);window._renderAlerts();
+function selectRole(role) {
+  if (PINS[role]) { pendingRole=role; pinVal=''; updateDots(); document.getElementById('perr').textContent=''; document.getElementById('pt').textContent=ROLE_META[role].icon+' '+ROLE_META[role].label; document.getElementById('ls').style.display='none'; document.getElementById('ps').style.display='flex'; }
+  else loginAs(role);
 }
-function logout(){curRole=null;curTab='orders';editId=null;formImgs=[];multiBlocks=null;window._appReady=false;document.getElementById('app').style.display='none';document.getElementById('ls').style.display='flex';window._renderLogo();}
-function buildMenu(active){const groups=MENUS[curRole]||[];document.getElementById('menu-bar').innerHTML=groups.map((g,gi)=>`${gi>0?'<div class="msep"></div>':''}<div class="mgroup"><span class="mgl">${g.g}</span>${g.items.map(it=>`<button class="mb ${it.id===(active||curTab)?'active':''}" onclick="goTab('${it.id}')">${it.l}</button>`).join('')}</div>`).join('');}
-function goTab(t){curTab=t;buildMenu(t);render();}
-window._render=render;
-function render(){const el=document.getElementById('main');if(!el)return;if(curTab==='orders')el.innerHTML=renderList();else if(curTab==='add')el.innerHTML=renderForm();else if(curTab==='rep-cust')el.innerHTML=renderRC();else if(curTab==='rep-model')el.innerHTML=renderRM();else if(curTab==='stats')el.innerHTML=renderStats();else if(curTab==='branches')el.innerHTML=renderBranches();}
+function pKey(k) { if(pinVal.length>=4) return; pinVal+=k; updateDots(); if(pinVal.length===4) setTimeout(checkPin,140); }
+function pDel() { pinVal=pinVal.slice(0,-1); updateDots(); document.getElementById('perr').textContent=''; }
+function updateDots() { for(let i=0;i<4;i++) document.getElementById('pd'+i).classList.toggle('on',i<pinVal.length); }
+function checkPin() { if(pinVal===PINS[pendingRole]) loginAs(pendingRole); else { document.getElementById('perr').textContent='❌ รหัสไม่ถูกต้อง'; pinVal=''; updateDots(); } }
+function backLogin() { document.getElementById('ps').style.display='none'; document.getElementById('ls').style.display='flex'; pendingRole=null; pinVal=''; }
+function loginAs(role) {
+  curRole=role; _appReady=true; _alertDismissed=false;
+  document.getElementById('ps').style.display='none';
+  document.getElementById('ls').style.display='none';
+  document.getElementById('app').style.display='flex';
+  const m=ROLE_META[role];
+  document.getElementById('rbadge').textContent=m.icon+' '+m.label;
+  document.getElementById('rbadge').className='rbadge '+m.cls;
+  renderTbarLogo(); multiBlocks=newMB();
+  const first=(MENUS[role]||[])[0]?.items[0]?.id||'orders';
+  buildMenu(first); goTab(first); renderAlerts();
+}
+function logout() { curRole=null; curTab='orders'; editId=null; formImgs=[]; multiBlocks=null; _appReady=false; document.getElementById('app').style.display='none'; document.getElementById('ls').style.display='flex'; renderLogoEl(); }
+function buildMenu(active) {
+  const groups=MENUS[curRole]||[];
+  document.getElementById('menu-bar').innerHTML=groups.map((g,gi)=>`${gi>0?'<div class="msep"></div>':''}<div class="mgroup"><span class="mgl">${g.g}</span>${g.items.map(it=>`<button class="mb ${it.id===(active||curTab)?'active':''}" onclick="goTab('${it.id}')">${it.l}</button>`).join('')}</div>`).join('');
+}
+function goTab(t) { curTab=t; buildMenu(t); render(); }
+function render() {
+  const el=document.getElementById('main'); if(!el) return;
+  if(curTab==='orders') el.innerHTML=renderList();
+  else if(curTab==='add') el.innerHTML=renderForm();
+  else if(curTab==='rep-cust') el.innerHTML=renderRC();
+  else if(curTab==='rep-model') el.innerHTML=renderRM();
+  else if(curTab==='stats') el.innerHTML=renderStats();
+  else if(curTab==='branches') el.innerHTML=renderBranches();
+}
 
 // ── Branch Manager ──
-function renderBranches(){
-  const branches=window._branches||[];
+function renderBranches() {
   return `<div class="branch-panel">
     <div class="card-title">🏪 จัดการสาขา</div>
-    <p style="font-size:12px;color:var(--t3);margin-bottom:14px">เพิ่มสาขาที่รับออเดอร์ เพื่อกำกับแต่ละออเดอร์ว่ามาจากสาขาไหน</p>
-    <div id="branch-tags" style="margin-bottom:14px;min-height:36px">
-      ${branches.map((b,i)=>`<span class="branch-tag">${b}<button class="branch-tag-del" onclick="delBranch(${i})">✕</button></span>`).join('')}
-      ${!branches.length?'<span style="color:var(--t4);font-size:13px">ยังไม่มีสาขา</span>':''}
+    <p style="font-size:12px;color:var(--t3);margin-bottom:14px">เพิ่มสาขาที่รับออเดอร์ สาขาจะแสดงเป็น dropdown ในฟอร์ม และป้ายสีฟ้าบนออเดอร์</p>
+    <div style="margin-bottom:14px;min-height:36px">
+      ${_branches.map((b,i)=>`<span class="branch-tag">${b}<button class="branch-tag-del" onclick="delBranch(${i})">✕</button></span>`).join('')}
+      ${!_branches.length?'<span style="color:var(--t4);font-size:13px">ยังไม่มีสาขา</span>':''}
     </div>
     <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
       <input id="branch-inp" placeholder="ชื่อสาขาใหม่ เช่น เชียงใหม่, สาขา 2..." style="flex:1;padding:9px 12px;border:1.5px solid var(--g2);border-radius:8px;font-size:14px;font-family:'Sarabun',sans-serif;outline:none;min-width:180px" onkeydown="if(event.key==='Enter')addBranch()">
       <button class="btn bp" onclick="addBranch()">➕ เพิ่มสาขา</button>
     </div>
-    <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--g2)">
-      <div style="font-size:12px;color:var(--t3)">💡 สาขาที่เพิ่มจะแสดงเป็น dropdown ในฟอร์มเพิ่มออเดอร์ และแสดงเป็นป้ายสีฟ้าบนออเดอร์</div>
-    </div>
   </div>`;
 }
-function addBranch(){
+function addBranch() {
   const inp=document.getElementById('branch-inp');
-  const val=(inp.value||'').trim();
+  const val=(inp?.value||'').trim();
   if(!val){toast('⚠️ กรอกชื่อสาขาก่อน',false);return;}
-  const arr=[...window._branches];
+  const arr=[..._branches];
   if(arr.includes(val)){toast('⚠️ มีสาขานี้แล้ว',false);return;}
-  arr.push(val);
-  fbSaveBranches(arr);
-  inp.value='';
-  toast('✅ เพิ่มสาขาแล้ว');
+  arr.push(val); fbSaveBranches(arr); inp.value=''; toast('✅ เพิ่มสาขาแล้ว');
 }
-function delBranch(i){
+function delBranch(i) {
   if(!confirm('ลบสาขานี้?'))return;
-  const arr=[...window._branches];arr.splice(i,1);fbSaveBranches(arr);toast('🗑 ลบสาขาแล้ว');
+  const arr=[..._branches]; arr.splice(i,1); fbSaveBranches(arr); toast('🗑 ลบสาขาแล้ว');
 }
 
 // ── List ──
-function renderList(){
-  let list=[...window._orders];
-  if(fStatus!=='all')list=list.filter(o=>o.status===fStatus);
-  if(fSearch)list=list.filter(o=>(o.name||'').includes(fSearch)||(o.model||'').includes(fSearch)||(o.branch||'').includes(fSearch)||(o.color||'').includes(fSearch));
+function renderList() {
+  let list=[..._orders];
+  if(fStatus!=='all') list=list.filter(o=>o.status===fStatus);
+  if(fSearch) list=list.filter(o=>(o.name||'').includes(fSearch)||(o.model||'').includes(fSearch)||(o.branch||'').includes(fSearch)||(o.color||'').includes(fSearch));
   const tQ=list.reduce((s,o)=>s+parseInt(o.qty||0),0);
   const bf=Object.entries(SL).map(([k,v])=>`<button class="btn bxs ${fStatus===k?'bp':'bg'}" onclick="fStatus='${k}';render()">${v.l}</button>`).join('');
+  const branchFilter=_branches.length?`<select class="btn bg bxs" onchange="fSearch=this.value;render()" style="border:1px solid var(--g2)"><option value="">🏪 ทุกสาขา</option>${_branches.map(b=>`<option value="${b}" ${fSearch===b?'selected':''}>${b}</option>`).join('')}</select>`:'';
   const canEdit=curRole==='admin'||curRole==='staff';
-  // filter by branch
-  const branches=window._branches||[];
-  const branchFilter=branches.length?`<select class="btn bg bxs" onchange="fSearch=this.value;render()" style="border:1px solid var(--g2)"><option value="">🏪 ทุกสาขา</option>${branches.map(b=>`<option value="${b}" ${fSearch===b?'selected':''}>${b}</option>`).join('')}</select>`:'';
   return `<div class="fbar"><input class="sin" placeholder="🔍 ค้นหาชื่อ รุ่น สาขา..." value="${fSearch}" oninput="fSearch=this.value;render()">${branchFilter}<button class="btn bxs ${fStatus==='all'?'bp':'bg'}" onclick="fStatus='all';render()">ทั้งหมด</button>${bf}</div>
   <div style="font-size:12px;color:var(--t3);margin-bottom:10px">${list.length} รายการ • รวม <strong>${tQ}</strong> ตัว</div>
   ${list.length?list.map(o=>renderOI(o,canEdit)).join(''):`<div class="empty"><div class="empty-ico">📦</div><p>ยังไม่มีออเดอร์</p></div>`}`;
 }
 
-function renderOI(o,canEdit){
-  const st=SL[o.status]||SL.wait,si4=STEPS4.indexOf(o.status);
+function renderOI(o, canEdit) {
+  const st=SL[o.status]||SL.wait, si4=STEPS4.indexOf(o.status);
   const thumb=(o.imgs&&o.imgs[0])?`<img src="${o.imgs[0]}" class="oi-thumb" onclick="openIM('${o.id}',0,'main')">`:`<div class="oi-ph" onclick="trigAddImg('${o.id}')"><span style="font-size:22px">📷</span><span style="font-size:10px;color:var(--t4)">เพิ่มรูป</span></div>`;
   const extra=(o.imgs||[]).slice(1).map((img,i)=>`<img src="${img}" class="eimg" onclick="openIM('${o.id}',${i+1},'main')">`).join('');
   const steps=STEPS4.map((s,i)=>{const cl=i<si4?'done':i===si4?'cur':'';const lb={wait:'รอ',prod:'ผลิต',ready:'พร้อม',sent:'ส่ง'}[s];return`<div class="step"><div class="sdot ${cl}">${i<si4?'✓':i+1}</div><div class="slbl ${cl}">${lb}</div></div>`;}).join('');
-  const pay=o.payment||{};const del=o.delivery||{};
-  const delSection=canEdit?`<div class="del-section"><div class="del-title">📦 ติดตามการส่งของ — รายการที่ 1</div><div class="g2" style="gap:8px;margin-bottom:8px"><div class="fg" style="margin-bottom:0"><label>ผู้ส่ง</label><input placeholder="ชื่อผู้ส่ง" value="${del.sender||''}" onchange="updDel('${o.id}','main',-1,'sender',this.value)"></div><div class="fg" style="margin-bottom:0"><label>ผู้รับ</label><input placeholder="ชื่อผู้รับ" value="${del.receiver||''}" onchange="updDel('${o.id}','main',-1,'receiver',this.value)"></div></div><div class="fg" style="margin-bottom:8px"><label>หมายเหตุการส่ง</label><input placeholder="เช่น Kerry เลขพัสดุ..." value="${del.note||''}" onchange="updDel('${o.id}','main',-1,'note',this.value)"></div><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">${(del.proofs||[]).map((img,ii)=>`<img src="${img}" class="del-proof-img" onclick="bigImg('${img}')">`).join('')}<label class="btn bg bxs" style="cursor:pointer">📷 หลักฐานส่ง<input type="file" accept="image/*" style="display:none" onchange="addDelProof('${o.id}','main',-1,event)"></label></div></div>`:'';
-  const infoSection=`<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;align-items:center;font-size:12px">${o.dueDate?`<span style="color:var(--t3)">📅 ต้องการรับ: <strong>${o.dueDate}</strong></span>`:''}${o.deliveryDate?`<span style="color:var(--t3)">🚚 กำหนดส่ง: <strong>${o.deliveryDate}</strong></span>`:''}<span class="${pay.paid?'pay-paid':'pay-unpaid'}">${pay.paid?'✅ จ่ายแล้ว':'⏳ ยังไม่จ่าย'}</span></div>`;
+  const pay=o.payment||{}; const del=o.delivery||{};
+  const infoSection=`<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;align-items:center;font-size:12px">
+    ${o.deliveryDate?dueDateBadge(o.deliveryDate):o.dueDate?`<span style="color:var(--t3)">📅 รับ: ${o.dueDate}</span>`:''}
+    <span class="${pay.paid?'pay-paid':'pay-unpaid'}">${pay.paid?'✅ จ่ายแล้ว':'⏳ ยังไม่จ่าย'}</span>
+  </div>`;
+  const delSection=canEdit?`<div class="del-section"><div class="del-title">📦 ติดตามการส่ง — รายการที่ 1</div><div class="g2" style="gap:8px;margin-bottom:8px"><div class="fg" style="margin-bottom:0"><label>ผู้ส่ง</label><input placeholder="ชื่อผู้ส่ง" value="${del.sender||''}" onchange="updDel('${o.id}','main',-1,'sender',this.value)"></div><div class="fg" style="margin-bottom:0"><label>ผู้รับ</label><input placeholder="ชื่อผู้รับ" value="${del.receiver||''}" onchange="updDel('${o.id}','main',-1,'receiver',this.value)"></div></div><div class="fg" style="margin-bottom:8px"><label>หมายเหตุการส่ง</label><input placeholder="Kerry เลขพัสดุ..." value="${del.note||''}" onchange="updDel('${o.id}','main',-1,'note',this.value)"></div><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">${(del.proofs||[]).map((img)=>`<img src="${img}" class="del-proof-img" onclick="bigImg('${img}')">`).join('')}<label class="btn bg bxs" style="cursor:pointer">📷 หลักฐาน<input type="file" accept="image/*" style="display:none" onchange="addDelProof('${o.id}','main',-1,event)"></label></div></div>`:'';
   const subs=(o.subs||[]);
   const subItems=subs.map((s,si2)=>{
     const sSi4=STEPS4.indexOf(s.status||'wait');
     const sThumb=(s.imgs&&s.imgs[0])?`<img src="${s.imgs[0]}" class="sub-thumb" onclick="openIM('${o.id}',0,'sub',${si2})">`:`<div class="sub-ph"><span style="font-size:22px">📷</span><span style="font-size:10px;color:var(--t4)">ไม่มีรูป</span></div>`;
     const sExtra=(s.imgs||[]).slice(1).map((img,ii)=>`<img src="${img}" class="eimg" onclick="openIM('${o.id}',${ii+1},'sub',${si2})">`).join('');
     const sSteps=STEPS4.map((st,i)=>{const cl=i<sSi4?'done':i===sSi4?'cur':'';const lb={wait:'รอ',prod:'ผลิต',ready:'พร้อม',sent:'ส่ง'}[st];return`<div class="step"><div class="sdot ${cl}">${i<sSi4?'✓':i+1}</div><div class="slbl ${cl}">${lb}</div></div>`;}).join('');
-    const sDel=s.delivery||{};const sPay=s.payment||{};
-    const sDelSection=canEdit?`<div class="del-section"><div class="del-title">📦 ติดตามการส่งของ — รายการที่ ${si2+2}</div><div class="g2" style="gap:8px;margin-bottom:8px"><div class="fg" style="margin-bottom:0"><label>ผู้ส่ง</label><input placeholder="ชื่อผู้ส่ง" value="${sDel.sender||''}" onchange="updDel('${o.id}','sub',${si2},'sender',this.value)"></div><div class="fg" style="margin-bottom:0"><label>ผู้รับ</label><input placeholder="ชื่อผู้รับ" value="${sDel.receiver||''}" onchange="updDel('${o.id}','sub',${si2},'receiver',this.value)"></div></div><div class="fg" style="margin-bottom:8px"><label>หมายเหตุการส่ง</label><input placeholder="เช่น Kerry เลขพัสดุ..." value="${sDel.note||''}" onchange="updDel('${o.id}','sub',${si2},'note',this.value)"></div><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">${(sDel.proofs||[]).map((img,ii)=>`<img src="${img}" class="del-proof-img" onclick="bigImg('${img}')">`).join('')}<label class="btn bg bxs" style="cursor:pointer">📷 หลักฐานส่ง<input type="file" accept="image/*" style="display:none" onchange="addDelProof('${o.id}','sub',${si2},event)"></label></div></div>`:'';
-    return `<div class="sub-item"><div style="display:flex;align-items:center;gap:6px;margin-bottom:8px"><span class="num-b sub">${si2+2}</span><strong style="font-size:13px">รายการที่ ${si2+2}</strong></div><div class="oi-hd">${sThumb}<div class="oi-info"><div class="oi-name" style="font-size:14px">${o.name}</div><div class="oi-meta">${o.channel||''}</div><div class="oi-tags">${s.model?`<span class="tag tmod">👕 ${s.model}</span>`:''}${s.color?`<span class="tag tcol">🎨 ${s.color}</span>`:''}${s.size?`<span class="tag">📏 ${s.size}</span>`:''}${s.qty?`<span class="tag tqty">×${s.qty} ตัว</span>`:''}${spill(s.status||'wait')}</div>${sExtra?`<div class="extra-imgs">${sExtra}</div>`:''}</div></div><div class="steps">${sSteps}</div><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;align-items:center;font-size:12px"><span class="${sPay.paid?'pay-paid':'pay-unpaid'}">${sPay.paid?'✅ จ่ายแล้ว':'⏳ ยังไม่จ่าย'}</span>${canEdit?`<button class="btn bg bxs" onclick="togglePay('${o.id}','sub',${si2})">${sPay.paid?'ยกเลิกจ่าย':'💳 จ่ายแล้ว'}</button>`:''}</div>${canEdit?`<div class="sub-status-row"><span style="font-size:11px;color:var(--t3);font-weight:600">อัปเดทสถานะ:</span><select class="btn bg bxs" style="border:1px solid var(--g2);font-size:11px;padding:4px 8px" onchange="updSubSt('${o.id}',${si2},this.value)">${stOpts(s.status||'wait')}</select><label class="btn bg bxs" style="cursor:pointer;font-size:11px;padding:4px 8px">📷 เพิ่มรูป<input type="file" accept="image/*" multiple style="display:none" onchange="addSubImg('${o.id}',${si2},event)"></label><button class="btn br bxs" style="font-size:11px;padding:4px 8px" onclick="delSub('${o.id}',${si2})">🗑 ลบ</button></div>`:''}${sDelSection}</div>`;
+    const sDel=s.delivery||{}; const sPay=s.payment||{};
+    const sDelSection=canEdit?`<div class="del-section"><div class="del-title">📦 ติดตามการส่ง — รายการที่ ${si2+2}</div><div class="g2" style="gap:8px;margin-bottom:8px"><div class="fg" style="margin-bottom:0"><label>ผู้ส่ง</label><input placeholder="ชื่อผู้ส่ง" value="${sDel.sender||''}" onchange="updDel('${o.id}','sub',${si2},'sender',this.value)"></div><div class="fg" style="margin-bottom:0"><label>ผู้รับ</label><input placeholder="ชื่อผู้รับ" value="${sDel.receiver||''}" onchange="updDel('${o.id}','sub',${si2},'receiver',this.value)"></div></div><div class="fg" style="margin-bottom:8px"><label>หมายเหตุการส่ง</label><input placeholder="Kerry เลขพัสดุ..." value="${sDel.note||''}" onchange="updDel('${o.id}','sub',${si2},'note',this.value)"></div><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">${(sDel.proofs||[]).map((img)=>`<img src="${img}" class="del-proof-img" onclick="bigImg('${img}')">`).join('')}<label class="btn bg bxs" style="cursor:pointer">📷 หลักฐาน<input type="file" accept="image/*" style="display:none" onchange="addDelProof('${o.id}','sub',${si2},event)"></label></div></div>`:'';
+    return `<div class="sub-item"><div style="display:flex;align-items:center;gap:6px;margin-bottom:8px"><span class="num-b sub">${si2+2}</span><strong style="font-size:13px">รายการที่ ${si2+2}</strong></div><div class="oi-hd">${sThumb}<div class="oi-info"><div class="oi-name" style="font-size:14px">${o.name}</div><div class="oi-meta">${o.channel||''}</div><div class="oi-tags">${s.model?`<span class="tag tmod">👕 ${s.model}</span>`:''}${s.color?`<span class="tag tcol">🎨 ${s.color}</span>`:''}${s.size?`<span class="tag">📏 ${s.size}</span>`:''}${s.qty?`<span class="tag tqty">×${s.qty} ตัว</span>`:''}${spill(s.status||'wait')}</div>${sExtra?`<div class="extra-imgs">${sExtra}</div>`:''}</div></div><div class="steps">${sSteps}</div><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;align-items:center;font-size:12px"><span class="${sPay.paid?'pay-paid':'pay-unpaid'}">${sPay.paid?'✅ จ่ายแล้ว':'⏳ ยังไม่จ่าย'}</span>${canEdit?`<button class="btn bg bxs" onclick="togglePay('${o.id}','sub',${si2})">${sPay.paid?'ยกเลิก':'💳 จ่ายแล้ว'}</button>`:''}</div>${canEdit?`<div class="sub-status-row"><span style="font-size:11px;color:var(--t3);font-weight:600">สถานะ:</span><select class="btn bg bxs" style="border:1px solid var(--g2);font-size:11px;padding:4px 8px" onchange="updSubSt('${o.id}',${si2},this.value)">${stOpts(s.status||'wait')}</select><label class="btn bg bxs" style="cursor:pointer;font-size:11px;padding:4px 8px">📷 รูป<input type="file" accept="image/*" multiple style="display:none" onchange="addSubImg('${o.id}',${si2},event)"></label><button class="btn br bxs" style="font-size:11px;padding:4px 8px" onclick="delSub('${o.id}',${si2})">🗑 ลบ</button></div>`:''}${sDelSection}</div>`;
   }).join('');
   return `<div class="oi" id="oi-${o.id}">
     <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px">
@@ -564,7 +571,7 @@ function renderOI(o,canEdit){
       <select class="btn bg bxs" style="border:1px solid var(--g2)" onchange="updSt('${o.id}',this.value)">${stOpts(o.status)}</select>
       <button class="btn bg bxs" onclick="togglePay('${o.id}','main',-1)">${pay.paid?'ยกเลิกจ่าย':'💳 จ่ายแล้ว'}</button>
       <button class="btn bg bxs" onclick="startEdit('${o.id}')">✏️ แก้ไข</button>
-      <label class="btn bg bxs" style="cursor:pointer">📷 เพิ่มรูป<input type="file" accept="image/*" multiple style="display:none" onchange="addImgs('${o.id}',event)"></label>
+      <label class="btn bg bxs" style="cursor:pointer">📷 รูป<input type="file" accept="image/*" multiple style="display:none" onchange="addImgs('${o.id}',event)"></label>
       <button class="btn bg bxs" onclick="addSubInline('${o.id}')">➕ เพิ่มรายการ</button>
       <button class="btn br bxs" onclick="delOrd('${o.id}')">🗑</button>
     </div>`:''}
@@ -573,39 +580,34 @@ function renderOI(o,canEdit){
 }
 
 // ── Data actions ──
-function updDel(oid,type,si,field,val){const o=window._orders.find(x=>x.id===oid);if(!o)return;if(type==='main'){if(!o.delivery)o.delivery={};o.delivery[field]=val;}else{if(!o.subs[si].delivery)o.subs[si].delivery={};o.subs[si].delivery[field]=val;}fbSave(o);}
-function addDelProof(oid,type,si,e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{const o=window._orders.find(x=>x.id===oid);if(!o)return;if(type==='main'){if(!o.delivery)o.delivery={};if(!o.delivery.proofs)o.delivery.proofs=[];o.delivery.proofs.push(ev.target.result);}else{if(!o.subs[si].delivery)o.subs[si].delivery={};if(!o.subs[si].delivery.proofs)o.subs[si].delivery.proofs=[];o.subs[si].delivery.proofs.push(ev.target.result);}fbSave(o);};r.readAsDataURL(f);}
-function togglePay(oid,type,si){const o=window._orders.find(x=>x.id===oid);if(!o)return;if(type==='main'){if(!o.payment)o.payment={};o.payment.paid=!o.payment.paid;}else{if(!o.subs[si].payment)o.subs[si].payment={};o.subs[si].payment.paid=!o.subs[si].payment.paid;}fbSave(o);toast('✅ บันทึกสถานะชำระเงิน');}
-function addSubInline(oid){const o=window._orders.find(x=>x.id===oid);if(!o.subs)o.subs=[];o.subs.push(newSub());fbSave(o);}
-function addSubImg(oid,si,e){const o=window._orders.find(x=>x.id===oid);if(!o||!o.subs[si])return;if(!o.subs[si].imgs)o.subs[si].imgs=[];Array.from(e.target.files).forEach(f=>{const r=new FileReader();r.onload=ev=>{o.subs[si].imgs.push(ev.target.result);fbSave(o);};r.readAsDataURL(f);});}
-function delSub(oid,si){if(!confirm('ลบรายการนี้?'))return;const o=window._orders.find(x=>x.id===oid);o.subs.splice(si,1);fbSave(o);toast('🗑 ลบแล้ว');}
-function updSubSt(oid,si,status){const o=window._orders.find(x=>x.id===oid);if(o&&o.subs[si]){o.subs[si].status=status;fbSave(o);toast('✅ อัปเดทสถานะ');}}
-function updSt(id,s){const o=window._orders.find(x=>x.id===id);if(o){o.status=s;fbSave(o);toast('✅ อัปเดทสถานะ');}}
-function addImgs(id,e){const o=window._orders.find(x=>x.id===id);if(!o.imgs)o.imgs=[];Array.from(e.target.files).forEach(f=>{const r=new FileReader();r.onload=ev=>{o.imgs.push(ev.target.result);fbSave(o);};r.readAsDataURL(f);});}
+function updDel(oid,type,si,field,val){const o=_orders.find(x=>x.id===oid);if(!o)return;if(type==='main'){if(!o.delivery)o.delivery={};o.delivery[field]=val;}else{if(!o.subs[si].delivery)o.subs[si].delivery={};o.subs[si].delivery[field]=val;}fbSave(o);}
+function addDelProof(oid,type,si,e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{const o=_orders.find(x=>x.id===oid);if(!o)return;if(type==='main'){if(!o.delivery)o.delivery={};if(!o.delivery.proofs)o.delivery.proofs=[];o.delivery.proofs.push(ev.target.result);}else{if(!o.subs[si].delivery)o.subs[si].delivery={};if(!o.subs[si].delivery.proofs)o.subs[si].delivery.proofs=[];o.subs[si].delivery.proofs.push(ev.target.result);}fbSave(o);};r.readAsDataURL(f);}
+function togglePay(oid,type,si){const o=_orders.find(x=>x.id===oid);if(!o)return;if(type==='main'){if(!o.payment)o.payment={};o.payment.paid=!o.payment.paid;}else{if(!o.subs[si].payment)o.subs[si].payment={};o.subs[si].payment.paid=!o.subs[si].payment.paid;}fbSave(o);toast('✅ บันทึกสถานะชำระเงิน');}
+function addSubInline(oid){const o=_orders.find(x=>x.id===oid);if(!o.subs)o.subs=[];o.subs.push(newSub());fbSave(o);}
+function addSubImg(oid,si,e){const o=_orders.find(x=>x.id===oid);if(!o||!o.subs[si])return;if(!o.subs[si].imgs)o.subs[si].imgs=[];Array.from(e.target.files).forEach(f=>{const r=new FileReader();r.onload=ev=>{o.subs[si].imgs.push(ev.target.result);fbSave(o);};r.readAsDataURL(f);});}
+function delSub(oid,si){if(!confirm('ลบรายการนี้?'))return;const o=_orders.find(x=>x.id===oid);o.subs.splice(si,1);fbSave(o);toast('🗑 ลบแล้ว');}
+function updSubSt(oid,si,status){const o=_orders.find(x=>x.id===oid);if(o&&o.subs[si]){o.subs[si].status=status;fbSave(o);toast('✅ อัปเดทสถานะ');}}
+function updSt(id,s){const o=_orders.find(x=>x.id===id);if(o){o.status=s;fbSave(o);toast('✅ อัปเดทสถานะ');}}
+function addImgs(id,e){const o=_orders.find(x=>x.id===id);if(!o.imgs)o.imgs=[];Array.from(e.target.files).forEach(f=>{const r=new FileReader();r.onload=ev=>{o.imgs.push(ev.target.result);fbSave(o);};r.readAsDataURL(f);});}
 function trigAddImg(id){const i=document.createElement('input');i.type='file';i.accept='image/*';i.multiple=true;i.onchange=e=>addImgs(id,e);i.click();}
-async function delOrd(id){if(!confirm('ยืนยันลบออเดอร์?'))return;await fbDel(id);toast('🗑 ลบแล้ว');}
+function delOrd(id){if(!confirm('ยืนยันลบออเดอร์?'))return;fbDel(id);toast('🗑 ลบแล้ว');}
 
 // ── Form ──
 function renderForm(){
-  const branches=window._branches||[];
-  const branchOpts=branches.length?`<div class="fg"><label>🏪 สาขาที่รับออเดอร์</label><select id="F_br"><option value="">-- เลือกสาขา --</option>${branches.map(b=>`<option>${b}</option>`).join('')}</select></div>`:'<div style="font-size:12px;color:var(--t4);margin-bottom:10px">💡 เพิ่มสาขาได้ที่เมนู สาขา (ผู้ดูแลเท่านั้น)</div>';
+  const branches=_branches||[];
+  const branchSel=(id,cur)=>branches.length?`<div class="fg"><label>🏪 สาขาที่รับออเดอร์</label><select id="${id}"><option value="">-- เลือกสาขา --</option>${branches.map(b=>`<option ${cur===b?'selected':''}>${b}</option>`).join('')}</select></div>`:'';
   if(editId){
-    const o=window._orders.find(x=>x.id===editId);
-    const eBranchOpts=branches.length?`<div class="fg"><label>🏪 สาขาที่รับออเดอร์</label><select id="f_br"><option value="">-- เลือกสาขา --</option>${branches.map(b=>`<option ${o.branch===b?'selected':''}>${b}</option>`).join('')}</select></div>`:'';
-    return `<div class="card"><div class="card-title">✏️ แก้ไขออเดอร์ — ${o.name}</div>${mainFields(o,'f_')}${eBranchOpts}<div class="fg"><label>รูปภาพ</label><label class="upzone" style="display:block;cursor:pointer"><div style="font-size:26px">📷</div><div style="font-size:12px;color:var(--t3);margin-top:4px">อัปโหลดหรือเลือกจากแกลเลอรี่</div><input type="file" accept="image/*" multiple style="display:none" onchange="handleFImgs(event)"></label><div class="igrid" id="fimg-grid">${formImgs.map((img,i)=>`<div class="iwrap"><img src="${img}" class="iprev" onclick="bigImg('${img}')"><button class="idel" onclick="rmFImg(${i})">✕</button></div>`).join('')}</div></div><div class="btn-row"><button class="btn bp" onclick="saveEdit()">💾 บันทึกการแก้ไข</button><button class="btn bg" onclick="cancelEdit()">ยกเลิก</button></div></div>`;
+    const o=_orders.find(x=>x.id===editId);
+    return `<div class="card"><div class="card-title">✏️ แก้ไขออเดอร์ — ${o.name}</div>${mainFields(o,'f_')}${branchSel('f_br',o.branch||'')}<div class="fg"><label>รูปภาพ</label><label class="upzone" style="display:block;cursor:pointer"><div style="font-size:26px">📷</div><div style="font-size:12px;color:var(--t3);margin-top:4px">อัปโหลดหรือเลือกจากแกลเลอรี่</div><input type="file" accept="image/*" multiple style="display:none" onchange="handleFImgs(event)"></label><div class="igrid" id="fimg-grid">${formImgs.map((img,i)=>`<div class="iwrap"><img src="${img}" class="iprev" onclick="bigImg('${img}')"><button class="idel" onclick="rmFImg(${i})">✕</button></div>`).join('')}</div></div><div class="btn-row"><button class="btn bp" onclick="saveEdit()">💾 บันทึกการแก้ไข</button><button class="btn bg" onclick="cancelEdit()">ยกเลิก</button></div></div>`;
   }
-  const blocks=multiBlocks.map((b,bi)=>`<div class="order-block" id="blk-${bi}"><div class="obn">ออเดอร์ที่ ${bi+1}</div>${bi>0?`<button class="ob-del-btn" onclick="rmBlock(${bi})">✕ ลบ</button>`:''} ${mainFields(b,'b'+bi+'_')}
-    ${branches.length?`<div class="fg"><label>🏪 สาขาที่รับออเดอร์</label><select id="b${bi}_br"><option value="">-- เลือกสาขา --</option>${branches.map(br=>`<option ${b.branch===br?'selected':''}>${br}</option>`).join('')}</select></div>`:''}
-    <div class="fg"><label>รูปภาพ</label><label class="upzone" style="display:block;cursor:pointer"><div style="font-size:22px">📷</div><div style="font-size:12px;color:var(--t3);margin-top:2px">อัปโหลดหรือเลือกจากแกลเลอรี่</div><input type="file" accept="image/*" multiple style="display:none" onchange="handleBI(${bi},event)"></label><div class="igrid" id="bimg-${bi}">${(b.imgs||[]).map((img,ii)=>`<div class="iwrap"><img src="${img}" class="iprev" onclick="bigImg('${img}')"><button class="idel" onclick="rmBI(${bi},${ii})">✕</button></div>`).join('')}</div></div>
-    <div style="margin-top:14px;padding-top:14px;border-top:1.5px dashed var(--g3)"><div style="font-size:11px;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:.4px;margin-bottom:10px">➕ เพิ่มรายการ</div><div id="sub-list-${bi}">${(b.subs||[]).map((s,si)=>renderSubForm(bi,si,s)).join('')}</div><button class="add-sub-btn" onclick="addSubBlock(${bi})">➕ เพิ่มรายการ</button></div>
-  </div>`).join('');
+  const blocks=multiBlocks.map((b,bi)=>`<div class="order-block" id="blk-${bi}"><div class="obn">ออเดอร์ที่ ${bi+1}</div>${bi>0?`<button class="ob-del-btn" onclick="rmBlock(${bi})">✕ ลบ</button>`:''} ${mainFields(b,'b'+bi+'_')}${branchSel('b'+bi+'_br',b.branch||'')}<div class="fg"><label>รูปภาพ</label><label class="upzone" style="display:block;cursor:pointer"><div style="font-size:22px">📷</div><div style="font-size:12px;color:var(--t3);margin-top:2px">อัปโหลดหรือเลือกจากแกลเลอรี่</div><input type="file" accept="image/*" multiple style="display:none" onchange="handleBI(${bi},event)"></label><div class="igrid" id="bimg-${bi}">${(b.imgs||[]).map((img,ii)=>`<div class="iwrap"><img src="${img}" class="iprev" onclick="bigImg('${img}')"><button class="idel" onclick="rmBI(${bi},${ii})">✕</button></div>`).join('')}</div></div><div style="margin-top:14px;padding-top:14px;border-top:1.5px dashed var(--g3)"><div style="font-size:11px;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:.4px;margin-bottom:10px">➕ เพิ่มรายการ</div><div id="sub-list-${bi}">${(b.subs||[]).map((s,si)=>renderSubForm(bi,si,s)).join('')}</div><button class="add-sub-btn" onclick="addSubBlock(${bi})">➕ เพิ่มรายการ</button></div></div>`).join('');
   return `<div class="card"><div class="card-title">➕ เพิ่มออเดอร์ใหม่</div><div style="font-size:12px;color:var(--t3);margin-bottom:14px">เพิ่มได้หลายออเดอร์พร้อมกัน</div><div id="blks">${blocks}</div><button class="add-blk" onclick="addBlock()">＋ เพิ่มออเดอร์อีก 1 รายการ</button><div class="btn-row"><button class="btn bp" onclick="saveMulti()">💾 บันทึกทั้งหมด (${multiBlocks.length} ออเดอร์)</button><button class="btn bg" onclick="clearAllBlocks()">🔄 ล้างทั้งหมด</button></div></div>`;
 }
 function mainFields(o,p){return `<div class="g2" style="margin-bottom:10px"><div class="fg"><label>ชื่อลูกค้า *</label><input id="${p}name" placeholder="ชื่อลูกค้า" value="${o.name||''}"></div><div class="fg"><label>ช่องทาง</label><select id="${p}ch">${CHNL.map(c=>`<option ${o.channel===c?'selected':''}>${c}</option>`).join('')}</select></div></div><div class="g3" style="margin-bottom:10px"><div class="fg"><label>รุ่นเสื้อ *</label><input id="${p}mod" placeholder="ทิวลิป..." value="${o.model||''}"></div><div class="fg"><label>สี</label><input id="${p}col" placeholder="สีเอ..." value="${o.color||''}"></div><div class="fg"><label>ไซส์</label><input id="${p}sz" placeholder="M/L/XL" value="${o.size||''}"></div></div><div class="g2" style="margin-bottom:10px"><div class="fg"><label>จำนวน *</label><input id="${p}qty" type="number" min="1" value="${o.qty||''}"></div><div class="fg"><label>วันที่รับออเดอร์</label><input id="${p}dt" type="date" value="${o.date||new Date().toISOString().slice(0,10)}"></div></div><div class="g2" style="margin-bottom:10px"><div class="fg"><label>📅 ลูกค้าต้องการรับวันที่</label><input id="${p}due" type="date" value="${o.dueDate||''}"></div><div class="fg"><label>🚚 กำหนดจัดส่งวันที่</label><input id="${p}deldate" type="date" value="${o.deliveryDate||''}"></div></div><div class="fg"><label>สถานะชำระเงิน</label><select id="${p}paid"><option value="0" ${!(o.payment&&o.payment.paid)?'selected':''}>⏳ ยังไม่จ่าย</option><option value="1" ${(o.payment&&o.payment.paid)?'selected':''}>✅ จ่ายแล้ว</option></select></div><div class="fg"><label>หมายเหตุ</label><input id="${p}note" value="${o.note||''}"></div><div class="fg"><label>แจ้งปัญหา</label><input id="${p}iss" value="${o.issue||''}"></div>`;}
 function renderSubForm(bi,si,s){return `<div class="sub-form-block" id="sub-${bi}-${si}"><div class="sub-form-num">รายการที่ ${si+2}</div><button class="sub-form-del" onclick="rmSubBlock(${bi},${si})">✕ ลบ</button><div class="g2" style="margin-bottom:8px;margin-top:4px"><div class="sf"><label>รุ่นเสื้อ</label><input id="s${bi}_${si}_mod" placeholder="ทิวลิป..." value="${s.model||''}"></div><div class="sf"><label>สี</label><input id="s${bi}_${si}_col" placeholder="สีเอ..." value="${s.color||''}"></div></div><div class="g2" style="margin-bottom:8px"><div class="sf"><label>ไซส์</label><input id="s${bi}_${si}_sz" placeholder="M/L/XL" value="${s.size||''}"></div><div class="sf"><label>จำนวน (ตัว)</label><input id="s${bi}_${si}_qty" type="number" min="1" placeholder="0" value="${s.qty||''}"></div></div><label class="upzone" style="display:block;cursor:pointer;padding:10px"><div style="font-size:18px">📷</div><div style="font-size:11px;color:var(--t3)">อัปโหลดหรือเลือกจากแกลเลอรี่</div><input type="file" accept="image/*" multiple style="display:none" onchange="handleSubBI(${bi},${si},event)"></label><div class="igrid" id="subimg-${bi}-${si}">${(s.imgs||[]).map((img,ii)=>`<div class="iwrap"><img src="${img}" class="iprev" onclick="bigImg('${img}')"><button class="idel" onclick="rmSubImg(${bi},${si},${ii})">✕</button></div>`).join('')}</div></div>`;}
 function readFields(p){const g=id=>(document.getElementById(p+id)||{}).value||'';const paid=(document.getElementById(p+'paid')||{}).value==='1';return{name:g('name').trim(),channel:g('ch'),model:g('mod').trim(),color:g('col'),size:g('sz'),qty:parseInt(g('qty'))||0,date:g('dt'),dueDate:g('due'),deliveryDate:g('deldate'),note:g('note'),issue:g('iss'),payment:{paid}};}
 function readSubFields(bi,si){const g=id=>(document.getElementById(id)||{}).value||'';return{model:g(`s${bi}_${si}_mod`).trim(),color:g(`s${bi}_${si}_col`),size:g(`s${bi}_${si}_sz`),qty:parseInt(g(`s${bi}_${si}_qty`))||0,status:'wait',imgs:[...(multiBlocks[bi].subs[si].imgs||[])],delivery:{},payment:{paid:false}};}
-function syncDOM(){if(!multiBlocks)return;multiBlocks.forEach((b,bi)=>{const g=id=>(document.getElementById(id)||{}).value;b.name=g('b'+bi+'_name')??b.name;b.channel=g('b'+bi+'_ch')??b.channel;b.branch=g('b'+bi+'_br')??b.branch||'';b.model=g('b'+bi+'_mod')??b.model;b.color=g('b'+bi+'_col')??b.color;b.size=g('b'+bi+'_sz')??b.size;b.qty=g('b'+bi+'_qty')??b.qty;b.date=g('b'+bi+'_dt')??b.date;b.dueDate=g('b'+bi+'_due')??b.dueDate;b.deliveryDate=g('b'+bi+'_deldate')??b.deliveryDate;b.note=g('b'+bi+'_note')??b.note;b.issue=g('b'+bi+'_iss')??b.issue;(b.subs||[]).forEach((s,si)=>{s.model=g('s'+bi+'_'+si+'_mod')??s.model;s.color=g('s'+bi+'_'+si+'_col')??s.color;s.size=g('s'+bi+'_'+si+'_sz')??s.size;s.qty=g('s'+bi+'_'+si+'_qty')??s.qty;});});}
+function syncDOM(){if(!multiBlocks)return;multiBlocks.forEach((b,bi)=>{const g=id=>(document.getElementById(id)||{}).value;b.name=g('b'+bi+'_name')??b.name;b.channel=g('b'+bi+'_ch')??b.channel;b.branch=g('b'+bi+'_br')||b.branch||'';b.model=g('b'+bi+'_mod')??b.model;b.color=g('b'+bi+'_col')??b.color;b.size=g('b'+bi+'_sz')??b.size;b.qty=g('b'+bi+'_qty')??b.qty;b.date=g('b'+bi+'_dt')??b.date;b.dueDate=g('b'+bi+'_due')??b.dueDate;b.deliveryDate=g('b'+bi+'_deldate')??b.deliveryDate;b.note=g('b'+bi+'_note')??b.note;b.issue=g('b'+bi+'_iss')??b.issue;(b.subs||[]).forEach((s,si)=>{s.model=g('s'+bi+'_'+si+'_mod')??s.model;s.color=g('s'+bi+'_'+si+'_col')??s.color;s.size=g('s'+bi+'_'+si+'_sz')??s.size;s.qty=g('s'+bi+'_'+si+'_qty')??s.qty;});});}
 function addBlock(){syncDOM();multiBlocks.push({...newMB()[0]});render();setTimeout(()=>document.getElementById('blks')?.lastElementChild?.scrollIntoView({behavior:'smooth'}),100);}
 function rmBlock(bi){syncDOM();multiBlocks.splice(bi,1);render();}
 function addSubBlock(bi){syncDOM();if(!multiBlocks[bi].subs)multiBlocks[bi].subs=[];multiBlocks[bi].subs.push(newSub());render();setTimeout(()=>document.getElementById(`sub-list-${bi}`)?.lastElementChild?.scrollIntoView({behavior:'smooth',block:'nearest'}),80);}
@@ -629,29 +631,29 @@ async function saveMulti(){
   }
   toast(`✅ บันทึก ${multiBlocks.length} ออเดอร์`);multiBlocks=newMB();goTab('orders');
 }
-function startEdit(id){editId=id;const o=window._orders.find(x=>x.id===id);formImgs=[...(o.imgs||[])];goTab('add');}
+function startEdit(id){editId=id;const o=_orders.find(x=>x.id===id);formImgs=[...(o.imgs||[])];goTab('add');}
 function cancelEdit(){editId=null;formImgs=[];goTab('orders');}
 async function saveEdit(){
   const d=readFields('f_');if(!d.name||!d.model||!d.qty){toast('⚠️ กรอกชื่อ รุ่น จำนวน',false);return;}
   const branch=(document.getElementById('f_br')||{}).value||'';
-  const o=window._orders.find(x=>x.id===editId);
+  const o=_orders.find(x=>x.id===editId);
   await fbSave({...o,...d,branch,imgs:formImgs.length?[...formImgs]:(o.imgs||[])});
   toast('✅ แก้ไขสำเร็จ');editId=null;formImgs=[];goTab('orders');
 }
 
-// ── IMG MODAL ──
-function openIM(oid,idx,type,subIdx){modalCtx={oid,idx,type,subIdx};const o=window._orders.find(x=>x.id===oid);let src,total,name;if(type==='sub'){const s=o.subs[subIdx];src=s&&s.imgs&&s.imgs[idx];total=(s&&s.imgs||[]).length;name=o.name+' รายการที่ '+(subIdx+2);}else{src=o&&o.imgs&&o.imgs[idx];total=(o&&o.imgs||[]).length;name=o.name+' รายการที่ 1';}if(!src)return;document.getElementById('modal-img-el').src=src;document.getElementById('modal-info').textContent=`รูปที่ ${idx+1}/${total} | ${name}`;const ce=curRole==='admin'||curRole==='staff';document.getElementById('modal-actions').innerHTML=ce?`<label class="btn bg bsm" style="cursor:pointer">📷 เปลี่ยนรูป<input type="file" accept="image/*" style="display:none" onchange="changeIM(event)"></label><button class="btn br bsm" onclick="deleteIM()">🗑 ลบรูป</button><button class="btn bg bsm" onclick="closeIML()">✕ ปิด</button>`:`<button class="btn bg bsm" onclick="closeIML()">✕ ปิด</button>`;document.getElementById('img-modal').style.display='flex';}
+// ── IMG Modal ──
+function openIM(oid,idx,type,subIdx){modalCtx={oid,idx,type,subIdx};const o=_orders.find(x=>x.id===oid);let src,total,name;if(type==='sub'){const s=o.subs[subIdx];src=s&&s.imgs&&s.imgs[idx];total=(s&&s.imgs||[]).length;name=o.name+' รายการที่ '+(subIdx+2);}else{src=o&&o.imgs&&o.imgs[idx];total=(o&&o.imgs||[]).length;name=o.name+' รายการที่ 1';}if(!src)return;document.getElementById('modal-img-el').src=src;document.getElementById('modal-info').textContent=`รูปที่ ${idx+1}/${total} | ${name}`;const ce=curRole==='admin'||curRole==='staff';document.getElementById('modal-actions').innerHTML=ce?`<label class="btn bg bsm" style="cursor:pointer">📷 เปลี่ยนรูป<input type="file" accept="image/*" style="display:none" onchange="changeIM(event)"></label><button class="btn br bsm" onclick="deleteIM()">🗑 ลบรูป</button><button class="btn bg bsm" onclick="closeIML()">✕ ปิด</button>`:`<button class="btn bg bsm" onclick="closeIML()">✕ ปิด</button>`;document.getElementById('img-modal').style.display='flex';}
 function bigImg(src){modalCtx=null;document.getElementById('modal-img-el').src=src;document.getElementById('modal-info').textContent='';document.getElementById('modal-actions').innerHTML=`<button class="btn bg bsm" onclick="closeIML()">✕ ปิด</button>`;document.getElementById('img-modal').style.display='flex';}
 function closeIML(){document.getElementById('img-modal').style.display='none';}
 function closeIM(e){if(!e||e.target.id==='img-modal')closeIML();}
-function changeIM(e){if(!modalCtx)return;const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{const o=window._orders.find(x=>x.id===modalCtx.oid);if(modalCtx.type==='sub')o.subs[modalCtx.subIdx].imgs[modalCtx.idx]=ev.target.result;else o.imgs[modalCtx.idx]=ev.target.result;fbSave(o);toast('✅ เปลี่ยนรูปแล้ว');document.getElementById('modal-img-el').src=ev.target.result;};r.readAsDataURL(f);}
-function deleteIM(){if(!modalCtx||!confirm('ลบรูปนี้?'))return;const o=window._orders.find(x=>x.id===modalCtx.oid);if(modalCtx.type==='sub')o.subs[modalCtx.subIdx].imgs.splice(modalCtx.idx,1);else o.imgs.splice(modalCtx.idx,1);fbSave(o);toast('🗑 ลบรูปแล้ว');closeIML();}
+function changeIM(e){if(!modalCtx)return;const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{const o=_orders.find(x=>x.id===modalCtx.oid);if(modalCtx.type==='sub')o.subs[modalCtx.subIdx].imgs[modalCtx.idx]=ev.target.result;else o.imgs[modalCtx.idx]=ev.target.result;fbSave(o);toast('✅ เปลี่ยนรูปแล้ว');document.getElementById('modal-img-el').src=ev.target.result;};r.readAsDataURL(f);}
+function deleteIM(){if(!modalCtx||!confirm('ลบรูปนี้?'))return;const o=_orders.find(x=>x.id===modalCtx.oid);if(modalCtx.type==='sub')o.subs[modalCtx.subIdx].imgs.splice(modalCtx.idx,1);else o.imgs.splice(modalCtx.idx,1);fbSave(o);toast('🗑 ลบรูปแล้ว');closeIML();}
 
 // ── Report Customer ──
 function renderRC(){
-  const custs=[...new Set(window._orders.map(o=>o.name))].sort();
+  const custs=[...new Set(_orders.map(o=>o.name))].sort();
   if(!custs.length)return`<div class="empty"><div class="empty-ico">👤</div><p>ยังไม่มีลูกค้า</p></div>`;
-  const sel=window._rc||custs[0];const cos=window._orders.filter(o=>o.name===sel);
+  const sel=window._rc||custs[0];const cos=_orders.filter(o=>o.name===sel);
   const totQ=cos.reduce((s,o)=>s+o.qty+((o.subs||[]).reduce((ss,sb)=>ss+(parseInt(sb.qty)||0),0)),0);
   const mb={};cos.forEach(o=>{const k=`${o.model}||${o.color||''}`;if(!mb[k])mb[k]={model:o.model,color:o.color,qty:0};mb[k].qty+=o.qty;(o.subs||[]).forEach(s=>{const sk=`${s.model||o.model}||${s.color||''}`;if(!mb[sk])mb[sk]={model:s.model||o.model,color:s.color,qty:0};mb[sk].qty+=(parseInt(s.qty)||0);});});
   const ce=curRole==='admin'||curRole==='staff';let itemNum=0;
@@ -660,24 +662,12 @@ function renderRC(){
     itemNum++;const num=itemNum;const imgs=o.imgs||[];
     const imgSection=imgs.length?imgs.map((img,ii)=>`<img src="${img}" class="rep-img" onclick="openIM('${o.id}',${ii},'main')">`).join(''):`<div style="background:var(--g1);border-radius:10px;height:140px;display:flex;align-items:center;justify-content:center;color:var(--t3);font-size:13px;margin-bottom:10px">ยังไม่มีรูปภาพ</div>`;
     const si4=STEPS4.indexOf(o.status);const steps=STEPS4.map((s,i)=>{const cl=i<si4?'done':i===si4?'cur':'';const lb={wait:'รอ',prod:'ผลิต',ready:'พร้อม',sent:'ส่ง'}[s];return`<div class="step"><div class="sdot ${cl}">${i<si4?'✓':i+1}</div><div class="slbl ${cl}">${lb}</div></div>`;}).join('');
-    const table=`<table class="tbl" style="margin-top:8px">
-      <tr><td style="color:var(--t3);width:130px">ลูกค้า</td><td><strong>${o.name}</strong></td></tr>
-      <tr><td style="color:var(--t3)">รุ่น</td><td><strong>${o.model}</strong></td></tr>
-      ${o.color?`<tr><td style="color:var(--t3)">สี</td><td>${o.color}</td></tr>`:''}${o.size?`<tr><td style="color:var(--t3)">ไซส์</td><td>${o.size}</td></tr>`:''}
-      <tr><td style="color:var(--t3)">จำนวน</td><td><strong style="color:var(--pri);font-size:16px">${o.qty} ตัว</strong></td></tr>
-      <tr><td style="color:var(--t3)">สถานะ</td><td>${spill(o.status)}</td></tr>
-      <tr><td style="color:var(--t3)">ชำระเงิน</td><td><span class="${pay.paid?'pay-paid':'pay-unpaid'}">${pay.paid?'✅ จ่ายแล้ว':'⏳ ยังไม่จ่าย'}</span></td></tr>
-      ${o.branch?`<tr><td style="color:var(--t3)">สาขา</td><td><span class="tag tbranch">🏪 ${o.branch}</span></td></tr>`:''}
-      ${o.dueDate?`<tr><td style="color:var(--t3)">ต้องการรับ</td><td>${o.dueDate}</td></tr>`:''}${o.deliveryDate?`<tr><td style="color:var(--t3)">กำหนดส่ง</td><td>${dueDateBadge(o.deliveryDate)}</td></tr>`:''}
-      ${del.sender?`<tr><td style="color:var(--t3)">ผู้ส่ง</td><td>${del.sender}</td></tr>`:''}${del.receiver?`<tr><td style="color:var(--t3)">ผู้รับ</td><td>${del.receiver}</td></tr>`:''}
-      ${del.note?`<tr><td style="color:var(--t3)">หมายเหตุส่ง</td><td>${del.note}</td></tr>`:''}
-      ${o.note?`<tr><td style="color:var(--t3)">หมายเหตุ</td><td>${o.note}</td></tr>`:''}${o.issue?`<tr><td style="color:var(--red)">ปัญหา</td><td style="color:var(--red)">${o.issue}</td></tr>`:''}
-    </table>${(del.proofs||[]).length?`<div style="margin-top:8px"><div style="font-size:11px;font-weight:700;color:var(--t3);margin-bottom:6px">หลักฐานการส่ง</div><div style="display:flex;gap:8px;flex-wrap:wrap">${(del.proofs||[]).map(img=>`<img src="${img}" style="width:80px;height:80px;border-radius:8px;object-fit:cover;cursor:pointer;border:1px solid var(--g2)" onclick="bigImg('${img}')">`).join('')}</div></div>`:''}`;
+    const table=`<table class="tbl" style="margin-top:8px"><tr><td style="color:var(--t3);width:130px">ลูกค้า</td><td><strong>${o.name}</strong></td></tr><tr><td style="color:var(--t3)">รุ่น</td><td><strong>${o.model}</strong></td></tr>${o.color?`<tr><td style="color:var(--t3)">สี</td><td>${o.color}</td></tr>`:''}${o.size?`<tr><td style="color:var(--t3)">ไซส์</td><td>${o.size}</td></tr>`:''}<tr><td style="color:var(--t3)">จำนวน</td><td><strong style="color:var(--pri);font-size:16px">${o.qty} ตัว</strong></td></tr><tr><td style="color:var(--t3)">สถานะ</td><td>${spill(o.status)}</td></tr><tr><td style="color:var(--t3)">ชำระเงิน</td><td><span class="${pay.paid?'pay-paid':'pay-unpaid'}">${pay.paid?'✅ จ่ายแล้ว':'⏳ ยังไม่จ่าย'}</span></td></tr>${o.branch?`<tr><td style="color:var(--t3)">สาขา</td><td><span class="tag tbranch">🏪 ${o.branch}</span></td></tr>`:''}${o.deliveryDate?`<tr><td style="color:var(--t3)">กำหนดส่ง</td><td>${dueDateBadge(o.deliveryDate)}</td></tr>`:''}${del.sender?`<tr><td style="color:var(--t3)">ผู้ส่ง</td><td>${del.sender}</td></tr>`:''}${del.receiver?`<tr><td style="color:var(--t3)">ผู้รับ</td><td>${del.receiver}</td></tr>`:''}${del.note?`<tr><td style="color:var(--t3)">หมายเหตุส่ง</td><td>${del.note}</td></tr>`:''}${o.note?`<tr><td style="color:var(--t3)">หมายเหตุ</td><td>${o.note}</td></tr>`:''}${o.issue?`<tr><td style="color:var(--red)">ปัญหา</td><td style="color:var(--red)">${o.issue}</td></tr>`:''}</table>${(del.proofs||[]).length?`<div style="margin-top:8px"><div style="font-size:11px;color:var(--t3);font-weight:700;margin-bottom:6px">หลักฐานการส่ง</div><div style="display:flex;gap:8px;flex-wrap:wrap">${(del.proofs||[]).map(img=>`<img src="${img}" style="width:80px;height:80px;border-radius:8px;object-fit:cover;cursor:pointer" onclick="bigImg('${img}')">`).join('')}</div></div>`:''}`;
     const subHTML=(o.subs||[]).map((s,si2)=>{
       itemNum++;const snum=itemNum;const sImgs=(s.imgs||[]);const sDel=s.delivery||{};const sPay=s.payment||{};
-      const sImgSection=sImgs.length?sImgs.map((img,ii)=>`<img src="${img}" class="rep-img" onclick="openIM('${o.id}',${ii},'sub',${si2})">`).join(''):`<div style="background:var(--g1);border-radius:10px;height:140px;display:flex;align-items:center;justify-content:center;color:var(--t3);font-size:13px;margin-bottom:10px">ยังไม่มีรูปภาพ</div>`;
+      const sImgSection=sImgs.length?sImgs.map((img,ii)=>`<img src="${img}" class="rep-img" onclick="openIM('${o.id}',${ii},'sub',${si2})">`).join(''):`<div style="background:var(--g1);border-radius:10px;height:100px;display:flex;align-items:center;justify-content:center;color:var(--t3);font-size:13px;margin-bottom:10px">ยังไม่มีรูปภาพ</div>`;
       const sSi4=STEPS4.indexOf(s.status||'wait');const sSteps=STEPS4.map((st,i)=>{const cl=i<sSi4?'done':i===sSi4?'cur':'';const lb={wait:'รอ',prod:'ผลิต',ready:'พร้อม',sent:'ส่ง'}[st];return`<div class="step"><div class="sdot ${cl}">${i<sSi4?'✓':i+1}</div><div class="slbl ${cl}">${lb}</div></div>`;}).join('');
-      return `<div class="rep-item" style="border-left:3px solid var(--teal)"><div class="rep-item-num" style="background:var(--teal)">${snum}</div><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:6px"><span style="font-family:'Mitr',sans-serif;font-size:14px;font-weight:500">รายการที่ ${snum} — ${s.model||'-'}${s.color?' / '+s.color:''}</span>${spill(s.status||'wait')}</div><div class="steps">${sSteps}</div>${sImgSection}<table class="tbl"><tr><td style="color:var(--t3);width:130px">ลูกค้า</td><td><strong>${o.name}</strong></td></tr><tr><td style="color:var(--t3)">รุ่น</td><td><strong>${s.model||'-'}</strong></td></tr>${s.color?`<tr><td style="color:var(--t3)">สี</td><td>${s.color}</td></tr>`:''}${s.size?`<tr><td style="color:var(--t3)">ไซส์</td><td>${s.size}</td></tr>`:''}<tr><td style="color:var(--t3)">จำนวน</td><td><strong style="color:var(--pri);font-size:16px">${s.qty||0} ตัว</strong></td></tr><tr><td style="color:var(--t3)">สถานะ</td><td>${spill(s.status||'wait')}</td></tr><tr><td style="color:var(--t3)">ชำระเงิน</td><td><span class="${sPay.paid?'pay-paid':'pay-unpaid'}">${sPay.paid?'✅ จ่ายแล้ว':'⏳ ยังไม่จ่าย'}</span></td></tr>${sDel.sender?`<tr><td style="color:var(--t3)">ผู้ส่ง</td><td>${sDel.sender}</td></tr>`:''}${sDel.receiver?`<tr><td style="color:var(--t3)">ผู้รับ</td><td>${sDel.receiver}</td></tr>`:''}${sDel.note?`<tr><td style="color:var(--t3)">หมายเหตุส่ง</td><td>${sDel.note}</td></tr>`:''}</table>${(sDel.proofs||[]).length?`<div style="margin-top:8px"><div style="font-size:11px;font-weight:700;color:var(--t3);margin-bottom:6px">หลักฐานการส่ง</div><div style="display:flex;gap:8px;flex-wrap:wrap">${(sDel.proofs||[]).map(img=>`<img src="${img}" style="width:80px;height:80px;border-radius:8px;object-fit:cover;cursor:pointer;border:1px solid var(--g2)" onclick="bigImg('${img}')">`).join('')}</div></div>`:''}</div>`;
+      return `<div class="rep-item" style="border-left:3px solid var(--teal)"><div class="rep-item-num" style="background:var(--teal)">${snum}</div><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:6px"><span style="font-family:'Mitr',sans-serif;font-size:14px;font-weight:500">รายการที่ ${snum} — ${s.model||'-'}${s.color?' / '+s.color:''}</span>${spill(s.status||'wait')}</div><div class="steps">${sSteps}</div>${sImgSection}<table class="tbl"><tr><td style="color:var(--t3);width:130px">รุ่น</td><td><strong>${s.model||'-'}</strong></td></tr>${s.color?`<tr><td style="color:var(--t3)">สี</td><td>${s.color}</td></tr>`:''}${s.size?`<tr><td style="color:var(--t3)">ไซส์</td><td>${s.size}</td></tr>`:''}<tr><td style="color:var(--t3)">จำนวน</td><td><strong style="color:var(--pri);font-size:16px">${s.qty||0} ตัว</strong></td></tr><tr><td style="color:var(--t3)">ชำระเงิน</td><td><span class="${sPay.paid?'pay-paid':'pay-unpaid'}">${sPay.paid?'✅ จ่ายแล้ว':'⏳ ยังไม่จ่าย'}</span></td></tr>${sDel.sender?`<tr><td style="color:var(--t3)">ผู้ส่ง</td><td>${sDel.sender}</td></tr>`:''}${sDel.receiver?`<tr><td style="color:var(--t3)">ผู้รับ</td><td>${sDel.receiver}</td></tr>`:''}${sDel.note?`<tr><td style="color:var(--t3)">หมายเหตุส่ง</td><td>${sDel.note}</td></tr>`:''}</table>${(sDel.proofs||[]).length?`<div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap">${(sDel.proofs||[]).map(img=>`<img src="${img}" style="width:80px;height:80px;border-radius:8px;object-fit:cover;cursor:pointer" onclick="bigImg('${img}')">`).join('')}</div>`:''}</div>`;
     }).join('');
     return `<div class="rep-item" style="border-left:3px solid var(--pri)"><div class="rep-item-num">${num}</div><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:6px"><span style="font-family:'Mitr',sans-serif;font-size:14px;font-weight:500">รายการที่ ${num} — ${o.model}${o.color?' / '+o.color:''}</span><div style="display:flex;gap:6px;align-items:center">${spill(o.status)}${ce?`<button class="btn bg bxs" onclick="startEdit('${o.id}')">✏️</button>`:''}</div></div><div class="steps">${steps}</div>${imgSection}${table}</div>${subHTML}`;
   }).join('');
@@ -687,43 +677,40 @@ function renderRC(){
 }
 
 // ── Report Model ──
-function getAllModels(){const s=new Set();window._orders.forEach(o=>{if(o.model)s.add(o.model);(o.subs||[]).forEach(sub=>{if(sub.model)s.add(sub.model);});});return[...s].sort();}
+function getAllModels(){const s=new Set();_orders.forEach(o=>{if(o.model)s.add(o.model);(o.subs||[]).forEach(sub=>{if(sub.model)s.add(sub.model);});});return[...s].sort();}
 function renderRM(){
   const mdls=getAllModels();if(!mdls.length)return`<div class="empty"><div class="empty-ico">👕</div><p>ยังไม่มีข้อมูลรุ่น</p></div>`;
   const sel=window._rm||mdls[0];const rows=[];
-  window._orders.forEach(o=>{
+  _orders.forEach(o=>{
     if(o.model===sel)rows.push({name:o.name,color:o.color||'',size:o.size||'',qty:parseInt(o.qty)||0,status:o.status,imgs:o.imgs||[],deliveryDate:o.deliveryDate||'',branch:o.branch||''});
     (o.subs||[]).forEach(s=>{if(s.model===sel)rows.push({name:o.name,color:s.color||'',size:s.size||'',qty:parseInt(s.qty)||0,status:s.status||o.status,imgs:s.imgs||[],deliveryDate:o.deliveryDate||'',branch:o.branch||''});});
   });
   const grandT=rows.reduce((s,r)=>s+(r.qty||0),0);
   let heroImg=null;for(const r of rows){if(r.imgs&&r.imgs[0]){heroImg=r.imgs[0];break;}}
-  const cg={};rows.forEach(r=>{const ck=`${r.color||'ไม่ระบุสี'}__${r.size||'-'}`;if(!cg[ck])cg[ck]={color:r.color||'ไม่ระบุสี',size:r.size||'-',rows:[],total:0};const ex=cg[ck].rows.find(x=>x.name===r.name&&x.deliveryDate===r.deliveryDate);if(ex){ex.qty+=r.qty;if(r.status)ex.status=r.status;}else cg[ck].rows.push({name:r.name,qty:r.qty,status:r.status,deliveryDate:r.deliveryDate,branch:r.branch});cg[ck].total+=r.qty;});
+  const cg={};rows.forEach(r=>{const ck=`${r.color||'ไม่ระบุสี'}__${r.size||'-'}`;if(!cg[ck])cg[ck]={color:r.color||'ไม่ระบุสี',size:r.size||'-',rows:[],total:0};const ex=cg[ck].rows.find(x=>x.name===r.name&&x.deliveryDate===r.deliveryDate&&x.branch===r.branch);if(ex){ex.qty+=r.qty;if(r.status)ex.status=r.status;}else cg[ck].rows.push({name:r.name,qty:r.qty,status:r.status,deliveryDate:r.deliveryDate,branch:r.branch});cg[ck].total+=r.qty;});
   const ct=Object.values(cg).map(c=>`<div style="margin-bottom:18px"><div style="font-weight:700;font-size:13px;margin-bottom:8px">🎨 ${c.color}${c.size&&c.size!=='-'?' • 📏 '+c.size:''} — <span style="color:var(--pri)">${c.total} ตัว</span></div><table class="tbl"><tr><th>ลูกค้า</th><th>จำนวน</th><th>สถานะ</th><th>กำหนดส่ง</th><th>สาขา</th></tr>${c.rows.map(r=>`<tr><td><strong>${r.name}</strong></td><td><strong>${r.qty} ตัว</strong></td><td>${spill(r.status)}</td><td>${r.deliveryDate?dueDateBadge(r.deliveryDate):'<span style="color:var(--t4);font-size:12px">—</span>'}</td><td>${r.branch?`<span class="tag tbranch" style="font-size:11px">🏪 ${r.branch}</span>`:'<span style="color:var(--t4);font-size:12px">—</span>'}</td></tr>`).join('')}<tr class="total-row"><td>รวม</td><td>${c.total} ตัว</td><td></td><td></td><td></td></tr></table></div>`).join('');
   const ce=curRole==='admin'||curRole==='staff';const custCount=[...new Set(rows.map(r=>r.name))].length;
   return `<div class="card"><div class="card-title">👕 รายงานรุ่นเสื้อ</div><div class="fg" style="margin-bottom:0"><label>เลือกรุ่น (${mdls.length} รุ่น)</label><select style="max-width:300px" onchange="window._rm=this.value;render()">${mdls.map(m=>`<option ${m===sel?'selected':''}>${m}</option>`).join('')}</select></div></div>
-  <div id="pdf-model"><div class="model-head">${heroImg?`<img src="${heroImg}" class="model-img" onclick="bigImg('${heroImg}')">`:`<div class="model-img-ph"><span style="font-size:28px">📷</span><span>ไม่มีรูป</span></div>`}<div style="flex:1"><div style="font-family:'Mitr',sans-serif;font-size:22px;font-weight:700;color:var(--pri)">${sel}</div><div style="font-size:13px;color:var(--t2);margin:4px 0">${custCount} ลูกค้า • ${rows.length} รายการ</div><div style="font-family:'Mitr',sans-serif;font-size:44px;font-weight:700;color:var(--pri);line-height:1">${grandT}</div><div style="font-size:13px;color:var(--t3)">ตัวรวมทั้งหมด</div>${ce?`<label class="btn bg bxs" style="cursor:pointer;margin-top:8px;display:inline-flex">📷 เปลี่ยนรูปรุ่น<input type="file" accept="image/*" style="display:none" onchange="repMImg('${sel}',event)"></label>`:''}</div></div>
-  <div class="card"><div class="rep-h">รายละเอียดแยกตามสี ไซส์ และลูกค้า</div>${ct||'<p style="color:var(--t3)">ไม่มีข้อมูล</p>'}<div style="background:var(--pri-ll);border-radius:10px;padding:14px;text-align:center;border:1px solid var(--pri-l);margin-top:12px"><div style="font-size:13px;color:var(--t3)">ยอดผลิตรวม — รุ่น ${sel}</div><div style="font-family:'Mitr',sans-serif;font-size:44px;font-weight:700;color:var(--pri)">${grandT} <span style="font-size:18px">ตัว</span></div><div style="font-size:13px;color:var(--t3)">จาก ${custCount} ลูกค้า</div></div></div></div>
+  <div id="pdf-model"><div class="model-head">${heroImg?`<img src="${heroImg}" class="model-img" onclick="bigImg('${heroImg}')">`:`<div class="model-img-ph"><span style="font-size:28px">📷</span><span>ไม่มีรูป</span></div>`}<div style="flex:1"><div style="font-family:'Mitr',sans-serif;font-size:22px;font-weight:700;color:var(--pri)">${sel}</div><div style="font-size:13px;color:var(--t2);margin:4px 0">${custCount} ลูกค้า • ${rows.length} รายการ</div><div style="font-family:'Mitr',sans-serif;font-size:44px;font-weight:700;color:var(--pri);line-height:1">${grandT}</div><div style="font-size:13px;color:var(--t3)">ตัวรวมทั้งหมด</div>${ce?`<label class="btn bg bxs" style="cursor:pointer;margin-top:8px;display:inline-flex">📷 เปลี่ยนรูปรุ่น<input type="file" accept="image/*" style="display:none" onchange="repMImg('${sel}',event)"></label>`:''}</div></div><div class="card"><div class="rep-h">รายละเอียดแยกตามสี ไซส์ และลูกค้า</div>${ct||'<p style="color:var(--t3)">ไม่มีข้อมูล</p>'}<div style="background:var(--pri-ll);border-radius:10px;padding:14px;text-align:center;border:1px solid var(--pri-l);margin-top:12px"><div style="font-size:13px;color:var(--t3)">ยอดผลิตรวม — รุ่น ${sel}</div><div style="font-family:'Mitr',sans-serif;font-size:44px;font-weight:700;color:var(--pri)">${grandT} <span style="font-size:18px">ตัว</span></div><div style="font-size:13px;color:var(--t3)">จาก ${custCount} ลูกค้า</div></div></div></div>
   <div class="export-bar"><button class="pdfbtn" onclick="doExportPDF('pdf-model','คำสั่งผลิต_${sel}')">📄 ส่งออก PDF</button><button class="imgbtn" onclick="doExportImg('pdf-model','คำสั่งผลิต_${sel}')">🖼️ บันทึกรูป</button></div>`;
 }
-function repMImg(model,e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{let found=false;for(const o of window._orders){if(o.model===model){if(!o.imgs)o.imgs=[];o.imgs[0]=ev.target.result;fbSave(o);found=true;break;}for(const s of(o.subs||[])){if(s.model===model){if(!s.imgs)s.imgs=[];s.imgs[0]=ev.target.result;fbSave(o);found=true;break;}}if(found)break;}if(found)toast('✅ เปลี่ยนรูปแล้ว');};r.readAsDataURL(f);}
+function repMImg(model,e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{let found=false;for(const o of _orders){if(o.model===model){if(!o.imgs)o.imgs=[];o.imgs[0]=ev.target.result;fbSave(o);found=true;break;}for(const s of(o.subs||[])){if(s.model===model){if(!s.imgs)s.imgs=[];s.imgs[0]=ev.target.result;fbSave(o);found=true;break;}}if(found)break;}if(found)toast('✅ เปลี่ยนรูปแล้ว');};r.readAsDataURL(f);}
 
 // ── Stats ──
 function renderStats(){
-  const tO=window._orders.length,tQ=window._orders.reduce((s,o)=>s+o.qty,0);
-  const tS=window._orders.filter(o=>o.status==='sent').reduce((s,o)=>s+o.qty,0);
-  const tR=window._orders.filter(o=>o.status==='ready').reduce((s,o)=>s+o.qty,0);
-  const tP=window._orders.filter(o=>o.status==='prod').reduce((s,o)=>s+o.qty,0);
-  const tI=window._orders.filter(o=>o.status==='issue').length;
-  const tPaid=window._orders.filter(o=>o.payment&&o.payment.paid).length;
-  // นับตามสาขา
-  const bySrc={};window._orders.forEach(o=>{const br=o.branch||'ไม่ระบุสาขา';if(!bySrc[br])bySrc[br]=0;bySrc[br]+=o.qty;});
-  const byM={};window._orders.forEach(o=>{if(!byM[o.model])byM[o.model]={qty:0,sent:0};byM[o.model].qty+=o.qty;if(o.status==='sent')byM[o.model].sent+=o.qty;(o.subs||[]).forEach(s=>{if(s.model){if(!byM[s.model])byM[s.model]={qty:0,sent:0};byM[s.model].qty+=(parseInt(s.qty)||0);if(s.status==='sent')byM[s.model].sent+=(parseInt(s.qty)||0);}});});
+  const tO=_orders.length,tQ=_orders.reduce((s,o)=>s+o.qty,0);
+  const tS=_orders.filter(o=>o.status==='sent').reduce((s,o)=>s+o.qty,0);
+  const tR=_orders.filter(o=>o.status==='ready').reduce((s,o)=>s+o.qty,0);
+  const tP=_orders.filter(o=>o.status==='prod').reduce((s,o)=>s+o.qty,0);
+  const tI=_orders.filter(o=>o.status==='issue').length;
+  const tPaid=_orders.filter(o=>o.payment&&o.payment.paid).length;
+  const bySrc={};_orders.forEach(o=>{const br=o.branch||'ไม่ระบุสาขา';if(!bySrc[br])bySrc[br]=0;bySrc[br]+=o.qty;});
+  const byM={};_orders.forEach(o=>{if(!byM[o.model])byM[o.model]={qty:0,sent:0};byM[o.model].qty+=o.qty;if(o.status==='sent')byM[o.model].sent+=o.qty;(o.subs||[]).forEach(s=>{if(s.model){if(!byM[s.model])byM[s.model]={qty:0,sent:0};byM[s.model].qty+=(parseInt(s.qty)||0);if(s.status==='sent')byM[s.model].sent+=(parseInt(s.qty)||0);}});});
   const mR=Object.entries(byM).sort((a,b)=>b[1].qty-a[1].qty);const mQ=Math.max(...mR.map(([,v])=>v.qty),1);
-  const branchStats=Object.entries(bySrc).map(([b,q])=>`<tr><td>${b}</td><td><strong>${q} ตัว</strong></td></tr>`).join('');
   return `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px"><div style="font-family:'Mitr',sans-serif;font-size:16px;font-weight:500">📊 สถิติการผลิต</div><div style="display:flex;gap:8px"><button class="pdfbtn bsm" onclick="doExportPDF('sa','สถิติ')">📄 PDF</button><button class="imgbtn bsm" onclick="doExportImg('sa','สถิติ')">🖼️ รูป</button></div></div>
   <div id="sa">
   <div class="sg"><div class="sc"><div class="sn">${tO}</div><div class="sl">ออเดอร์รวม</div></div><div class="sc"><div class="sn" style="color:var(--amb)">${tQ}</div><div class="sl">ตัวทั้งหมด</div></div><div class="sc"><div class="sn" style="color:var(--teal)">${tP}</div><div class="sl">กำลังผลิต</div></div><div class="sc"><div class="sn" style="color:var(--grn)">${tR}</div><div class="sl">พร้อมส่ง</div></div><div class="sc"><div class="sn" style="color:var(--blu)">${tS}</div><div class="sl">ส่งแล้ว</div></div><div class="sc"><div class="sn" style="color:var(--red)">${tI}</div><div class="sl">มีปัญหา</div></div><div class="sc"><div class="sn" style="color:var(--grn)">${tPaid}</div><div class="sl">จ่ายแล้ว</div></div></div>
-  ${Object.keys(bySrc).length?`<div class="card"><div class="card-title">🏪 สถิติรายสาขา</div><table class="tbl"><tr><th>สาขา</th><th>จำนวน (ตัว)</th></tr>${branchStats}</table></div>`:''}
+  ${Object.keys(bySrc).length>1?`<div class="card"><div class="card-title">🏪 สถิติรายสาขา</div><table class="tbl"><tr><th>สาขา</th><th>จำนวน (ตัว)</th></tr>${Object.entries(bySrc).map(([b,q])=>`<tr><td>${b}</td><td><strong>${q} ตัว</strong></td></tr>`).join('')}</table></div>`:''}
   <div class="card"><div class="card-title">สถิติรายรุ่น</div>${mR.length?mR.map(([m,v])=>`<div style="margin-bottom:14px"><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px"><strong>${m}</strong><span style="color:var(--t3)">ส่งแล้ว ${v.sent}/${v.qty}</span></div><div style="background:var(--g1);border-radius:6px;height:10px;overflow:hidden"><div style="background:var(--pri);height:100%;width:${Math.round(v.qty/mQ*100)}%;border-radius:6px"></div></div></div>`).join(''):'<p style="color:var(--t3)">ยังไม่มีข้อมูล</p>'}</div>
   </div>`;
 }
@@ -733,7 +720,6 @@ async function doExportPDF(id,fname){const el=document.getElementById(id);if(!el
 async function doExportImg(id,fname){const el=document.getElementById(id);if(!el){toast('❌ ไม่พบ',false);return;}toast('⏳ กำลังสร้างรูป...');try{await new Promise(r=>setTimeout(r,300));const c=await html2canvas(el,{scale:2,useCORS:true,backgroundColor:'#fff',logging:false,allowTaint:true});const a=document.createElement('a');a.download=fname+'.png';a.href=c.toDataURL('image/png');document.body.appendChild(a);a.click();document.body.removeChild(a);toast('✅ รูปบันทึกแล้ว');}catch(err){toast('❌ '+err.message,false);}}
 
 function toast(msg,ok=true){const t=document.getElementById('toast');t.textContent=msg;t.className='toast '+(ok===false?'terr':ok==='info'?'tinfo':'tok');t.style.display='block';setTimeout(()=>t.style.display='none',3000);}
-window._initApp=function(){window._renderLogo();};
 </script>
 </body>
 </html>
