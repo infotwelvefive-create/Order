@@ -363,7 +363,7 @@ function fbSaveBranches(arr) { return db.ref('branches').set(arr); }
 function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2,5); }
 function stOpts(cur) { return Object.entries(SL).map(([k,v])=>`<option value="${k}" ${k===cur?'selected':''}>${v.l}</option>`).join(''); }
 function spill(s) { const x=SL[s]||SL.wait; return `<span class="sp ${x.sp}">${x.l}</span>`; }
-function newSub() { return {model:'',color:'',size:'',qty:'',status:'wait',imgs:[],delivery:{},payment:{paid:false}}; }
+function newSub() { return {model:'',color:'',size:'',qty:'',dueDate:'',deliveryDate:'',branch:'',status:'wait',imgs:[],delivery:{},payment:{paid:false}}; }
 function newMB() { return [{name:'',channel:'LINE',branch:'',model:'',color:'',size:'',qty:'',date:new Date().toISOString().slice(0,10),dueDate:'',deliveryDate:'',note:'',issue:'',imgs:[],subs:[],delivery:{},payment:{paid:false}}]; }
 function dueDateBadge(d) {
   if (!d) return '';
@@ -384,12 +384,19 @@ function renderAlerts() {
   const now = new Date(); now.setHours(0,0,0,0);
   const alerts = [];
   _orders.forEach(o => {
-    if (o.status === 'sent') return;
-    const d = o.deliveryDate || o.dueDate;
-    if (!d) return;
-    const dd = new Date(d); dd.setHours(0,0,0,0);
-    const diff = Math.ceil((dd - now) / 86400000);
-    if (diff <= ALERT_DAYS) alerts.push({id:o.id, name:o.name, model:o.model, branch:o.branch||'', status:o.status, diff, date:d});
+    // ตรวจออเดอร์หลัก
+    if (o.status !== 'sent') {
+      const d = o.deliveryDate || o.dueDate;
+      if (d) { const dd=new Date(d);dd.setHours(0,0,0,0);const diff=Math.ceil((dd-now)/86400000);if(diff<=ALERT_DAYS) alerts.push({id:o.id,name:o.name,model:o.model,branch:o.branch||'',status:o.status,diff,date:d,itemLabel:'รายการที่ 1'}); }
+    }
+    // ตรวจ sub items
+    (o.subs||[]).forEach((s,si) => {
+      if ((s.status||'wait') === 'sent') return;
+      const d = s.deliveryDate || s.dueDate;
+      if (!d) return;
+      const dd=new Date(d);dd.setHours(0,0,0,0);const diff=Math.ceil((dd-now)/86400000);
+      if(diff<=ALERT_DAYS) alerts.push({id:o.id,name:o.name,model:s.model||o.model,branch:s.branch||o.branch||'',status:s.status||'wait',diff,date:d,itemLabel:'รายการที่ '+(si+2)});
+    });
   });
   const banner = document.getElementById('alert-banner');
   const list = document.getElementById('alert-list');
@@ -402,6 +409,7 @@ function renderAlerts() {
     return `<div class="alert-item ${cls}" onclick="goToOrder('${a.id}')">
       <span class="alert-days ${cls}">${daysTxt}</span>
       <strong style="font-size:13px">${a.name}</strong>
+      ${a.itemLabel?`<span style="font-size:11px;color:var(--t3)">${a.itemLabel}</span>`:''}
       <span class="tag tmod" style="font-size:11px">👕 ${a.model}</span>
       ${a.branch ? `<span class="tag tbranch" style="font-size:11px">🏪 ${a.branch}</span>` : ''}
       <span class="sp ${st.sp}" style="font-size:10px">${st.l}</span>
@@ -550,7 +558,8 @@ function renderOI(o, canEdit) {
     const sSteps=STEPS4.map((st,i)=>{const cl=i<sSi4?'done':i===sSi4?'cur':'';const lb={wait:'รอ',prod:'ผลิต',ready:'พร้อม',sent:'ส่ง'}[st];return`<div class="step"><div class="sdot ${cl}">${i<sSi4?'✓':i+1}</div><div class="slbl ${cl}">${lb}</div></div>`;}).join('');
     const sDel=s.delivery||{}; const sPay=s.payment||{};
     const sDelSection=canEdit?`<div class="del-section"><div class="del-title">📦 ติดตามการส่ง — รายการที่ ${si2+2}</div><div class="g2" style="gap:8px;margin-bottom:8px"><div class="fg" style="margin-bottom:0"><label>ผู้ส่ง</label><input placeholder="ชื่อผู้ส่ง" value="${sDel.sender||''}" onchange="updDel('${o.id}','sub',${si2},'sender',this.value)"></div><div class="fg" style="margin-bottom:0"><label>ผู้รับ</label><input placeholder="ชื่อผู้รับ" value="${sDel.receiver||''}" onchange="updDel('${o.id}','sub',${si2},'receiver',this.value)"></div></div><div class="fg" style="margin-bottom:8px"><label>หมายเหตุการส่ง</label><input placeholder="Kerry เลขพัสดุ..." value="${sDel.note||''}" onchange="updDel('${o.id}','sub',${si2},'note',this.value)"></div><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">${(sDel.proofs||[]).map((img)=>`<img src="${img}" class="del-proof-img" onclick="bigImg('${img}')">`).join('')}<label class="btn bg bxs" style="cursor:pointer">📷 หลักฐาน<input type="file" accept="image/*" style="display:none" onchange="addDelProof('${o.id}','sub',${si2},event)"></label></div></div>`:'';
-    return `<div class="sub-item"><div style="display:flex;align-items:center;gap:6px;margin-bottom:8px"><span class="num-b sub">${si2+2}</span><strong style="font-size:13px">รายการที่ ${si2+2}</strong></div><div class="oi-hd">${sThumb}<div class="oi-info"><div class="oi-name" style="font-size:14px">${o.name}</div><div class="oi-meta">${o.channel||''}</div><div class="oi-tags">${s.model?`<span class="tag tmod">👕 ${s.model}</span>`:''}${s.color?`<span class="tag tcol">🎨 ${s.color}</span>`:''}${s.size?`<span class="tag">📏 ${s.size}</span>`:''}${s.qty?`<span class="tag tqty">×${s.qty} ตัว</span>`:''}${spill(s.status||'wait')}</div>${sExtra?`<div class="extra-imgs">${sExtra}</div>`:''}</div></div><div class="steps">${sSteps}</div><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;align-items:center;font-size:12px"><span class="${sPay.paid?'pay-paid':'pay-unpaid'}">${sPay.paid?'✅ จ่ายแล้ว':'⏳ ยังไม่จ่าย'}</span>${canEdit?`<button class="btn bg bxs" onclick="togglePay('${o.id}','sub',${si2})">${sPay.paid?'ยกเลิก':'💳 จ่ายแล้ว'}</button>`:''}</div>${canEdit?`<div class="sub-status-row"><span style="font-size:11px;color:var(--t3);font-weight:600">สถานะ:</span><select class="btn bg bxs" style="border:1px solid var(--g2);font-size:11px;padding:4px 8px" onchange="updSubSt('${o.id}',${si2},this.value)">${stOpts(s.status||'wait')}</select><label class="btn bg bxs" style="cursor:pointer;font-size:11px;padding:4px 8px">📷 รูป<input type="file" accept="image/*" multiple style="display:none" onchange="addSubImg('${o.id}',${si2},event)"></label><button class="btn br bxs" style="font-size:11px;padding:4px 8px" onclick="delSub('${o.id}',${si2})">🗑 ลบ</button></div>`:''}${sDelSection}</div>`;
+    const sSubDueBadge=s.deliveryDate?dueDateBadge(s.deliveryDate):''; const sBranch=s.branch||'';
+    return `<div class="sub-item"><div style="display:flex;align-items:center;gap:6px;margin-bottom:8px"><span class="num-b sub">${si2+2}</span><strong style="font-size:13px">รายการที่ ${si2+2}</strong>${sBranch?`<span class="tag tbranch">🏪 ${sBranch}</span>`:''}</div><div class="oi-hd">${sThumb}<div class="oi-info"><div class="oi-name" style="font-size:14px">${o.name}</div><div class="oi-meta">${o.channel||''}</div><div class="oi-tags">${s.model?`<span class="tag tmod">👕 ${s.model}</span>`:''}${s.color?`<span class="tag tcol">🎨 ${s.color}</span>`:''}${s.size?`<span class="tag">📏 ${s.size}</span>`:''}${s.qty?`<span class="tag tqty">×${s.qty} ตัว</span>`:''}${spill(s.status||'wait')}</div>${sExtra?`<div class="extra-imgs">${sExtra}</div>`:''}</div></div><div class="steps">${sSteps}</div><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;align-items:center;font-size:12px"><span class="${sPay.paid?'pay-paid':'pay-unpaid'}">${sPay.paid?'✅ จ่ายแล้ว':'⏳ ยังไม่จ่าย'}</span>${canEdit?`<button class="btn bg bxs" onclick="togglePay('${o.id}','sub',${si2})">${sPay.paid?'ยกเลิก':'💳 จ่ายแล้ว'}</button>`:''}</div>${canEdit?`<div class="sub-status-row"><span style="font-size:11px;color:var(--t3);font-weight:600">สถานะ:</span><select class="btn bg bxs" style="border:1px solid var(--g2);font-size:11px;padding:4px 8px" onchange="updSubSt('${o.id}',${si2},this.value)">${stOpts(s.status||'wait')}</select><label class="btn bg bxs" style="cursor:pointer;font-size:11px;padding:4px 8px">📷 รูป<input type="file" accept="image/*" multiple style="display:none" onchange="addSubImg('${o.id}',${si2},event)"></label><button class="btn br bxs" style="font-size:11px;padding:4px 8px" onclick="delSub('${o.id}',${si2})">🗑 ลบ</button></div>`:''}${sDelSection}</div>`;
   }).join('');
   return `<div class="oi" id="oi-${o.id}">
     <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px">
@@ -604,10 +613,35 @@ function renderForm(){
   return `<div class="card"><div class="card-title">➕ เพิ่มออเดอร์ใหม่</div><div style="font-size:12px;color:var(--t3);margin-bottom:14px">เพิ่มได้หลายออเดอร์พร้อมกัน</div><div id="blks">${blocks}</div><button class="add-blk" onclick="addBlock()">＋ เพิ่มออเดอร์อีก 1 รายการ</button><div class="btn-row"><button class="btn bp" onclick="saveMulti()">💾 บันทึกทั้งหมด (${multiBlocks.length} ออเดอร์)</button><button class="btn bg" onclick="clearAllBlocks()">🔄 ล้างทั้งหมด</button></div></div>`;
 }
 function mainFields(o,p){return `<div class="g2" style="margin-bottom:10px"><div class="fg"><label>ชื่อลูกค้า *</label><input id="${p}name" placeholder="ชื่อลูกค้า" value="${o.name||''}"></div><div class="fg"><label>ช่องทาง</label><select id="${p}ch">${CHNL.map(c=>`<option ${o.channel===c?'selected':''}>${c}</option>`).join('')}</select></div></div><div class="g3" style="margin-bottom:10px"><div class="fg"><label>รุ่นเสื้อ *</label><input id="${p}mod" placeholder="ทิวลิป..." value="${o.model||''}"></div><div class="fg"><label>สี</label><input id="${p}col" placeholder="สีเอ..." value="${o.color||''}"></div><div class="fg"><label>ไซส์</label><input id="${p}sz" placeholder="M/L/XL" value="${o.size||''}"></div></div><div class="g2" style="margin-bottom:10px"><div class="fg"><label>จำนวน *</label><input id="${p}qty" type="number" min="1" value="${o.qty||''}"></div><div class="fg"><label>วันที่รับออเดอร์</label><input id="${p}dt" type="date" value="${o.date||new Date().toISOString().slice(0,10)}"></div></div><div class="g2" style="margin-bottom:10px"><div class="fg"><label>📅 ลูกค้าต้องการรับวันที่</label><input id="${p}due" type="date" value="${o.dueDate||''}"></div><div class="fg"><label>🚚 กำหนดจัดส่งวันที่</label><input id="${p}deldate" type="date" value="${o.deliveryDate||''}"></div></div><div class="fg"><label>สถานะชำระเงิน</label><select id="${p}paid"><option value="0" ${!(o.payment&&o.payment.paid)?'selected':''}>⏳ ยังไม่จ่าย</option><option value="1" ${(o.payment&&o.payment.paid)?'selected':''}>✅ จ่ายแล้ว</option></select></div><div class="fg"><label>หมายเหตุ</label><input id="${p}note" value="${o.note||''}"></div><div class="fg"><label>แจ้งปัญหา</label><input id="${p}iss" value="${o.issue||''}"></div>`;}
-function renderSubForm(bi,si,s){return `<div class="sub-form-block" id="sub-${bi}-${si}"><div class="sub-form-num">รายการที่ ${si+2}</div><button class="sub-form-del" onclick="rmSubBlock(${bi},${si})">✕ ลบ</button><div class="g2" style="margin-bottom:8px;margin-top:4px"><div class="sf"><label>รุ่นเสื้อ</label><input id="s${bi}_${si}_mod" placeholder="ทิวลิป..." value="${s.model||''}"></div><div class="sf"><label>สี</label><input id="s${bi}_${si}_col" placeholder="สีเอ..." value="${s.color||''}"></div></div><div class="g2" style="margin-bottom:8px"><div class="sf"><label>ไซส์</label><input id="s${bi}_${si}_sz" placeholder="M/L/XL" value="${s.size||''}"></div><div class="sf"><label>จำนวน (ตัว)</label><input id="s${bi}_${si}_qty" type="number" min="1" placeholder="0" value="${s.qty||''}"></div></div><label class="upzone" style="display:block;cursor:pointer;padding:10px"><div style="font-size:18px">📷</div><div style="font-size:11px;color:var(--t3)">อัปโหลดหรือเลือกจากแกลเลอรี่</div><input type="file" accept="image/*" multiple style="display:none" onchange="handleSubBI(${bi},${si},event)"></label><div class="igrid" id="subimg-${bi}-${si}">${(s.imgs||[]).map((img,ii)=>`<div class="iwrap"><img src="${img}" class="iprev" onclick="bigImg('${img}')"><button class="idel" onclick="rmSubImg(${bi},${si},${ii})">✕</button></div>`).join('')}</div></div>`;}
+function renderSubForm(bi,si,s){
+  const branches=_branches||[];
+  const branchOpts=branches.length?`<option value="">-- เลือกสาขา --</option>${branches.map(b=>`<option ${(s.branch||'')===b?'selected':''}>${b}</option>`).join('')}`:`<option value="">ยังไม่มีสาขา</option>`;
+  return `<div class="sub-form-block" id="sub-${bi}-${si}">
+    <div class="sub-form-num">รายการที่ ${si+2}</div>
+    <button class="sub-form-del" onclick="rmSubBlock(${bi},${si})">✕ ลบ</button>
+    <div class="g2" style="margin-bottom:8px;margin-top:4px">
+      <div class="sf"><label>รุ่นเสื้อ</label><input id="s${bi}_${si}_mod" placeholder="ทิวลิป..." value="${s.model||''}"></div>
+      <div class="sf"><label>สี</label><input id="s${bi}_${si}_col" placeholder="สีเอ..." value="${s.color||''}"></div>
+    </div>
+    <div class="g2" style="margin-bottom:8px">
+      <div class="sf"><label>ไซส์</label><input id="s${bi}_${si}_sz" placeholder="M/L/XL" value="${s.size||''}"></div>
+      <div class="sf"><label>จำนวน (ตัว)</label><input id="s${bi}_${si}_qty" type="number" min="1" placeholder="0" value="${s.qty||''}"></div>
+    </div>
+    <div class="g2" style="margin-bottom:8px">
+      <div class="sf"><label>📅 ลูกค้าต้องการรับวันที่</label><input id="s${bi}_${si}_due" type="date" value="${s.dueDate||''}"></div>
+      <div class="sf"><label>🚚 กำหนดจัดส่งวันที่</label><input id="s${bi}_${si}_deldate" type="date" value="${s.deliveryDate||''}"></div>
+    </div>
+    <div class="g2" style="margin-bottom:8px">
+      <div class="sf"><label>สถานะชำระเงิน</label><select id="s${bi}_${si}_paid"><option value="0" ${!(s.payment&&s.payment.paid)?'selected':''}>⏳ ยังไม่จ่าย</option><option value="1" ${(s.payment&&s.payment.paid)?'selected':''}>✅ จ่ายแล้ว</option></select></div>
+      <div class="sf"><label>🏪 สาขา</label><select id="s${bi}_${si}_br">${branchOpts}</select></div>
+    </div>
+    <label class="upzone" style="display:block;cursor:pointer;padding:10px"><div style="font-size:18px">📷</div><div style="font-size:11px;color:var(--t3)">อัปโหลดหรือเลือกจากแกลเลอรี่</div><input type="file" accept="image/*" multiple style="display:none" onchange="handleSubBI(${bi},${si},event)"></label>
+    <div class="igrid" id="subimg-${bi}-${si}">${(s.imgs||[]).map((img,ii)=>`<div class="iwrap"><img src="${img}" class="iprev" onclick="bigImg('${img}')"><button class="idel" onclick="rmSubImg(${bi},${si},${ii})">✕</button></div>`).join('')}</div>
+  </div>`;
+}
 function readFields(p){const g=id=>(document.getElementById(p+id)||{}).value||'';const paid=(document.getElementById(p+'paid')||{}).value==='1';return{name:g('name').trim(),channel:g('ch'),model:g('mod').trim(),color:g('col'),size:g('sz'),qty:parseInt(g('qty'))||0,date:g('dt'),dueDate:g('due'),deliveryDate:g('deldate'),note:g('note'),issue:g('iss'),payment:{paid}};}
-function readSubFields(bi,si){const g=id=>(document.getElementById(id)||{}).value||'';return{model:g(`s${bi}_${si}_mod`).trim(),color:g(`s${bi}_${si}_col`),size:g(`s${bi}_${si}_sz`),qty:parseInt(g(`s${bi}_${si}_qty`))||0,status:'wait',imgs:[...(multiBlocks[bi].subs[si].imgs||[])],delivery:{},payment:{paid:false}};}
-function syncDOM(){if(!multiBlocks)return;multiBlocks.forEach((b,bi)=>{const g=id=>(document.getElementById(id)||{}).value;b.name=g('b'+bi+'_name')??b.name;b.channel=g('b'+bi+'_ch')??b.channel;b.branch=g('b'+bi+'_br')||b.branch||'';b.model=g('b'+bi+'_mod')??b.model;b.color=g('b'+bi+'_col')??b.color;b.size=g('b'+bi+'_sz')??b.size;b.qty=g('b'+bi+'_qty')??b.qty;b.date=g('b'+bi+'_dt')??b.date;b.dueDate=g('b'+bi+'_due')??b.dueDate;b.deliveryDate=g('b'+bi+'_deldate')??b.deliveryDate;b.note=g('b'+bi+'_note')??b.note;b.issue=g('b'+bi+'_iss')??b.issue;(b.subs||[]).forEach((s,si)=>{s.model=g('s'+bi+'_'+si+'_mod')??s.model;s.color=g('s'+bi+'_'+si+'_col')??s.color;s.size=g('s'+bi+'_'+si+'_sz')??s.size;s.qty=g('s'+bi+'_'+si+'_qty')??s.qty;});});}
+function readSubFields(bi,si){const g=id=>(document.getElementById(id)||{}).value||'';const paid=(document.getElementById(`s${bi}_${si}_paid`)||{}).value==='1';return{model:g(`s${bi}_${si}_mod`).trim(),color:g(`s${bi}_${si}_col`),size:g(`s${bi}_${si}_sz`),qty:parseInt(g(`s${bi}_${si}_qty`))||0,dueDate:g(`s${bi}_${si}_due`),deliveryDate:g(`s${bi}_${si}_deldate`),branch:g(`s${bi}_${si}_br`),status:'wait',imgs:[...(multiBlocks[bi].subs[si].imgs||[])],delivery:{},payment:{paid}};}
+function syncDOM(){if(!multiBlocks)return;multiBlocks.forEach((b,bi)=>{const g=id=>(document.getElementById(id)||{}).value;b.name=g('b'+bi+'_name')??b.name;b.channel=g('b'+bi+'_ch')??b.channel;b.branch=g('b'+bi+'_br')||b.branch||'';b.model=g('b'+bi+'_mod')??b.model;b.color=g('b'+bi+'_col')??b.color;b.size=g('b'+bi+'_sz')??b.size;b.qty=g('b'+bi+'_qty')??b.qty;b.date=g('b'+bi+'_dt')??b.date;b.dueDate=g('b'+bi+'_due')??b.dueDate;b.deliveryDate=g('b'+bi+'_deldate')??b.deliveryDate;b.note=g('b'+bi+'_note')??b.note;b.issue=g('b'+bi+'_iss')??b.issue;(b.subs||[]).forEach((s,si)=>{s.model=g('s'+bi+'_'+si+'_mod')??s.model;s.color=g('s'+bi+'_'+si+'_col')??s.color;s.size=g('s'+bi+'_'+si+'_sz')??s.size;s.qty=g('s'+bi+'_'+si+'_qty')??s.qty;s.dueDate=g('s'+bi+'_'+si+'_due')||s.dueDate||'';s.deliveryDate=g('s'+bi+'_'+si+'_deldate')||s.deliveryDate||'';s.branch=g('s'+bi+'_'+si+'_br')||s.branch||'';const pEl=document.getElementById('s'+bi+'_'+si+'_paid');if(pEl)s.payment={paid:pEl.value==='1'};});});}
 function addBlock(){syncDOM();multiBlocks.push({...newMB()[0]});render();setTimeout(()=>document.getElementById('blks')?.lastElementChild?.scrollIntoView({behavior:'smooth'}),100);}
 function rmBlock(bi){syncDOM();multiBlocks.splice(bi,1);render();}
 function addSubBlock(bi){syncDOM();if(!multiBlocks[bi].subs)multiBlocks[bi].subs=[];multiBlocks[bi].subs.push(newSub());render();setTimeout(()=>document.getElementById(`sub-list-${bi}`)?.lastElementChild?.scrollIntoView({behavior:'smooth',block:'nearest'}),80);}
