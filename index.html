@@ -473,28 +473,36 @@ async function exportAlertPDF() {
     const urgBg  = diff<0?'#FEE2E2':'#FEF3C7';
     const urgCol = diff<0?'#991B1B':'#92400E';
     const del    = s ? (s.delivery||{}) : (o.delivery||{});
+    // รูปภาพ: ใช้รูปของ sub ก่อน ถ้าไม่มีใช้รูปออเดอร์หลัก
+    const imgSrc = s ? ((s.imgs&&s.imgs[0])||(o.imgs&&o.imgs[0])||'') : ((o.imgs&&o.imgs[0])||'');
+    const imgCell = imgSrc
+      ? `<img src="${imgSrc}" style="width:90px;height:90px;object-fit:cover;border-radius:8px;border:1px solid #E5E7EB;display:block">`
+      : `<div style="width:90px;height:90px;border-radius:8px;background:#F3F4F6;display:flex;align-items:center;justify-content:center;font-size:28px">📷</div>`;
     return `<tr style="background:${rowBg}">
-      <td style="padding:8px 10px;border-bottom:1px solid #E5E7EB;font-size:12px;color:#374151;white-space:nowrap">
+      <td style="padding:8px 10px;border-bottom:1px solid #E5E7EB;text-align:center;vertical-align:middle">
+        ${imgCell}
+      </td>
+      <td style="padding:8px 10px;border-bottom:1px solid #E5E7EB;font-size:12px;color:#374151;white-space:nowrap;vertical-align:middle">
         <span style="background:${urgBg};color:${urgCol};border-radius:12px;padding:2px 8px;font-size:11px;font-weight:700">${diffTxt}</span>
       </td>
-      <td style="padding:8px 10px;border-bottom:1px solid #E5E7EB;font-size:13px;font-weight:700">${o.name}</td>
-      <td style="padding:8px 10px;border-bottom:1px solid #E5E7EB;font-size:12px;color:#374151">${a.itemLabel}</td>
-      <td style="padding:8px 10px;border-bottom:1px solid #E5E7EB;font-size:12px"><strong>${model}</strong></td>
-      <td style="padding:8px 10px;border-bottom:1px solid #E5E7EB;font-size:12px">${color}</td>
-      <td style="padding:8px 10px;border-bottom:1px solid #E5E7EB;font-size:12px">${size}</td>
-      <td style="padding:8px 10px;border-bottom:1px solid #E5E7EB;font-size:12px;text-align:center"><strong style="color:#6D28D9">${qty} ตัว</strong></td>
-      <td style="padding:8px 10px;border-bottom:1px solid #E5E7EB;font-size:12px">${branch}</td>
-      <td style="padding:8px 10px;border-bottom:1px solid #E5E7EB;font-size:12px">${status}</td>
-      <td style="padding:8px 10px;border-bottom:1px solid #E5E7EB;font-size:12px">${a.date}</td>
-      <td style="padding:8px 10px;border-bottom:1px solid #E5E7EB;font-size:12px">
+      <td style="padding:8px 10px;border-bottom:1px solid #E5E7EB;font-size:13px;font-weight:700;vertical-align:middle">${o.name}</td>
+      <td style="padding:8px 10px;border-bottom:1px solid #E5E7EB;font-size:12px;color:#374151;vertical-align:middle">${a.itemLabel}</td>
+      <td style="padding:8px 10px;border-bottom:1px solid #E5E7EB;font-size:12px;vertical-align:middle"><strong>${model}</strong></td>
+      <td style="padding:8px 10px;border-bottom:1px solid #E5E7EB;font-size:12px;vertical-align:middle">${color}</td>
+      <td style="padding:8px 10px;border-bottom:1px solid #E5E7EB;font-size:12px;vertical-align:middle">${size}</td>
+      <td style="padding:8px 10px;border-bottom:1px solid #E5E7EB;font-size:12px;text-align:center;vertical-align:middle"><strong style="color:#6D28D9;font-size:14px">${qty} ตัว</strong></td>
+      <td style="padding:8px 10px;border-bottom:1px solid #E5E7EB;font-size:12px;vertical-align:middle">${branch}</td>
+      <td style="padding:8px 10px;border-bottom:1px solid #E5E7EB;font-size:12px;vertical-align:middle">${status}</td>
+      <td style="padding:8px 10px;border-bottom:1px solid #E5E7EB;font-size:12px;vertical-align:middle">${a.date}</td>
+      <td style="padding:8px 10px;border-bottom:1px solid #E5E7EB;font-size:12px;vertical-align:middle">
         <span style="background:${pay?'#DCFCE7':'#FEE2E2'};color:${pay?'#166534':'#991B1B'};border-radius:20px;padding:2px 8px;font-size:11px;font-weight:700">${pay?'✅ จ่ายแล้ว':'⏳ ยังไม่จ่าย'}</span>
       </td>
-      <td style="padding:8px 10px;border-bottom:1px solid #E5E7EB;font-size:11px;color:#6B7280">${del.sender?'ผู้ส่ง: '+del.sender+' ':''} ${del.receiver?'ผู้รับ: '+del.receiver:''}${del.note?'<br>'+del.note:''}</td>
-      <td style="padding:8px 10px;border-bottom:1px solid #E5E7EB;font-size:11px;color:#6B7280">${o.note||'-'}</td>
+      <td style="padding:8px 10px;border-bottom:1px solid #E5E7EB;font-size:11px;color:#6B7280;vertical-align:middle">${del.sender?'ผู้ส่ง: '+del.sender+'<br>':''} ${del.receiver?'ผู้รับ: '+del.receiver:''}${del.note?'<br>'+del.note:''}</td>
+      <td style="padding:8px 10px;border-bottom:1px solid #E5E7EB;font-size:11px;color:#6B7280;vertical-align:middle">${o.note||'-'}</td>
     </tr>`;
   }).join('');
 
-  const html = `<div style="font-family:'Sarabun',sans-serif;padding:20px;background:#fff;min-width:900px">
+  const html = `<div style="font-family:'Sarabun',sans-serif;padding:20px;background:#fff;min-width:1100px">
     <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;border-bottom:3px solid #6D28D9;padding-bottom:12px">
       <div>
         <div style="font-family:sans-serif;font-size:22px;font-weight:700;color:#6D28D9">📋 รายงานออเดอร์ใกล้กำหนดส่ง</div>
@@ -508,6 +516,7 @@ async function exportAlertPDF() {
     <table style="width:100%;border-collapse:collapse;font-size:12px">
       <thead>
         <tr style="background:#F3F4F6">
+          <th style="padding:8px 10px;text-align:center;font-size:11px;color:#6B7280;border-bottom:2px solid #E5E7EB;width:110px">รูปภาพ</th>
           <th style="padding:8px 10px;text-align:left;font-size:11px;color:#6B7280;border-bottom:2px solid #E5E7EB">กำหนด</th>
           <th style="padding:8px 10px;text-align:left;font-size:11px;color:#6B7280;border-bottom:2px solid #E5E7EB">ลูกค้า</th>
           <th style="padding:8px 10px;text-align:left;font-size:11px;color:#6B7280;border-bottom:2px solid #E5E7EB">รายการ</th>
