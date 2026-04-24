@@ -578,9 +578,9 @@ const ROLE_META = {
   report:{label:'รายงาน',icon:'📊',cls:'report'}
 };
 const MENUS = {
-  admin:[{g:'ออเดอร์',items:[{id:'orders',l:'📋 รายการ'},{id:'add',l:'➕ เพิ่ม'}]},{g:'รายงาน',items:[{id:'rep-cust',l:'👤 ลูกค้า'},{id:'rep-model',l:'👕 รุ่น'}]},{g:'ระบบ',items:[{id:'stats',l:'📊 สถิติ'},{id:'branches',l:'🏪 สาขา'}]}],
+  admin:[{g:'ออเดอร์',items:[{id:'orders',l:'📋 รายการ'},{id:'add',l:'➕ เพิ่ม'}]},{g:'รายงาน',items:[{id:'rep-cust',l:'👤 ลูกค้า'},{id:'rep-model',l:'👕 รุ่น'},{id:'rep-date',l:'📅 วันส่ง'}]},{g:'ระบบ',items:[{id:'stats',l:'📊 สถิติ'},{id:'branches',l:'🏪 สาขา'}]}],
   staff:[{g:'ออเดอร์',items:[{id:'orders',l:'📋 รายการ'},{id:'add',l:'➕ เพิ่ม'}]}],
-  report:[{g:'รายงาน',items:[{id:'rep-cust',l:'👤 ลูกค้า'},{id:'rep-model',l:'👕 รุ่น'}]}]
+  report:[{g:'รายงาน',items:[{id:'rep-cust',l:'👤 ลูกค้า'},{id:'rep-model',l:'👕 รุ่น'},{id:'rep-date',l:'📅 วันส่ง'}]}]
 };
 const SL = {
   wait:{l:'รอผลิต',c:'bwait',sp:'sp-wait'},
@@ -631,6 +631,7 @@ function render() {
   else if(curTab==='add') el.innerHTML=renderForm();
   else if(curTab==='rep-cust') el.innerHTML=renderRC();
   else if(curTab==='rep-model') el.innerHTML=renderRM();
+  else if(curTab==='rep-date') el.innerHTML=renderRD();
   else if(curTab==='stats') el.innerHTML=renderStats();
   else if(curTab==='branches') el.innerHTML=renderBranches();
 }
@@ -928,6 +929,147 @@ function changeIM(e){if(!modalCtx)return;const f=e.target.files[0];if(!f)return;
 function deleteIM(){if(!modalCtx||!confirm('ลบรูปนี้?'))return;const o=_orders.find(x=>x.id===modalCtx.oid);if(modalCtx.type==='sub')o.subs[modalCtx.subIdx].imgs.splice(modalCtx.idx,1);else o.imgs.splice(modalCtx.idx,1);fbSave(o);toast('🗑 ลบรูปแล้ว');closeIML();}
 
 // ── Report Customer ──
+function renderRD(){
+  // รายงานตามวันที่จัดส่ง
+  const selDate = window._rdDate || '';
+  const canEdit = curRole==='admin'||curRole==='staff';
+
+  // รวบรวมทุก item (ออเดอร์ + sub) ที่มีกำหนดส่ง
+  let allItems = [];
+  _orders.forEach(o => {
+    if(o.deliveryDate||o.dueDate){
+      allItems.push({
+        date: o.deliveryDate||o.dueDate,
+        name: o.name, model: o.model, color: o.color||'-',
+        size: o.size||'-', qty: o.qty||0, branch: o.branch||'',
+        status: o.status, payment: o.payment||{},
+        imgs: o.imgs||[], delivery: o.delivery||{},
+        itemLabel:'รายการที่ 1', id: o.id, isSub:false
+      });
+    }
+    (o.subs||[]).forEach((s,si)=>{
+      if(s.deliveryDate||s.dueDate||o.deliveryDate||o.dueDate){
+        allItems.push({
+          date: s.deliveryDate||s.dueDate||o.deliveryDate||o.dueDate,
+          name: o.name, model: s.model||o.model, color: s.color||o.color||'-',
+          size: s.size||o.size||'-', qty: s.qty||0, branch: s.branch||o.branch||'',
+          status: s.status||'wait', payment: s.payment||{},
+          imgs: (s.imgs&&s.imgs.length)?s.imgs:(o.imgs||[]),
+          delivery: s.delivery||{},
+          itemLabel:'รายการที่ '+(si+2), id: o.id, isSub:true, subIdx:si
+        });
+      }
+    });
+  });
+
+  // เอาวันที่ที่มีทั้งหมด (unique, sorted)
+  const allDates = [...new Set(allItems.map(x=>x.date).filter(Boolean))].sort();
+
+  // filter ตามวันที่เลือก
+  let filtered = selDate ? allItems.filter(x=>x.date===selDate) : allItems;
+  filtered.sort((a,b)=>a.date.localeCompare(b.date)||(a.name.localeCompare(b.name)));
+
+  // นับ stats
+  const now = new Date(); now.setHours(0,0,0,0);
+  function getDiff(d){ const dd=new Date(d);dd.setHours(0,0,0,0);return Math.ceil((dd-now)/86400000); }
+
+  // แยกกลุ่มตามวันที่
+  const groups = {};
+  filtered.forEach(item=>{
+    if(!groups[item.date]) groups[item.date]=[];
+    groups[item.date].push(item);
+  });
+
+  const dateOpts = allDates.map(d=>{
+    const diff=getDiff(d);
+    const label = diff<0?` (เกินกำหนด ${Math.abs(diff)} วัน)`:diff===0?' (วันนี้!)':` (อีก ${diff} วัน)`;
+    return `<option value="${d}" ${d===selDate?'selected':''}>${d}${label}</option>`;
+  }).join('');
+
+  const groupHTML = Object.entries(groups).map(([date,items])=>{
+    const diff=getDiff(date);
+    const urgCls = diff<0?'overdue':diff<=3?'urgent':'';
+    const urgLabel = diff<0?`🔴 เกินกำหนด ${Math.abs(diff)} วัน`:diff===0?'🔴 วันนี้!':diff<=3?`⚠️ อีก ${diff} วัน`:`✅ อีก ${diff} วัน`;
+    const urgBg = diff<0||diff===0?'#FEE2E2':diff<=3?'#FEF3C7':'#DCFCE7';
+    const urgColor = diff<0||diff===0?'#991B1B':diff<=3?'#92400E':'#166534';
+    const totalQty = items.reduce((s,x)=>s+(parseInt(x.qty)||0),0);
+    const rows = items.map(item=>{
+      const stObj = SL[item.status]||SL.wait;
+      const img = item.imgs&&item.imgs[0]?`<img src="${item.imgs[0]}" style="width:56px;height:56px;border-radius:8px;object-fit:cover;border:1px solid #E5E7EB;cursor:pointer" onclick="bigImg('${item.imgs[0]}')">`:`<div style="width:56px;height:56px;border-radius:8px;background:#F3F4F6;display:flex;align-items:center;justify-content:center;font-size:22px">📷</div>`;
+      const del = item.delivery||{};
+      return `<tr style="border-bottom:1px solid #F3F4F6">
+        <td style="padding:10px 8px;vertical-align:middle">${img}</td>
+        <td style="padding:10px 8px;vertical-align:middle"><strong style="font-size:14px">${item.name}</strong><br><span style="font-size:11px;color:#6B7280">${item.itemLabel}</span></td>
+        <td style="padding:10px 8px;vertical-align:middle"><strong>${item.model}</strong></td>
+        <td style="padding:10px 8px;vertical-align:middle">${item.color}</td>
+        <td style="padding:10px 8px;vertical-align:middle">${item.size}</td>
+        <td style="padding:10px 8px;vertical-align:middle;text-align:center"><strong style="color:#6D28D9;font-size:15px">${item.qty} ตัว</strong></td>
+        <td style="padding:10px 8px;vertical-align:middle">${item.branch?`<span class="tag tbranch">🏪 ${item.branch}</span>`:'-'}</td>
+        <td style="padding:10px 8px;vertical-align:middle"><span class="sp ${stObj.sp}">${stObj.l}</span></td>
+        <td style="padding:10px 8px;vertical-align:middle"><span class="${item.payment.paid?'pay-paid':'pay-unpaid'}">${item.payment.paid?'✅ จ่าย':'⏳ ยังไม่จ่าย'}</span></td>
+        <td style="padding:10px 8px;vertical-align:middle;font-size:12px;color:#6B7280">${del.sender?'ส่ง: '+del.sender:''}${del.receiver?'<br>รับ: '+del.receiver:''}</td>
+      </tr>`;
+    }).join('');
+
+    return `<div class="card" style="margin-bottom:14px;border-left:4px solid ${urgColor}">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px">
+        <div style="display:flex;align-items:center;gap:10px">
+          <span style="background:${urgBg};color:${urgColor};border-radius:12px;padding:4px 14px;font-size:13px;font-weight:700">${urgLabel}</span>
+          <span style="font-family:'Mitr',sans-serif;font-size:17px;font-weight:600">📅 ${date}</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="font-size:13px;color:#6B7280">${items.length} รายการ</span>
+          <span style="font-family:'Mitr',sans-serif;font-size:20px;font-weight:700;color:#6D28D9">${totalQty} ตัว</span>
+        </div>
+      </div>
+      <div id="rd-wrap-${date.replace(/-/g,'')}" style="overflow-x:auto">
+        <table style="width:100%;border-collapse:collapse;min-width:640px">
+          <thead><tr style="background:#F9FAFB">
+            <th style="padding:8px;text-align:left;font-size:11px;color:#6B7280;width:70px">รูป</th>
+            <th style="padding:8px;text-align:left;font-size:11px;color:#6B7280">ลูกค้า</th>
+            <th style="padding:8px;text-align:left;font-size:11px;color:#6B7280">รุ่น</th>
+            <th style="padding:8px;text-align:left;font-size:11px;color:#6B7280">สี</th>
+            <th style="padding:8px;text-align:left;font-size:11px;color:#6B7280">ไซส์</th>
+            <th style="padding:8px;text-align:center;font-size:11px;color:#6B7280">จำนวน</th>
+            <th style="padding:8px;text-align:left;font-size:11px;color:#6B7280">สาขา</th>
+            <th style="padding:8px;text-align:left;font-size:11px;color:#6B7280">สถานะ</th>
+            <th style="padding:8px;text-align:left;font-size:11px;color:#6B7280">ชำระเงิน</th>
+            <th style="padding:8px;text-align:left;font-size:11px;color:#6B7280">ผู้ส่ง/รับ</th>
+          </tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>
+    </div>`;
+  }).join('');
+
+  const noData = `<div class="empty"><div class="empty-ico">📅</div><p>${selDate?'ไม่มีออเดอร์ในวันที่นี้':'ยังไม่มีออเดอร์ที่กำหนดวันส่ง'}</p></div>`;
+
+  return `<div class="card">
+    <div class="card-title">📅 รายงานตามวันที่จัดส่ง</div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+      <div class="fg" style="margin-bottom:0;flex:1;min-width:220px">
+        <label>เลือกวันที่จัดส่ง</label>
+        <select onchange="window._rdDate=this.value;render()" style="max-width:340px">
+          <option value="">📅 แสดงทุกวันที่ (${allDates.length} วัน)</option>
+          ${dateOpts}
+        </select>
+      </div>
+      <button class="pdfbtn bsm" onclick="exportDatePDF()">📄 ออก PDF</button>
+      <button class="imgbtn bsm" onclick="doExportImg('rd-export','รายงานวันส่ง${selDate?'_'+selDate:''}')">🖼️ บันทึกรูป</button>
+    </div>
+    ${selDate?`<div style="margin-top:8px;font-size:12px;color:#6B7280">แสดงเฉพาะวันที่ <strong>${selDate}</strong> — พบ <strong>${filtered.length}</strong> รายการ รวม <strong>${filtered.reduce((s,x)=>s+x.qty,0)}</strong> ตัว</div>`:''}
+  </div>
+  <div id="rd-export">
+    ${Object.keys(groups).length ? groupHTML : noData}
+  </div>`;
+}
+
+async function exportDatePDF(){
+  const el=document.getElementById('rd-export');
+  if(!el){toast('❌ ไม่พบข้อมูล',false);return;}
+  await doExportPDF('rd-export','รายงานวันส่ง'+(window._rdDate?'_'+window._rdDate:'_ทั้งหมด'));
+}
+
 function renderRC(){
   const custs=[...new Set(_orders.map(o=>o.name))].sort();
   if(!custs.length)return`<div class="empty"><div class="empty-ico">👤</div><p>ยังไม่มีลูกค้า</p></div>`;
