@@ -11,7 +11,7 @@
   --pri:#6D28D9;--pri2:#7C3AED;--pri-l:#EDE9FE;--pri-ll:#F5F3FF;
   --teal:#0D9488;--tl:#CCFBF1;
   --amb:#D97706;--red:#DC2626;
-  --grn:#16A34A;--blu:#2563EB;
+  --grn:#16A34A;-a-blu:#2563EB;
   --g0:#F4F6F9;--g1:#F3F4F6;--g2:#E5E7EB;--g3:#D1D5DB;
   --t1:#111827;--t2:#374151;--t3:#6B7280;--t4:#9CA3AF;
   --white:#fff;--r:12px;--r2:16px;
@@ -328,7 +328,7 @@ const db = firebase.database();
 
 // ── Global state ──
 let _orders = [];
-let _branches = ['สาขาหลัก'];
+let _branches = ['Bluenin', 'Twelvefive'];
 let _logoData = '';
 let _appReady = false;
 let _alertDismissed = false;
@@ -361,6 +361,12 @@ setTimeout(() => {
   document.getElementById('fb-loading').style.display = 'none';
   document.getElementById('ls').style.display = 'flex';
   renderLogoEl();
+  // ตั้งค่า default brands ถ้ายังไม่มีใน Firebase
+  db.ref('branches').once('value', snap => {
+    if (!snap.val()) {
+      db.ref('branches').set(['Bluenin', 'Twelvefive']);
+    }
+  });
 }, 1500);
 
 // ── Firebase save helpers ──
@@ -426,7 +432,7 @@ function renderAlerts() {
       ${a.color?`<span class="tag tcol" style="font-size:11px">🎨 ${a.color}</span>`:''}
       ${a.size?`<span class="tag" style="font-size:11px">📏 ${a.size}</span>`:''}
       <span class="tag tqty" style="font-size:11px">×${a.qty} ตัว</span>
-      ${a.branch ? `<span class="tag tbranch" style="font-size:11px">🏪 ${a.branch}</span>` : ''}
+      ${a.branch ? `<span class="tag tbranch" style="font-size:11px">🏷️ ${a.branch}</span>` : ''}
       <span class="sp ${st.sp}" style="font-size:10px">${st.l}</span>
       <span style="font-size:11px;color:var(--t3)">📅 ${a.date}</span>
     </div>`;
@@ -524,7 +530,7 @@ async function exportAlertPDF() {
           <th style="padding:8px 10px;text-align:left;font-size:11px;color:#6B7280;border-bottom:2px solid #E5E7EB">สี</th>
           <th style="padding:8px 10px;text-align:left;font-size:11px;color:#6B7280;border-bottom:2px solid #E5E7EB">ไซส์</th>
           <th style="padding:8px 10px;text-align:center;font-size:11px;color:#6B7280;border-bottom:2px solid #E5E7EB">จำนวน</th>
-          <th style="padding:8px 10px;text-align:left;font-size:11px;color:#6B7280;border-bottom:2px solid #E5E7EB">สาขา</th>
+          <th style="padding:8px 10px;text-align:left;font-size:11px;color:#6B7280;border-bottom:2px solid #E5E7EB">แบรนด์</th>
           <th style="padding:8px 10px;text-align:left;font-size:11px;color:#6B7280;border-bottom:2px solid #E5E7EB">สถานะ</th>
           <th style="padding:8px 10px;text-align:left;font-size:11px;color:#6B7280;border-bottom:2px solid #E5E7EB">วันส่ง</th>
           <th style="padding:8px 10px;text-align:left;font-size:11px;color:#6B7280;border-bottom:2px solid #E5E7EB">ชำระเงิน</th>
@@ -578,7 +584,7 @@ const ROLE_META = {
   report:{label:'รายงาน',icon:'📊',cls:'report'}
 };
 const MENUS = {
-  admin:[{g:'ออเดอร์',items:[{id:'orders',l:'📋 รายการ'},{id:'add',l:'➕ เพิ่ม'}]},{g:'รายงาน',items:[{id:'rep-cust',l:'👤 ลูกค้า'},{id:'rep-model',l:'👕 รุ่น'},{id:'rep-date',l:'📅 วันส่ง'}]},{g:'ระบบ',items:[{id:'stats',l:'📊 สถิติ'},{id:'branches',l:'🏪 สาขา'}]}],
+  admin:[{g:'ออเดอร์',items:[{id:'orders',l:'📋 รายการ'},{id:'add',l:'➕ เพิ่ม'}]},{g:'รายงาน',items:[{id:'rep-cust',l:'👤 ลูกค้า'},{id:'rep-model',l:'👕 รุ่น'},{id:'rep-date',l:'📅 วันส่ง'}]},{g:'ระบบ',items:[{id:'stats',l:'📊 สถิติ'},{id:'branches',l:'🏷️ แบรนด์'}]}],
   staff:[{g:'ออเดอร์',items:[{id:'orders',l:'📋 รายการ'},{id:'add',l:'➕ เพิ่ม'}]}],
   report:[{g:'รายงาน',items:[{id:'rep-cust',l:'👤 ลูกค้า'},{id:'rep-model',l:'👕 รุ่น'},{id:'rep-date',l:'📅 วันส่ง'}]}]
 };
@@ -639,29 +645,29 @@ function render() {
 // ── Branch Manager ──
 function renderBranches() {
   return `<div class="branch-panel">
-    <div class="card-title">🏪 จัดการสาขา</div>
-    <p style="font-size:12px;color:var(--t3);margin-bottom:14px">เพิ่มสาขาที่รับออเดอร์ สาขาจะแสดงเป็น dropdown ในฟอร์ม และป้ายสีฟ้าบนออเดอร์</p>
+    <div class="card-title">🏪 จัดการป้ายแบรนด์</div>
+    <p style="font-size:12px;color:var(--t3);margin-bottom:14px">เพิ่มป้ายแบรนด์ สาขาจะแสดงเป็น dropdown ในฟอร์ม และป้ายสีฟ้าบนออเดอร์</p>
     <div style="margin-bottom:14px;min-height:36px">
       ${_branches.map((b,i)=>`<span class="branch-tag">${b}<button class="branch-tag-del" onclick="delBranch(${i})">✕</button></span>`).join('')}
       ${!_branches.length?'<span style="color:var(--t4);font-size:13px">ยังไม่มีสาขา</span>':''}
     </div>
     <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-      <input id="branch-inp" placeholder="ชื่อสาขาใหม่ เช่น เชียงใหม่, สาขา 2..." style="flex:1;padding:9px 12px;border:1.5px solid var(--g2);border-radius:8px;font-size:14px;font-family:'Sarabun',sans-serif;outline:none;min-width:180px" onkeydown="if(event.key==='Enter')addBranch()">
-      <button class="btn bp" onclick="addBranch()">➕ เพิ่มสาขา</button>
+      <input id="branch-inp" placeholder="ชื่อแบรนด์ เช่น Bluenin, Twelvefive..." style="flex:1;padding:9px 12px;border:1.5px solid var(--g2);border-radius:8px;font-size:14px;font-family:'Sarabun',sans-serif;outline:none;min-width:180px" onkeydown="if(event.key==='Enter')addBranch()">
+      <button class="btn bp" onclick="addBranch()">➕ เพิ่มแบรนด์</button>
     </div>
   </div>`;
 }
 function addBranch() {
   const inp=document.getElementById('branch-inp');
   const val=(inp?.value||'').trim();
-  if(!val){toast('⚠️ กรอกชื่อสาขาก่อน',false);return;}
+  if(!val){toast('⚠️ กรอกชื่อแบรนด์ก่อน',false);return;}
   const arr=[..._branches];
-  if(arr.includes(val)){toast('⚠️ มีสาขานี้แล้ว',false);return;}
-  arr.push(val); fbSaveBranches(arr); inp.value=''; toast('✅ เพิ่มสาขาแล้ว');
+  if(arr.includes(val)){toast('⚠️ มีแบรนด์นี้แล้ว',false);return;}
+  arr.push(val); fbSaveBranches(arr); inp.value=''; toast('✅ เพิ่มแบรนด์แล้ว');
 }
 function delBranch(i) {
-  if(!confirm('ลบสาขานี้?'))return;
-  const arr=[..._branches]; arr.splice(i,1); fbSaveBranches(arr); toast('🗑 ลบสาขาแล้ว');
+  if(!confirm('ลบแบรนด์นี้?'))return;
+  const arr=[..._branches]; arr.splice(i,1); fbSaveBranches(arr); toast('🗑 ลบแบรนด์แล้ว');
 }
 
 // ── List ──
@@ -671,7 +677,7 @@ function renderList() {
   if(fSearch) list=list.filter(o=>(o.name||'').includes(fSearch)||(o.model||'').includes(fSearch)||(o.branch||'').includes(fSearch)||(o.color||'').includes(fSearch));
   const tQ=list.reduce((s,o)=>s+parseInt(o.qty||0),0);
   const bf=Object.entries(SL).map(([k,v])=>`<button class="btn bxs ${fStatus===k?'bp':'bg'}" onclick="fStatus='${k}';render()">${v.l}</button>`).join('');
-  const branchFilter=_branches.length?`<select class="btn bg bxs" onchange="fSearch=this.value;render()" style="border:1px solid var(--g2)"><option value="">🏪 ทุกสาขา</option>${_branches.map(b=>`<option value="${b}" ${fSearch===b?'selected':''}>${b}</option>`).join('')}</select>`:'';
+  const branchFilter=_branches.length?`<select class="btn bg bxs" onchange="fSearch=this.value;render()" style="border:1px solid var(--g2)"><option value="">🏷️ ทุกแบรนด์</option>${_branches.map(b=>`<option value="${b}" ${fSearch===b?'selected':''}>${b}</option>`).join('')}</select>`:'';
   const canEdit=curRole==='admin'||curRole==='staff';
   return `<div class="fbar"><input class="sin" placeholder="🔍 ค้นหาชื่อ รุ่น สาขา..." value="${fSearch}" oninput="fSearch=this.value;render()">${branchFilter}<button class="btn bxs ${fStatus==='all'?'bp':'bg'}" onclick="fStatus='all';render()">ทั้งหมด</button>${bf}</div>
   <div style="font-size:12px;color:var(--t3);margin-bottom:10px">${list.length} รายการ • รวม <strong>${tQ}</strong> ตัว</div>
@@ -698,12 +704,12 @@ function renderOI(o, canEdit) {
     const sDel=s.delivery||{}; const sPay=s.payment||{};
     const sDelSection=canEdit?`<div class="del-section"><div class="del-title">📦 ติดตามการส่ง — รายการที่ ${si2+2}</div><div class="g2" style="gap:8px;margin-bottom:8px"><div class="fg" style="margin-bottom:0"><label>ผู้ส่ง</label><input placeholder="ชื่อผู้ส่ง" value="${sDel.sender||''}" onchange="updDel('${o.id}','sub',${si2},'sender',this.value)"></div><div class="fg" style="margin-bottom:0"><label>ผู้รับ</label><input placeholder="ชื่อผู้รับ" value="${sDel.receiver||''}" onchange="updDel('${o.id}','sub',${si2},'receiver',this.value)"></div></div><div class="fg" style="margin-bottom:8px"><label>หมายเหตุการส่ง</label><input placeholder="Kerry เลขพัสดุ..." value="${sDel.note||''}" onchange="updDel('${o.id}','sub',${si2},'note',this.value)"></div><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">${(sDel.proofs||[]).map((img)=>`<img src="${img}" class="del-proof-img" onclick="bigImg('${img}')">`).join('')}<label class="btn bg bxs" style="cursor:pointer">📷 หลักฐาน<input type="file" accept="image/*" style="display:none" onchange="addDelProof('${o.id}','sub',${si2},event)"></label></div></div>`:'';
     const sSubDueBadge=s.deliveryDate?dueDateBadge(s.deliveryDate):''; const sBranch=s.branch||'';
-    return `<div class="sub-item"><div style="display:flex;align-items:center;gap:6px;margin-bottom:8px"><span class="num-b sub">${si2+2}</span><strong style="font-size:13px">รายการที่ ${si2+2}</strong>${sBranch?`<span class="tag tbranch">🏪 ${sBranch}</span>`:''}</div><div class="oi-hd">${sThumb}<div class="oi-info"><div class="oi-name" style="font-size:14px">${o.name}</div><div class="oi-meta">${o.channel||''}</div><div class="oi-tags">${s.model?`<span class="tag tmod">👕 ${s.model}</span>`:''}${s.color?`<span class="tag tcol">🎨 ${s.color}</span>`:''}${s.size?`<span class="tag">📏 ${s.size}</span>`:''}${s.qty?`<span class="tag tqty">×${s.qty} ตัว</span>`:''}${spill(s.status||'wait')}</div>${sExtra?`<div class="extra-imgs">${sExtra}</div>`:''}</div></div><div class="steps">${sSteps}</div><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;align-items:center;font-size:12px"><span class="${sPay.paid?'pay-paid':'pay-unpaid'}">${sPay.paid?'✅ จ่ายแล้ว':'⏳ ยังไม่จ่าย'}</span>${canEdit?`<button class="btn bg bxs" onclick="togglePay('${o.id}','sub',${si2})">${sPay.paid?'ยกเลิก':'💳 จ่ายแล้ว'}</button>`:''}</div>${canEdit?`<div class="sub-status-row"><span style="font-size:11px;color:var(--t3);font-weight:600">สถานะ:</span><select class="btn bg bxs" style="border:1px solid var(--g2);font-size:11px;padding:4px 8px" onchange="updSubSt('${o.id}',${si2},this.value)">${stOpts(s.status||'wait')}</select><label class="btn bg bxs" style="cursor:pointer;font-size:11px;padding:4px 8px">📷 รูป<input type="file" accept="image/*" multiple style="display:none" onchange="addSubImg('${o.id}',${si2},event)"></label><button class="btn br bxs" style="font-size:11px;padding:4px 8px" onclick="delSub('${o.id}',${si2})">🗑 ลบ</button></div>`:''}${sDelSection}</div>`;
+    return `<div class="sub-item"><div style="display:flex;align-items:center;gap:6px;margin-bottom:8px"><span class="num-b sub">${si2+2}</span><strong style="font-size:13px">รายการที่ ${si2+2}</strong>${sBranch?`<span class="tag tbranch">🏷️ ${sBranch}</span>`:''}</div><div class="oi-hd">${sThumb}<div class="oi-info"><div class="oi-name" style="font-size:14px">${o.name}</div><div class="oi-meta">${o.channel||''}</div><div class="oi-tags">${s.model?`<span class="tag tmod">👕 ${s.model}</span>`:''}${s.color?`<span class="tag tcol">🎨 ${s.color}</span>`:''}${s.size?`<span class="tag">📏 ${s.size}</span>`:''}${s.qty?`<span class="tag tqty">×${s.qty} ตัว</span>`:''}${spill(s.status||'wait')}</div>${sExtra?`<div class="extra-imgs">${sExtra}</div>`:''}</div></div><div class="steps">${sSteps}</div><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;align-items:center;font-size:12px"><span class="${sPay.paid?'pay-paid':'pay-unpaid'}">${sPay.paid?'✅ จ่ายแล้ว':'⏳ ยังไม่จ่าย'}</span>${canEdit?`<button class="btn bg bxs" onclick="togglePay('${o.id}','sub',${si2})">${sPay.paid?'ยกเลิก':'💳 จ่ายแล้ว'}</button>`:''}</div>${canEdit?`<div class="sub-status-row"><span style="font-size:11px;color:var(--t3);font-weight:600">สถานะ:</span><select class="btn bg bxs" style="border:1px solid var(--g2);font-size:11px;padding:4px 8px" onchange="updSubSt('${o.id}',${si2},this.value)">${stOpts(s.status||'wait')}</select><label class="btn bg bxs" style="cursor:pointer;font-size:11px;padding:4px 8px">📷 รูป<input type="file" accept="image/*" multiple style="display:none" onchange="addSubImg('${o.id}',${si2},event)"></label><button class="btn br bxs" style="font-size:11px;padding:4px 8px" onclick="delSub('${o.id}',${si2})">🗑 ลบ</button></div>`:''}${sDelSection}</div>`;
   }).join('');
   return `<div class="oi" id="oi-${o.id}">
     <div style="display:flex;align-items:center;gap:6px;margin-bottom:10px">
       <span class="num-b">1</span><strong style="font-size:12px;color:var(--t3)">รายการที่ 1</strong>
-      ${o.branch?`<span class="tag tbranch">🏪 ${o.branch}</span>`:''}
+      ${o.branch?`<span class="tag tbranch">🏷️ ${o.branch}</span>`:''}
     </div>
     <div class="oi-hd">${thumb}<div class="oi-info">
       <div class="oi-name">${o.name}</div>
@@ -742,7 +748,7 @@ function addSubInline(oid) {
   const o = _orders.find(x=>x.id===oid);
   const branches = _branches||[];
   const branchOpts = branches.length
-    ? `<option value="">-- เลือกสาขา --</option>${branches.map(b=>`<option>${b}</option>`).join('')}`
+    ? `<option value="">-- เลือกแบรนด์ --</option>${branches.map(b=>`<option>${b}</option>`).join('')}`
     : `<option value="">ยังไม่มีสาขา</option>`;
   const form = document.createElement('div');
   form.className = 'inline-sub-form';
@@ -759,7 +765,7 @@ function addSubInline(oid) {
     </div>
     <div class="isf-row">
       <div class="isf"><label>จำนวน (ตัว) *</label><input id="isf_qty_${oid}" type="number" min="1" placeholder="0"></div>
-      <div class="isf"><label>🏪 สาขา</label><select id="isf_br_${oid}">${branchOpts}</select></div>
+      <div class="isf"><label>🏷️ แบรนด์</label><select id="isf_br_${oid}">${branchOpts}</select></div>
     </div>
     <div class="isf-row">
       <div class="isf"><label>📅 ลูกค้าต้องการรับวันที่</label><input id="isf_due_${oid}" type="date"></div>
@@ -849,7 +855,7 @@ function delOrd(id){if(!confirm('ยืนยันลบออเดอร์?'
 // ── Form ──
 function renderForm(){
   const branches=_branches||[];
-  const branchSel=(id,cur)=>branches.length?`<div class="fg"><label>🏪 สาขาที่รับออเดอร์</label><select id="${id}"><option value="">-- เลือกสาขา --</option>${branches.map(b=>`<option ${cur===b?'selected':''}>${b}</option>`).join('')}</select></div>`:'';
+  const branchSel=(id,cur)=>branches.length?`<div class="fg"><label>🏷️ ป้ายแบรนด์</label><select id="${id}"><option value="">-- เลือกแบรนด์ --</option>${branches.map(b=>`<option ${cur===b?'selected':''}>${b}</option>`).join('')}</select></div>`:'';
   if(editId){
     const o=_orders.find(x=>x.id===editId);
     return `<div class="card"><div class="card-title">✏️ แก้ไขออเดอร์ — ${o.name}</div>${mainFields(o,'f_')}${branchSel('f_br',o.branch||'')}<div class="fg"><label>รูปภาพ</label><label class="upzone" style="display:block;cursor:pointer"><div style="font-size:26px">📷</div><div style="font-size:12px;color:var(--t3);margin-top:4px">อัปโหลดหรือเลือกจากแกลเลอรี่</div><input type="file" accept="image/*" multiple style="display:none" onchange="handleFImgs(event)"></label><div class="igrid" id="fimg-grid">${formImgs.map((img,i)=>`<div class="iwrap"><img src="${img}" class="iprev" onclick="bigImg('${img}')"><button class="idel" onclick="rmFImg(${i})">✕</button></div>`).join('')}</div></div><div class="btn-row"><button class="btn bp" onclick="saveEdit()">💾 บันทึกการแก้ไข</button><button class="btn bg" onclick="cancelEdit()">ยกเลิก</button></div></div>`;
@@ -860,7 +866,7 @@ function renderForm(){
 function mainFields(o,p){return `<div class="g2" style="margin-bottom:10px"><div class="fg"><label>ชื่อลูกค้า *</label><input id="${p}name" placeholder="ชื่อลูกค้า" value="${o.name||''}"></div><div class="fg"><label>ช่องทาง</label><select id="${p}ch">${CHNL.map(c=>`<option ${o.channel===c?'selected':''}>${c}</option>`).join('')}</select></div></div><div class="g3" style="margin-bottom:10px"><div class="fg"><label>รุ่นเสื้อ *</label><input id="${p}mod" placeholder="ทิวลิป..." value="${o.model||''}"></div><div class="fg"><label>สี</label><input id="${p}col" placeholder="สีเอ..." value="${o.color||''}"></div><div class="fg"><label>ไซส์</label><input id="${p}sz" placeholder="M/L/XL" value="${o.size||''}"></div></div><div class="g2" style="margin-bottom:10px"><div class="fg"><label>จำนวน *</label><input id="${p}qty" type="number" min="1" value="${o.qty||''}"></div><div class="fg"><label>วันที่รับออเดอร์</label><input id="${p}dt" type="date" value="${o.date||new Date().toISOString().slice(0,10)}"></div></div><div class="g2" style="margin-bottom:10px"><div class="fg"><label>📅 ลูกค้าต้องการรับวันที่</label><input id="${p}due" type="date" value="${o.dueDate||''}"></div><div class="fg"><label>🚚 กำหนดจัดส่งวันที่</label><input id="${p}deldate" type="date" value="${o.deliveryDate||''}"></div></div><div class="fg"><label>สถานะชำระเงิน</label><select id="${p}paid"><option value="0" ${!(o.payment&&o.payment.paid)?'selected':''}>⏳ ยังไม่จ่าย</option><option value="1" ${(o.payment&&o.payment.paid)?'selected':''}>✅ จ่ายแล้ว</option></select></div><div class="fg"><label>หมายเหตุ</label><input id="${p}note" value="${o.note||''}"></div><div class="fg"><label>แจ้งปัญหา</label><input id="${p}iss" value="${o.issue||''}"></div>`;}
 function renderSubForm(bi,si,s){
   const branches=_branches||[];
-  const branchOpts=branches.length?`<option value="">-- เลือกสาขา --</option>${branches.map(b=>`<option ${(s.branch||'')===b?'selected':''}>${b}</option>`).join('')}`:`<option value="">ยังไม่มีสาขา</option>`;
+  const branchOpts=branches.length?`<option value="">-- เลือกแบรนด์ --</option>${branches.map(b=>`<option ${(s.branch||'')===b?'selected':''}>${b}</option>`).join('')}`:`<option value="">ยังไม่มีสาขา</option>`;
   return `<div class="sub-form-block" id="sub-${bi}-${si}">
     <div class="sub-form-num">รายการที่ ${si+2}</div>
     <button class="sub-form-del" onclick="rmSubBlock(${bi},${si})">✕ ลบ</button>
@@ -878,7 +884,7 @@ function renderSubForm(bi,si,s){
     </div>
     <div class="g2" style="margin-bottom:8px">
       <div class="sf"><label>สถานะชำระเงิน</label><select id="s${bi}_${si}_paid"><option value="0" ${!(s.payment&&s.payment.paid)?'selected':''}>⏳ ยังไม่จ่าย</option><option value="1" ${(s.payment&&s.payment.paid)?'selected':''}>✅ จ่ายแล้ว</option></select></div>
-      <div class="sf"><label>🏪 สาขา</label><select id="s${bi}_${si}_br">${branchOpts}</select></div>
+      <div class="sf"><label>🏷️ แบรนด์</label><select id="s${bi}_${si}_br">${branchOpts}</select></div>
     </div>
     <label class="upzone" style="display:block;cursor:pointer;padding:10px"><div style="font-size:18px">📷</div><div style="font-size:11px;color:var(--t3)">อัปโหลดหรือเลือกจากแกลเลอรี่</div><input type="file" accept="image/*" multiple style="display:none" onchange="handleSubBI(${bi},${si},event)"></label>
     <div class="igrid" id="subimg-${bi}-${si}">${(s.imgs||[]).map((img,ii)=>`<div class="iwrap"><img src="${img}" class="iprev" onclick="bigImg('${img}')"><button class="idel" onclick="rmSubImg(${bi},${si},${ii})">✕</button></div>`).join('')}</div>
@@ -1004,7 +1010,7 @@ function renderRD(){
         <td style="padding:10px 8px;vertical-align:middle">${item.color}</td>
         <td style="padding:10px 8px;vertical-align:middle">${item.size}</td>
         <td style="padding:10px 8px;vertical-align:middle;text-align:center"><strong style="color:#6D28D9;font-size:15px">${item.qty} ตัว</strong></td>
-        <td style="padding:10px 8px;vertical-align:middle">${item.branch?`<span class="tag tbranch">🏪 ${item.branch}</span>`:'-'}</td>
+        <td style="padding:10px 8px;vertical-align:middle">${item.branch?`<span class="tag tbranch">🏷️ ${item.branch}</span>`:'-'}</td>
         <td style="padding:10px 8px;vertical-align:middle"><span class="sp ${stObj.sp}">${stObj.l}</span></td>
         <td style="padding:10px 8px;vertical-align:middle"><span class="${item.payment.paid?'pay-paid':'pay-unpaid'}">${item.payment.paid?'✅ จ่าย':'⏳ ยังไม่จ่าย'}</span></td>
         <td style="padding:10px 8px;vertical-align:middle;font-size:12px;color:#6B7280">${del.sender?'ส่ง: '+del.sender:''}${del.receiver?'<br>รับ: '+del.receiver:''}</td>
@@ -1031,7 +1037,7 @@ function renderRD(){
             <th style="padding:8px;text-align:left;font-size:11px;color:#6B7280">สี</th>
             <th style="padding:8px;text-align:left;font-size:11px;color:#6B7280">ไซส์</th>
             <th style="padding:8px;text-align:center;font-size:11px;color:#6B7280">จำนวน</th>
-            <th style="padding:8px;text-align:left;font-size:11px;color:#6B7280">สาขา</th>
+            <th style="padding:8px;text-align:left;font-size:11px;color:#6B7280">แบรนด์</th>
             <th style="padding:8px;text-align:left;font-size:11px;color:#6B7280">สถานะ</th>
             <th style="padding:8px;text-align:left;font-size:11px;color:#6B7280">ชำระเงิน</th>
             <th style="padding:8px;text-align:left;font-size:11px;color:#6B7280">ผู้ส่ง/รับ</th>
@@ -1093,7 +1099,7 @@ function renderRC(){
     itemNum++;const num=itemNum;const imgs=o.imgs||[];
     const imgSection=imgs.length?imgs.map((img,ii)=>`<img src="${img}" class="rep-img" onclick="openIM('${o.id}',${ii},'main')">`).join(''):`<div style="background:var(--g1);border-radius:10px;height:140px;display:flex;align-items:center;justify-content:center;color:var(--t3);font-size:13px;margin-bottom:10px">ยังไม่มีรูปภาพ</div>`;
     const si4=STEPS4.indexOf(o.status);const steps=STEPS4.map((s,i)=>{const cl=i<si4?'done':i===si4?'cur':'';const lb={wait:'รอ',prod:'ผลิต',ready:'พร้อม',sent:'ส่ง'}[s];return`<div class="step"><div class="sdot ${cl}">${i<si4?'✓':i+1}</div><div class="slbl ${cl}">${lb}</div></div>`;}).join('');
-    const table=`<table class="tbl" style="margin-top:8px"><tr><td style="color:var(--t3);width:130px">ลูกค้า</td><td><strong>${o.name}</strong></td></tr><tr><td style="color:var(--t3)">รุ่น</td><td><strong>${o.model}</strong></td></tr>${o.color?`<tr><td style="color:var(--t3)">สี</td><td>${o.color}</td></tr>`:''}${o.size?`<tr><td style="color:var(--t3)">ไซส์</td><td>${o.size}</td></tr>`:''}<tr><td style="color:var(--t3)">จำนวน</td><td><strong style="color:var(--pri);font-size:16px">${o.qty} ตัว</strong></td></tr><tr><td style="color:var(--t3)">สถานะ</td><td>${spill(o.status)}</td></tr><tr><td style="color:var(--t3)">ชำระเงิน</td><td><span class="${pay.paid?'pay-paid':'pay-unpaid'}">${pay.paid?'✅ จ่ายแล้ว':'⏳ ยังไม่จ่าย'}</span></td></tr>${o.branch?`<tr><td style="color:var(--t3)">สาขา</td><td><span class="tag tbranch">🏪 ${o.branch}</span></td></tr>`:''}${o.deliveryDate?`<tr><td style="color:var(--t3)">กำหนดส่ง</td><td>${dueDateBadge(o.deliveryDate)}</td></tr>`:''}${del.sender?`<tr><td style="color:var(--t3)">ผู้ส่ง</td><td>${del.sender}</td></tr>`:''}${del.receiver?`<tr><td style="color:var(--t3)">ผู้รับ</td><td>${del.receiver}</td></tr>`:''}${del.note?`<tr><td style="color:var(--t3)">หมายเหตุส่ง</td><td>${del.note}</td></tr>`:''}${o.note?`<tr><td style="color:var(--t3)">หมายเหตุ</td><td>${o.note}</td></tr>`:''}${o.issue?`<tr><td style="color:var(--red)">ปัญหา</td><td style="color:var(--red)">${o.issue}</td></tr>`:''}</table>${(del.proofs||[]).length?`<div style="margin-top:8px"><div style="font-size:11px;color:var(--t3);font-weight:700;margin-bottom:6px">หลักฐานการส่ง</div><div style="display:flex;gap:8px;flex-wrap:wrap">${(del.proofs||[]).map(img=>`<img src="${img}" style="width:80px;height:80px;border-radius:8px;object-fit:cover;cursor:pointer" onclick="bigImg('${img}')">`).join('')}</div></div>`:''}`;
+    const table=`<table class="tbl" style="margin-top:8px"><tr><td style="color:var(--t3);width:130px">ลูกค้า</td><td><strong>${o.name}</strong></td></tr><tr><td style="color:var(--t3)">รุ่น</td><td><strong>${o.model}</strong></td></tr>${o.color?`<tr><td style="color:var(--t3)">สี</td><td>${o.color}</td></tr>`:''}${o.size?`<tr><td style="color:var(--t3)">ไซส์</td><td>${o.size}</td></tr>`:''}<tr><td style="color:var(--t3)">จำนวน</td><td><strong style="color:var(--pri);font-size:16px">${o.qty} ตัว</strong></td></tr><tr><td style="color:var(--t3)">สถานะ</td><td>${spill(o.status)}</td></tr><tr><td style="color:var(--t3)">ชำระเงิน</td><td><span class="${pay.paid?'pay-paid':'pay-unpaid'}">${pay.paid?'✅ จ่ายแล้ว':'⏳ ยังไม่จ่าย'}</span></td></tr>${o.branch?`<tr><td style="color:var(--t3)">แบรนด์</td><td><span class="tag tbranch">🏷️ ${o.branch}</span></td></tr>`:''}${o.deliveryDate?`<tr><td style="color:var(--t3)">กำหนดส่ง</td><td>${dueDateBadge(o.deliveryDate)}</td></tr>`:''}${del.sender?`<tr><td style="color:var(--t3)">ผู้ส่ง</td><td>${del.sender}</td></tr>`:''}${del.receiver?`<tr><td style="color:var(--t3)">ผู้รับ</td><td>${del.receiver}</td></tr>`:''}${del.note?`<tr><td style="color:var(--t3)">หมายเหตุส่ง</td><td>${del.note}</td></tr>`:''}${o.note?`<tr><td style="color:var(--t3)">หมายเหตุ</td><td>${o.note}</td></tr>`:''}${o.issue?`<tr><td style="color:var(--red)">ปัญหา</td><td style="color:var(--red)">${o.issue}</td></tr>`:''}</table>${(del.proofs||[]).length?`<div style="margin-top:8px"><div style="font-size:11px;color:var(--t3);font-weight:700;margin-bottom:6px">หลักฐานการส่ง</div><div style="display:flex;gap:8px;flex-wrap:wrap">${(del.proofs||[]).map(img=>`<img src="${img}" style="width:80px;height:80px;border-radius:8px;object-fit:cover;cursor:pointer" onclick="bigImg('${img}')">`).join('')}</div></div>`:''}`;
     const subHTML=(o.subs||[]).map((s,si2)=>{
       itemNum++;const snum=itemNum;const sImgs=(s.imgs||[]);const sDel=s.delivery||{};const sPay=s.payment||{};
       const sImgSection=sImgs.length?sImgs.map((img,ii)=>`<img src="${img}" class="rep-img" onclick="openIM('${o.id}',${ii},'sub',${si2})">`).join(''):`<div style="background:var(--g1);border-radius:10px;height:100px;display:flex;align-items:center;justify-content:center;color:var(--t3);font-size:13px;margin-bottom:10px">ยังไม่มีรูปภาพ</div>`;
@@ -1103,7 +1109,7 @@ function renderRC(){
     return `<div class="rep-item" style="border-left:3px solid var(--pri)"><div class="rep-item-num">${num}</div><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:6px"><span style="font-family:'Mitr',sans-serif;font-size:14px;font-weight:500">รายการที่ ${num} — ${o.model}${o.color?' / '+o.color:''}</span><div style="display:flex;gap:6px;align-items:center">${spill(o.status)}${ce?`<button class="btn bg bxs" onclick="startEdit('${o.id}')">✏️</button>`:''}</div></div><div class="steps">${steps}</div>${imgSection}${table}</div>${subHTML}`;
   }).join('');
   return `<div class="card"><div class="card-title">👤 รายงานลูกค้ารายบุคคล</div><div class="fg" style="margin-bottom:0"><label>เลือกลูกค้า</label><select style="max-width:260px" onchange="window._rc=this.value;render()">${custs.map(c=>`<option ${c===sel?'selected':''}>${c}</option>`).join('')}</select></div></div>
-  <div id="pdf-cust"><div class="card" style="border-left:4px solid var(--pri)"><div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px"><div><div style="font-family:'Mitr',sans-serif;font-size:20px;font-weight:600">${sel}</div><div style="font-size:13px;color:var(--t3)">${cos.length} ออเดอร์ • รวม ${totQ} ตัว</div></div><div style="text-align:right"><div style="font-family:'Mitr',sans-serif;font-size:32px;font-weight:700;color:var(--pri)">${totQ}</div><div style="font-size:12px;color:var(--t3)">ตัวทั้งหมด</div></div></div><div class="rep-h">สรุปรายการสั่งซื้อ</div><table class="tbl"><tr><th>รุ่น</th><th>สี</th><th>สาขา</th><th>จำนวน</th></tr>${Object.values(mb).map(m=>`<tr><td>${m.model}</td><td>${m.color||'-'}</td><td>${m.branch?`<span class="tag tbranch" style="font-size:11px">🏪 ${m.branch}</span>`:'-'}</td><td><strong>${m.qty} ตัว</strong></td></tr>`).join('')}<tr class="total-row"><td colspan="3">รวมทั้งหมด</td><td>${totQ} ตัว</td></tr></table></div>${allItems}</div>
+  <div id="pdf-cust"><div class="card" style="border-left:4px solid var(--pri)"><div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px"><div><div style="font-family:'Mitr',sans-serif;font-size:20px;font-weight:600">${sel}</div><div style="font-size:13px;color:var(--t3)">${cos.length} ออเดอร์ • รวม ${totQ} ตัว</div></div><div style="text-align:right"><div style="font-family:'Mitr',sans-serif;font-size:32px;font-weight:700;color:var(--pri)">${totQ}</div><div style="font-size:12px;color:var(--t3)">ตัวทั้งหมด</div></div></div><div class="rep-h">สรุปรายการสั่งซื้อ</div><table class="tbl"><tr><th>รุ่น</th><th>สี</th><th>แบรนด์</th><th>จำนวน</th></tr>${Object.values(mb).map(m=>`<tr><td>${m.model}</td><td>${m.color||'-'}</td><td>${m.branch?`<span class="tag tbranch" style="font-size:11px">🏷️ ${m.branch}</span>`:'-'}</td><td><strong>${m.qty} ตัว</strong></td></tr>`).join('')}<tr class="total-row"><td colspan="3">รวมทั้งหมด</td><td>${totQ} ตัว</td></tr></table></div>${allItems}</div>
   <div class="export-bar"><button class="pdfbtn" onclick="doExportPDF('pdf-cust','รายงาน_${sel}')">📄 ส่งออก PDF</button><button class="imgbtn" onclick="doExportImg('pdf-cust','รายงาน_${sel}')">🖼️ บันทึกรูป</button></div>`;
 }
 
@@ -1119,7 +1125,7 @@ function renderRM(){
   const grandT=rows.reduce((s,r)=>s+(r.qty||0),0);
   let heroImg=null;for(const r of rows){if(r.imgs&&r.imgs[0]){heroImg=r.imgs[0];break;}}
   const cg={};rows.forEach(r=>{const ck=`${r.color||'ไม่ระบุสี'}__${r.size||'-'}`;if(!cg[ck])cg[ck]={color:r.color||'ไม่ระบุสี',size:r.size||'-',rows:[],total:0};const ex=cg[ck].rows.find(x=>x.name===r.name&&x.deliveryDate===r.deliveryDate&&x.branch===r.branch);if(ex){ex.qty+=r.qty;if(r.status)ex.status=r.status;}else cg[ck].rows.push({name:r.name,qty:r.qty,status:r.status,deliveryDate:r.deliveryDate,branch:r.branch});cg[ck].total+=r.qty;});
-  const ct=Object.values(cg).map(c=>`<div style="margin-bottom:18px"><div style="font-weight:700;font-size:13px;margin-bottom:8px">🎨 ${c.color}${c.size&&c.size!=='-'?' • 📏 '+c.size:''} — <span style="color:var(--pri)">${c.total} ตัว</span></div><table class="tbl"><tr><th>ลูกค้า</th><th>จำนวน</th><th>สถานะ</th><th>กำหนดส่ง</th><th>สาขา</th></tr>${c.rows.map(r=>`<tr><td><strong>${r.name}</strong></td><td><strong>${r.qty} ตัว</strong></td><td>${spill(r.status)}</td><td>${r.deliveryDate?dueDateBadge(r.deliveryDate):'<span style="color:var(--t4);font-size:12px">—</span>'}</td><td>${r.branch?`<span class="tag tbranch" style="font-size:11px">🏪 ${r.branch}</span>`:'<span style="color:var(--t4);font-size:12px">—</span>'}</td></tr>`).join('')}<tr class="total-row"><td>รวม</td><td>${c.total} ตัว</td><td></td><td></td><td></td></tr></table></div>`).join('');
+  const ct=Object.values(cg).map(c=>`<div style="margin-bottom:18px"><div style="font-weight:700;font-size:13px;margin-bottom:8px">🎨 ${c.color}${c.size&&c.size!=='-'?' • 📏 '+c.size:''} — <span style="color:var(--pri)">${c.total} ตัว</span></div><table class="tbl"><tr><th>ลูกค้า</th><th>จำนวน</th><th>สถานะ</th><th>กำหนดส่ง</th><th>แบรนด์</th></tr>${c.rows.map(r=>`<tr><td><strong>${r.name}</strong></td><td><strong>${r.qty} ตัว</strong></td><td>${spill(r.status)}</td><td>${r.deliveryDate?dueDateBadge(r.deliveryDate):'<span style="color:var(--t4);font-size:12px">—</span>'}</td><td>${r.branch?`<span class="tag tbranch" style="font-size:11px">🏷️ ${r.branch}</span>/span>`:'<span style="color:var(--t4);font-size:12px">—</span>'}</td></tr>`).join('')}<tr class="total-row"><td>รวม</td><td>${c.total} ตัว</td><td></td><td></td><td></td></tr></table></div>`).join('');
   const ce=curRole==='admin'||curRole==='staff';const custCount=[...new Set(rows.map(r=>r.name))].length;
   return `<div class="card"><div class="card-title">👕 รายงานรุ่นเสื้อ</div><div class="fg" style="margin-bottom:0"><label>เลือกรุ่น (${mdls.length} รุ่น)</label><select style="max-width:300px" onchange="window._rm=this.value;render()">${mdls.map(m=>`<option ${m===sel?'selected':''}>${m}</option>`).join('')}</select></div></div>
   <div id="pdf-model"><div class="model-head">${heroImg?`<img src="${heroImg}" class="model-img" onclick="bigImg('${heroImg}')">`:`<div class="model-img-ph"><span style="font-size:28px">📷</span><span>ไม่มีรูป</span></div>`}<div style="flex:1"><div style="font-family:'Mitr',sans-serif;font-size:22px;font-weight:700;color:var(--pri)">${sel}</div><div style="font-size:13px;color:var(--t2);margin:4px 0">${custCount} ลูกค้า • ${rows.length} รายการ</div><div style="font-family:'Mitr',sans-serif;font-size:44px;font-weight:700;color:var(--pri);line-height:1">${grandT}</div><div style="font-size:13px;color:var(--t3)">ตัวรวมทั้งหมด</div>${ce?`<label class="btn bg bxs" style="cursor:pointer;margin-top:8px;display:inline-flex">📷 เปลี่ยนรูปรุ่น<input type="file" accept="image/*" style="display:none" onchange="repMImg('${sel}',event)"></label>`:''}</div></div><div class="card"><div class="rep-h">รายละเอียดแยกตามสี ไซส์ และลูกค้า</div>${ct||'<p style="color:var(--t3)">ไม่มีข้อมูล</p>'}<div style="background:var(--pri-ll);border-radius:10px;padding:14px;text-align:center;border:1px solid var(--pri-l);margin-top:12px"><div style="font-size:13px;color:var(--t3)">ยอดผลิตรวม — รุ่น ${sel}</div><div style="font-family:'Mitr',sans-serif;font-size:44px;font-weight:700;color:var(--pri)">${grandT} <span style="font-size:18px">ตัว</span></div><div style="font-size:13px;color:var(--t3)">จาก ${custCount} ลูกค้า</div></div></div></div>
@@ -1141,7 +1147,7 @@ function renderStats(){
   return `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px"><div style="font-family:'Mitr',sans-serif;font-size:16px;font-weight:500">📊 สถิติการผลิต</div><div style="display:flex;gap:8px"><button class="pdfbtn bsm" onclick="doExportPDF('sa','สถิติ')">📄 PDF</button><button class="imgbtn bsm" onclick="doExportImg('sa','สถิติ')">🖼️ รูป</button></div></div>
   <div id="sa">
   <div class="sg"><div class="sc"><div class="sn">${tO}</div><div class="sl">ออเดอร์รวม</div></div><div class="sc"><div class="sn" style="color:var(--amb)">${tQ}</div><div class="sl">ตัวทั้งหมด</div></div><div class="sc"><div class="sn" style="color:var(--teal)">${tP}</div><div class="sl">กำลังผลิต</div></div><div class="sc"><div class="sn" style="color:var(--grn)">${tR}</div><div class="sl">พร้อมส่ง</div></div><div class="sc"><div class="sn" style="color:var(--blu)">${tS}</div><div class="sl">ส่งแล้ว</div></div><div class="sc"><div class="sn" style="color:var(--red)">${tI}</div><div class="sl">มีปัญหา</div></div><div class="sc"><div class="sn" style="color:var(--grn)">${tPaid}</div><div class="sl">จ่ายแล้ว</div></div></div>
-  ${Object.keys(bySrc).length>1?`<div class="card"><div class="card-title">🏪 สถิติรายสาขา</div><table class="tbl"><tr><th>สาขา</th><th>จำนวน (ตัว)</th></tr>${Object.entries(bySrc).map(([b,q])=>`<tr><td>${b}</td><td><strong>${q} ตัว</strong></td></tr>`).join('')}</table></div>`:''}
+  ${Object.keys(bySrc).length>1?`<div class="card"><div class="card-title">🏪 สถิติรายสาขา</div><table class="tbl"><tr><th>แบรนด์</th><th>จำนวน (ตัว)</th></tr>${Object.entries(bySrc).map(([b,q])=>`<tr><td>${b}</td><td><strong>${q} ตัว</strong></td></tr>`).join('')}</table></div>`:''}
   <div class="card"><div class="card-title">สถิติรายรุ่น</div>${mR.length?mR.map(([m,v])=>`<div style="margin-bottom:14px"><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px"><strong>${m}</strong><span style="color:var(--t3)">ส่งแล้ว ${v.sent}/${v.qty}</span></div><div style="background:var(--g1);border-radius:6px;height:10px;overflow:hidden"><div style="background:var(--pri);height:100%;width:${Math.round(v.qty/mQ*100)}%;border-radius:6px"></div></div></div>`).join(''):'<p style="color:var(--t3)">ยังไม่มีข้อมูล</p>'}</div>
   </div>`;
 }
