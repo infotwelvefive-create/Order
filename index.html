@@ -1046,18 +1046,29 @@ function renderRD(){
 
   return `<div class="card">
     <div class="card-title">📅 รายงานตามวันที่จัดส่ง</div>
-    <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
-      <div class="fg" style="margin-bottom:0;flex:1;min-width:220px">
-        <label>เลือกวันที่จัดส่ง</label>
-        <select onchange="window._rdDate=this.value;render()" style="max-width:340px">
-          <option value="">📅 แสดงทุกวันที่ (${allDates.length} วัน)</option>
-          ${dateOpts}
-        </select>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end">
+      <div class="fg" style="margin-bottom:0">
+        <label>📅 เลือกวันที่จัดส่ง</label>
+        <input type="date" value="${selDate}" onchange="window._rdDate=this.value;render()"
+          style="padding:9px 12px;border:1.5px solid var(--g2);border-radius:8px;font-size:14px;font-family:'Sarabun',sans-serif;outline:none;cursor:pointer;min-width:180px"
+          onfocus="this.style.borderColor='var(--pri)'" onblur="this.style.borderColor='var(--g2)'">
       </div>
+      ${selDate?`<button class="btn bg bxs" onclick="window._rdDate='';render()">✕ ล้างวันที่</button>`:''}
+      <div style="flex:1"></div>
       <button class="pdfbtn bsm" onclick="exportDatePDF()">📄 ออก PDF</button>
       <button class="imgbtn bsm" onclick="doExportImg('rd-export','รายงานวันส่ง${selDate?'_'+selDate:''}')">🖼️ บันทึกรูป</button>
     </div>
-    ${selDate?`<div style="margin-top:8px;font-size:12px;color:#6B7280">แสดงเฉพาะวันที่ <strong>${selDate}</strong> — พบ <strong>${filtered.length}</strong> รายการ รวม <strong>${filtered.reduce((s,x)=>s+x.qty,0)}</strong> ตัว</div>`:''}
+    <div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap">
+      ${allDates.slice(0,8).map(d=>{
+        const diff=getDiff(d);
+        const bg=diff<0?'#FEE2E2':diff<=3?'#FEF3C7':'#F3F4F6';
+        const col=diff<0?'#991B1B':diff<=3?'#92400E':'#374151';
+        const lbl=diff<0?`เกิน ${Math.abs(diff)}วัน`:diff===0?'วันนี้':` ${diff}วัน`;
+        return `<button onclick="window._rdDate='${d}';render()" style="background:${d===selDate?'var(--pri)':bg};color:${d===selDate?'#fff':col};border:none;border-radius:20px;padding:4px 12px;font-size:12px;font-weight:600;cursor:pointer;font-family:'Sarabun',sans-serif">${d} (${lbl})</button>`;
+      }).join('')}
+      ${allDates.length>8?`<span style="font-size:12px;color:var(--t4);padding:4px 8px">+${allDates.length-8} วัน...</span>`:''}
+    </div>
+    ${selDate?`<div style="margin-top:8px;font-size:12px;color:#6B7280">แสดงเฉพาะวันที่ <strong>${selDate}</strong> — พบ <strong>${filtered.length}</strong> รายการ รวม <strong>${filtered.reduce((s,x)=>s+x.qty,0)}</strong> ตัว</div>`:`<div style="margin-top:8px;font-size:12px;color:#6B7280">แสดงทุกวันที่ — ${allDates.length} วัน • ${filtered.length} รายการ • ${filtered.reduce((s,x)=>s+x.qty,0)} ตัว</div>`}
   </div>
   <div id="rd-export">
     ${Object.keys(groups).length ? groupHTML : noData}
