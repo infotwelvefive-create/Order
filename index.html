@@ -127,6 +127,13 @@ body{font-family:'Sarabun',sans-serif;background:var(--g0);color:var(--t1);font-
 .alert-days{font-size:11px;font-weight:700;padding:2px 7px;border-radius:12px;white-space:nowrap}
 .alert-days.overdue{background:#FEE2E2;color:#991B1B}
 .alert-days.urgent{background:#FEF3C7;color:#92400E}
+/* INLINE SUB FORM */
+.inline-sub-form{background:var(--white);border:2px solid #A7F3D0;border-radius:var(--r2);padding:14px;margin-top:10px}
+.isf-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+.isf-row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:8px}
+.isf label{display:block;font-size:10px;font-weight:700;color:var(--t3);margin-bottom:3px;text-transform:uppercase;letter-spacing:.4px}
+.isf input,.isf select{width:100%;padding:8px 10px;border:1.5px solid var(--g2);border-radius:7px;font-size:13px;color:var(--t1);background:var(--white);outline:none;font-family:'Sarabun',sans-serif}
+.isf input:focus,.isf select:focus{border-color:var(--teal);box-shadow:0 0 0 2px rgba(13,148,136,.12)}
 /* BRANCH PANEL */
 .branch-panel{background:var(--white);border-radius:var(--r2);border:1px solid var(--g2);padding:16px;margin-bottom:12px;box-shadow:var(--sh)}
 .branch-tag{display:inline-flex;align-items:center;gap:6px;background:#E0F2FE;color:#0369A1;border-radius:20px;padding:4px 12px;font-size:13px;font-weight:600;margin:3px}
@@ -275,7 +282,10 @@ body{font-family:'Sarabun',sans-serif;background:var(--g0);color:var(--t1);font-
     <div class="alert-banner-inner">
       <div class="alert-title">🔔 ออเดอร์ถึงกำหนดส่งภายใน 3 วัน หรือเกินกำหนดแล้ว (ยังไม่ส่ง)</div>
       <div id="alert-list"></div>
-      <button onclick="dismissAlert()" style="margin-top:6px;background:none;border:1px solid #D97706;border-radius:8px;padding:4px 12px;font-size:12px;color:#92400E;cursor:pointer;font-family:'Sarabun',sans-serif;font-weight:600">ซ่อนชั่วคราว ✕</button>
+      <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
+        <button onclick="exportAlertPDF()" style="background:#DC2626;color:#fff;border:none;border-radius:8px;padding:5px 14px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Sarabun',sans-serif;display:inline-flex;align-items:center;gap:5px">📄 ออก PDF รายงาน</button>
+        <button onclick="dismissAlert()" style="background:none;border:1px solid #D97706;border-radius:8px;padding:4px 12px;font-size:12px;color:#92400E;cursor:pointer;font-family:'Sarabun',sans-serif;font-weight:600">ซ่อนชั่วคราว ✕</button>
+      </div>
     </div>
   </div>
   <div id="menu-bar" class="menu-bar"></div>
@@ -419,6 +429,120 @@ function renderAlerts() {
   banner.style.display = 'block';
 }
 function dismissAlert() { _alertDismissed = true; document.getElementById('alert-banner').style.display = 'none'; }
+
+async function exportAlertPDF() {
+  // สร้าง element สำหรับ print
+  const now = new Date(); now.setHours(0,0,0,0);
+  const alerts = [];
+  _orders.forEach(o => {
+    if (o.status !== 'sent') {
+      const d = o.deliveryDate || o.dueDate;
+      if (d) { const dd=new Date(d);dd.setHours(0,0,0,0);const diff=Math.ceil((dd-now)/86400000);if(diff<=ALERT_DAYS) alerts.push({order:o,sub:null,diff,date:d,itemLabel:'รายการที่ 1',itemIdx:-1}); }
+    }
+    (o.subs||[]).forEach((s,si) => {
+      if ((s.status||'wait') === 'sent') return;
+      const d = s.deliveryDate || s.dueDate;
+      if (!d) return;
+      const dd=new Date(d);dd.setHours(0,0,0,0);const diff=Math.ceil((dd-now)/86400000);
+      if(diff<=ALERT_DAYS) alerts.push({order:o,sub:s,diff,date:d,itemLabel:'รายการที่ '+(si+2),itemIdx:si});
+    });
+  });
+  if (!alerts.length) { toast('ไม่มีออเดอร์ใกล้กำหนดส่ง',false); return; }
+  alerts.sort((a,b)=>a.diff-b.diff);
+
+  // สร้าง HTML สำหรับ PDF
+  const dateStr = new Date().toLocaleDateString('th-TH',{year:'numeric',month:'long',day:'numeric'});
+  const rows = alerts.map((a,idx) => {
+    const o = a.order;
+    const s = a.sub;
+    const model  = s ? (s.model||o.model) : o.model;
+    const color  = s ? (s.color||o.color||'-') : (o.color||'-');
+    const size   = s ? (s.size||o.size||'-') : (o.size||'-');
+    const qty    = s ? (s.qty||0) : o.qty;
+    const branch = s ? (s.branch||o.branch||'-') : (o.branch||'-');
+    const pay    = s ? (s.payment&&s.payment.paid) : (o.payment&&o.payment.paid);
+    const status = s ? (SL[s.status||'wait']||SL.wait).l : (SL[o.status]||SL.wait).l;
+    const diff   = a.diff;
+    const diffTxt = diff<0?`เกินกำหนด ${Math.abs(diff)} วัน`:diff===0?'วันนี้!':`อีก ${diff} วัน`;
+    const rowBg  = diff<0?'#FFF5F5':diff===0?'#FFF5F5':'#FFFBEB';
+    const urgBg  = diff<0?'#FEE2E2':'#FEF3C7';
+    const urgCol = diff<0?'#991B1B':'#92400E';
+    const del    = s ? (s.delivery||{}) : (o.delivery||{});
+    return `<tr style="background:${rowBg}">
+      <td style="padding:8px 10px;border-bottom:1px solid #E5E7EB;font-size:12px;color:#374151;white-space:nowrap">
+        <span style="background:${urgBg};color:${urgCol};border-radius:12px;padding:2px 8px;font-size:11px;font-weight:700">${diffTxt}</span>
+      </td>
+      <td style="padding:8px 10px;border-bottom:1px solid #E5E7EB;font-size:13px;font-weight:700">${o.name}</td>
+      <td style="padding:8px 10px;border-bottom:1px solid #E5E7EB;font-size:12px;color:#374151">${a.itemLabel}</td>
+      <td style="padding:8px 10px;border-bottom:1px solid #E5E7EB;font-size:12px"><strong>${model}</strong></td>
+      <td style="padding:8px 10px;border-bottom:1px solid #E5E7EB;font-size:12px">${color}</td>
+      <td style="padding:8px 10px;border-bottom:1px solid #E5E7EB;font-size:12px">${size}</td>
+      <td style="padding:8px 10px;border-bottom:1px solid #E5E7EB;font-size:12px;text-align:center"><strong style="color:#6D28D9">${qty} ตัว</strong></td>
+      <td style="padding:8px 10px;border-bottom:1px solid #E5E7EB;font-size:12px">${branch}</td>
+      <td style="padding:8px 10px;border-bottom:1px solid #E5E7EB;font-size:12px">${status}</td>
+      <td style="padding:8px 10px;border-bottom:1px solid #E5E7EB;font-size:12px">${a.date}</td>
+      <td style="padding:8px 10px;border-bottom:1px solid #E5E7EB;font-size:12px">
+        <span style="background:${pay?'#DCFCE7':'#FEE2E2'};color:${pay?'#166534':'#991B1B'};border-radius:20px;padding:2px 8px;font-size:11px;font-weight:700">${pay?'✅ จ่ายแล้ว':'⏳ ยังไม่จ่าย'}</span>
+      </td>
+      <td style="padding:8px 10px;border-bottom:1px solid #E5E7EB;font-size:11px;color:#6B7280">${del.sender?'ผู้ส่ง: '+del.sender+' ':''} ${del.receiver?'ผู้รับ: '+del.receiver:''}${del.note?'<br>'+del.note:''}</td>
+      <td style="padding:8px 10px;border-bottom:1px solid #E5E7EB;font-size:11px;color:#6B7280">${o.note||'-'}</td>
+    </tr>`;
+  }).join('');
+
+  const html = `<div style="font-family:'Sarabun',sans-serif;padding:20px;background:#fff;min-width:900px">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;border-bottom:3px solid #6D28D9;padding-bottom:12px">
+      <div>
+        <div style="font-family:sans-serif;font-size:22px;font-weight:700;color:#6D28D9">📋 รายงานออเดอร์ใกล้กำหนดส่ง</div>
+        <div style="font-size:13px;color:#6B7280;margin-top:4px">พิมพ์วันที่: ${dateStr} • แจ้งเตือนออเดอร์ภายใน ${ALERT_DAYS} วัน และเกินกำหนดแล้ว</div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-size:28px;font-weight:700;color:#DC2626">${alerts.length}</div>
+        <div style="font-size:12px;color:#6B7280">รายการที่ต้องดำเนินการ</div>
+      </div>
+    </div>
+    <table style="width:100%;border-collapse:collapse;font-size:12px">
+      <thead>
+        <tr style="background:#F3F4F6">
+          <th style="padding:8px 10px;text-align:left;font-size:11px;color:#6B7280;border-bottom:2px solid #E5E7EB">กำหนด</th>
+          <th style="padding:8px 10px;text-align:left;font-size:11px;color:#6B7280;border-bottom:2px solid #E5E7EB">ลูกค้า</th>
+          <th style="padding:8px 10px;text-align:left;font-size:11px;color:#6B7280;border-bottom:2px solid #E5E7EB">รายการ</th>
+          <th style="padding:8px 10px;text-align:left;font-size:11px;color:#6B7280;border-bottom:2px solid #E5E7EB">รุ่นเสื้อ</th>
+          <th style="padding:8px 10px;text-align:left;font-size:11px;color:#6B7280;border-bottom:2px solid #E5E7EB">สี</th>
+          <th style="padding:8px 10px;text-align:left;font-size:11px;color:#6B7280;border-bottom:2px solid #E5E7EB">ไซส์</th>
+          <th style="padding:8px 10px;text-align:center;font-size:11px;color:#6B7280;border-bottom:2px solid #E5E7EB">จำนวน</th>
+          <th style="padding:8px 10px;text-align:left;font-size:11px;color:#6B7280;border-bottom:2px solid #E5E7EB">สาขา</th>
+          <th style="padding:8px 10px;text-align:left;font-size:11px;color:#6B7280;border-bottom:2px solid #E5E7EB">สถานะ</th>
+          <th style="padding:8px 10px;text-align:left;font-size:11px;color:#6B7280;border-bottom:2px solid #E5E7EB">วันส่ง</th>
+          <th style="padding:8px 10px;text-align:left;font-size:11px;color:#6B7280;border-bottom:2px solid #E5E7EB">ชำระเงิน</th>
+          <th style="padding:8px 10px;text-align:left;font-size:11px;color:#6B7280;border-bottom:2px solid #E5E7EB">ผู้ส่ง/ผู้รับ</th>
+          <th style="padding:8px 10px;text-align:left;font-size:11px;color:#6B7280;border-bottom:2px solid #E5E7EB">หมายเหตุ</th>
+        </tr>
+      </thead>
+      <tbody>${rows}</tbody>
+    </table>
+    <div style="margin-top:16px;padding-top:12px;border-top:1px solid #E5E7EB;display:flex;justify-content:space-between;font-size:11px;color:#9CA3AF">
+      <span>OrderPro — รายงานอัตโนมัติ</span>
+      <span>รวม ${alerts.length} รายการ ที่ต้องดำเนินการ</span>
+    </div>
+  </div>`;
+
+  toast('⏳ กำลังสร้าง PDF...');
+  const wrap = document.createElement('div');
+  wrap.style.cssText = 'position:fixed;left:-9999px;top:0;background:#fff';
+  wrap.innerHTML = html;
+  document.body.appendChild(wrap);
+  try {
+    await new Promise(r => setTimeout(r, 300));
+    const c = await html2canvas(wrap, {scale:2, backgroundColor:'#fff', logging:false, allowTaint:true, useCORS:true});
+    const imgD = c.toDataURL('image/jpeg', 0.92);
+    const {jsPDF} = window.jspdf;
+    const pdf = new jsPDF({orientation: c.width>c.height?'landscape':'portrait', unit:'px', format:[c.width/2, c.height/2]});
+    pdf.addImage(imgD,'JPEG',0,0,c.width/2,c.height/2);
+    pdf.save('รายงานออเดอร์ใกล้กำหนดส่ง_'+new Date().toISOString().slice(0,10)+'.pdf');
+    toast('✅ PDF บันทึกแล้ว');
+  } catch(err) { toast('❌ '+err.message, false); }
+  document.body.removeChild(wrap);
+}
 function goToOrder(id) { fSearch = ''; fStatus = 'all'; goTab('orders'); setTimeout(() => { const el = document.getElementById('oi-' + id); if (el) el.scrollIntoView({behavior:'smooth', block:'center'}); }, 300); }
 
 // ── Logo ──
@@ -592,7 +716,113 @@ function renderOI(o, canEdit) {
 function updDel(oid,type,si,field,val){const o=_orders.find(x=>x.id===oid);if(!o)return;if(type==='main'){if(!o.delivery)o.delivery={};o.delivery[field]=val;}else{if(!o.subs[si].delivery)o.subs[si].delivery={};o.subs[si].delivery[field]=val;}fbSave(o);}
 function addDelProof(oid,type,si,e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{const o=_orders.find(x=>x.id===oid);if(!o)return;if(type==='main'){if(!o.delivery)o.delivery={};if(!o.delivery.proofs)o.delivery.proofs=[];o.delivery.proofs.push(ev.target.result);}else{if(!o.subs[si].delivery)o.subs[si].delivery={};if(!o.subs[si].delivery.proofs)o.subs[si].delivery.proofs=[];o.subs[si].delivery.proofs.push(ev.target.result);}fbSave(o);};r.readAsDataURL(f);}
 function togglePay(oid,type,si){const o=_orders.find(x=>x.id===oid);if(!o)return;if(type==='main'){if(!o.payment)o.payment={};o.payment.paid=!o.payment.paid;}else{if(!o.subs[si].payment)o.subs[si].payment={};o.subs[si].payment.paid=!o.subs[si].payment.paid;}fbSave(o);toast('✅ บันทึกสถานะชำระเงิน');}
-function addSubInline(oid){const o=_orders.find(x=>x.id===oid);if(!o.subs)o.subs=[];o.subs.push(newSub());fbSave(o);}
+// ตัวแปรเก็บ inline form state
+let _inlineSubForms = {}; // key: oid -> {imgs:[]}
+
+function addSubInline(oid) {
+  // toggle form
+  if (!_inlineSubForms[oid]) _inlineSubForms[oid] = {imgs:[]};
+  const existing = document.getElementById('inline-sub-form-'+oid);
+  if (existing) { existing.remove(); delete _inlineSubForms[oid]; return; }
+  const o = _orders.find(x=>x.id===oid);
+  const branches = _branches||[];
+  const branchOpts = branches.length
+    ? `<option value="">-- เลือกสาขา --</option>${branches.map(b=>`<option>${b}</option>`).join('')}`
+    : `<option value="">ยังไม่มีสาขา</option>`;
+  const form = document.createElement('div');
+  form.className = 'inline-sub-form';
+  form.id = 'inline-sub-form-'+oid;
+  form.innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+      <strong style="font-family:'Mitr',sans-serif;font-size:13px;color:var(--teal)">➕ เพิ่มรายการใหม่</strong>
+      <button onclick="cancelSubInline('${oid}')" class="btn bg bxs" style="font-size:11px;padding:3px 8px">✕ ยกเลิก</button>
+    </div>
+    <div class="isf-row3">
+      <div class="isf"><label>รุ่นเสื้อ *</label><input id="isf_mod_${oid}" placeholder="ทิวลิป..."></div>
+      <div class="isf"><label>สี</label><input id="isf_col_${oid}" placeholder="สีเอ..."></div>
+      <div class="isf"><label>ไซส์</label><input id="isf_sz_${oid}" placeholder="M/L/XL"></div>
+    </div>
+    <div class="isf-row">
+      <div class="isf"><label>จำนวน (ตัว) *</label><input id="isf_qty_${oid}" type="number" min="1" placeholder="0"></div>
+      <div class="isf"><label>🏪 สาขา</label><select id="isf_br_${oid}">${branchOpts}</select></div>
+    </div>
+    <div class="isf-row">
+      <div class="isf"><label>📅 ลูกค้าต้องการรับวันที่</label><input id="isf_due_${oid}" type="date"></div>
+      <div class="isf"><label>🚚 กำหนดจัดส่งวันที่</label><input id="isf_deldate_${oid}" type="date"></div>
+    </div>
+    <div class="isf-row" style="margin-bottom:10px">
+      <div class="isf"><label>สถานะชำระเงิน</label><select id="isf_paid_${oid}"><option value="0">⏳ ยังไม่จ่าย</option><option value="1">✅ จ่ายแล้ว</option></select></div>
+      <div class="isf"><label>หมายเหตุ</label><input id="isf_note_${oid}" placeholder="..."></div>
+    </div>
+    <div style="margin-bottom:10px">
+      <div class="isf" style="margin-bottom:6px"><label>รูปภาพ</label></div>
+      <label class="upzone" style="display:block;cursor:pointer;padding:10px;text-align:center">
+        <div style="font-size:18px">📷</div>
+        <div style="font-size:11px;color:var(--t3)">อัปโหลดหรือเลือกจากแกลเลอรี่</div>
+        <input type="file" accept="image/*" multiple style="display:none" onchange="handleInlineSubImg('${oid}',event)">
+      </label>
+      <div class="igrid" id="isf_imgs_${oid}" style="margin-top:8px"></div>
+    </div>
+    <div style="display:flex;gap:8px">
+      <button class="btn bp" style="flex:1" onclick="saveSubInline('${oid}')">💾 บันทึกรายการนี้</button>
+      <button class="btn bg" onclick="cancelSubInline('${oid}')">ยกเลิก</button>
+    </div>
+  `;
+  // แทรกหลังปุ่ม ➕
+  const btn = document.querySelector(`[onclick="addSubInline('${oid}')"]`);
+  if (btn) btn.parentNode.insertBefore(form, btn.nextSibling);
+}
+
+function cancelSubInline(oid) {
+  const f = document.getElementById('inline-sub-form-'+oid);
+  if (f) f.remove();
+  delete _inlineSubForms[oid];
+}
+
+function handleInlineSubImg(oid, e) {
+  if (!_inlineSubForms[oid]) _inlineSubForms[oid] = {imgs:[]};
+  Array.from(e.target.files).forEach(f => {
+    const r = new FileReader();
+    r.onload = ev => {
+      _inlineSubForms[oid].imgs.push(ev.target.result);
+      const g = document.getElementById('isf_imgs_'+oid);
+      if (g) g.innerHTML = _inlineSubForms[oid].imgs.map((img,ii) =>
+        `<div class="iwrap"><img src="${img}" class="iprev" onclick="bigImg('${img}')"><button class="idel" onclick="rmInlineSubImg('${oid}',${ii})">✕</button></div>`
+      ).join('');
+    };
+    r.readAsDataURL(f);
+  });
+}
+
+function rmInlineSubImg(oid, ii) {
+  if (!_inlineSubForms[oid]) return;
+  _inlineSubForms[oid].imgs.splice(ii,1);
+  const g = document.getElementById('isf_imgs_'+oid);
+  if (g) g.innerHTML = _inlineSubForms[oid].imgs.map((img,iix) =>
+    `<div class="iwrap"><img src="${img}" class="iprev" onclick="bigImg('${img}')"><button class="idel" onclick="rmInlineSubImg('${oid}',${iix})">✕</button></div>`
+  ).join('');
+}
+
+async function saveSubInline(oid) {
+  const gv = id => (document.getElementById(id)||{}).value||'';
+  const model = gv('isf_mod_'+oid).trim();
+  const qty = parseInt(gv('isf_qty_'+oid))||0;
+  if (!model || !qty) { toast('⚠️ กรอกรุ่นเสื้อและจำนวนก่อน', false); return; }
+  const paid = gv('isf_paid_'+oid) === '1';
+  const sub = {
+    model, color: gv('isf_col_'+oid), size: gv('isf_sz_'+oid), qty,
+    branch: gv('isf_br_'+oid), dueDate: gv('isf_due_'+oid),
+    deliveryDate: gv('isf_deldate_'+oid), note: gv('isf_note_'+oid),
+    status: 'wait', imgs: [...((_inlineSubForms[oid]||{}).imgs||[])],
+    delivery: {}, payment: {paid}
+  };
+  const o = _orders.find(x=>x.id===oid);
+  if (!o.subs) o.subs = [];
+  o.subs.push(sub);
+  await fbSave(o);
+  cancelSubInline(oid);
+  toast('✅ เพิ่มรายการแล้ว');
+}
 function addSubImg(oid,si,e){const o=_orders.find(x=>x.id===oid);if(!o||!o.subs[si])return;if(!o.subs[si].imgs)o.subs[si].imgs=[];Array.from(e.target.files).forEach(f=>{const r=new FileReader();r.onload=ev=>{o.subs[si].imgs.push(ev.target.result);fbSave(o);};r.readAsDataURL(f);});}
 function delSub(oid,si){if(!confirm('ลบรายการนี้?'))return;const o=_orders.find(x=>x.id===oid);o.subs.splice(si,1);fbSave(o);toast('🗑 ลบแล้ว');}
 function updSubSt(oid,si,status){const o=_orders.find(x=>x.id===oid);if(o&&o.subs[si]){o.subs[si].status=status;fbSave(o);toast('✅ อัปเดทสถานะ');}}
@@ -689,7 +919,7 @@ function renderRC(){
   if(!custs.length)return`<div class="empty"><div class="empty-ico">👤</div><p>ยังไม่มีลูกค้า</p></div>`;
   const sel=window._rc||custs[0];const cos=_orders.filter(o=>o.name===sel);
   const totQ=cos.reduce((s,o)=>s+o.qty+((o.subs||[]).reduce((ss,sb)=>ss+(parseInt(sb.qty)||0),0)),0);
-  const mb={};cos.forEach(o=>{const k=`${o.model}||${o.color||''}`;if(!mb[k])mb[k]={model:o.model,color:o.color,qty:0};mb[k].qty+=o.qty;(o.subs||[]).forEach(s=>{const sk=`${s.model||o.model}||${s.color||''}`;if(!mb[sk])mb[sk]={model:s.model||o.model,color:s.color,qty:0};mb[sk].qty+=(parseInt(s.qty)||0);});});
+  const mb={};cos.forEach(o=>{const k=`${o.model}||${o.color||''}||${o.branch||''}`;if(!mb[k])mb[k]={model:o.model,color:o.color,branch:o.branch||'',qty:0};mb[k].qty+=o.qty;(o.subs||[]).forEach(s=>{const sk=`${s.model||o.model}||${s.color||''}||${s.branch||o.branch||''}`;if(!mb[sk])mb[sk]={model:s.model||o.model,color:s.color,branch:s.branch||o.branch||'',qty:0};mb[sk].qty+=(parseInt(s.qty)||0);});});
   const ce=curRole==='admin'||curRole==='staff';let itemNum=0;
   const allItems=cos.map(o=>{
     const st=SL[o.status]||SL.wait;const pay=o.payment||{};const del=o.delivery||{};
@@ -706,7 +936,7 @@ function renderRC(){
     return `<div class="rep-item" style="border-left:3px solid var(--pri)"><div class="rep-item-num">${num}</div><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:6px"><span style="font-family:'Mitr',sans-serif;font-size:14px;font-weight:500">รายการที่ ${num} — ${o.model}${o.color?' / '+o.color:''}</span><div style="display:flex;gap:6px;align-items:center">${spill(o.status)}${ce?`<button class="btn bg bxs" onclick="startEdit('${o.id}')">✏️</button>`:''}</div></div><div class="steps">${steps}</div>${imgSection}${table}</div>${subHTML}`;
   }).join('');
   return `<div class="card"><div class="card-title">👤 รายงานลูกค้ารายบุคคล</div><div class="fg" style="margin-bottom:0"><label>เลือกลูกค้า</label><select style="max-width:260px" onchange="window._rc=this.value;render()">${custs.map(c=>`<option ${c===sel?'selected':''}>${c}</option>`).join('')}</select></div></div>
-  <div id="pdf-cust"><div class="card" style="border-left:4px solid var(--pri)"><div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px"><div><div style="font-family:'Mitr',sans-serif;font-size:20px;font-weight:600">${sel}</div><div style="font-size:13px;color:var(--t3)">${cos.length} ออเดอร์ • รวม ${totQ} ตัว</div></div><div style="text-align:right"><div style="font-family:'Mitr',sans-serif;font-size:32px;font-weight:700;color:var(--pri)">${totQ}</div><div style="font-size:12px;color:var(--t3)">ตัวทั้งหมด</div></div></div><div class="rep-h">สรุปรายการสั่งซื้อ</div><table class="tbl"><tr><th>รุ่น</th><th>สี</th><th>จำนวน</th></tr>${Object.values(mb).map(m=>`<tr><td>${m.model}</td><td>${m.color||'-'}</td><td><strong>${m.qty} ตัว</strong></td></tr>`).join('')}<tr class="total-row"><td colspan="2">รวมทั้งหมด</td><td>${totQ} ตัว</td></tr></table></div>${allItems}</div>
+  <div id="pdf-cust"><div class="card" style="border-left:4px solid var(--pri)"><div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px"><div><div style="font-family:'Mitr',sans-serif;font-size:20px;font-weight:600">${sel}</div><div style="font-size:13px;color:var(--t3)">${cos.length} ออเดอร์ • รวม ${totQ} ตัว</div></div><div style="text-align:right"><div style="font-family:'Mitr',sans-serif;font-size:32px;font-weight:700;color:var(--pri)">${totQ}</div><div style="font-size:12px;color:var(--t3)">ตัวทั้งหมด</div></div></div><div class="rep-h">สรุปรายการสั่งซื้อ</div><table class="tbl"><tr><th>รุ่น</th><th>สี</th><th>สาขา</th><th>จำนวน</th></tr>${Object.values(mb).map(m=>`<tr><td>${m.model}</td><td>${m.color||'-'}</td><td>${m.branch?`<span class="tag tbranch" style="font-size:11px">🏪 ${m.branch}</span>`:'-'}</td><td><strong>${m.qty} ตัว</strong></td></tr>`).join('')}<tr class="total-row"><td colspan="3">รวมทั้งหมด</td><td>${totQ} ตัว</td></tr></table></div>${allItems}</div>
   <div class="export-bar"><button class="pdfbtn" onclick="doExportPDF('pdf-cust','รายงาน_${sel}')">📄 ส่งออก PDF</button><button class="imgbtn" onclick="doExportImg('pdf-cust','รายงาน_${sel}')">🖼️ บันทึกรูป</button></div>`;
 }
 
