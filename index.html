@@ -120,7 +120,7 @@ body{font-family:'Sarabun',sans-serif;background:var(--g0);color:var(--t1);font-
 .alert-banner{background:linear-gradient(135deg,#FEF3C7,#FEE2E2);border-bottom:2px solid #FDE68A;padding:10px 16px}
 .alert-banner-inner{max-width:920px;margin:0 auto}
 .alert-title{font-family:'Mitr',sans-serif;font-size:13px;font-weight:700;color:#92400E;display:flex;align-items:center;gap:6px;margin-bottom:6px}
-.alert-item{display:flex;align-items:center;gap:8px;padding:6px 10px;background:rgba(255,255,255,.7);border-radius:8px;margin-bottom:4px;cursor:pointer;transition:.15s;border:1px solid rgba(220,38,38,.15);flex-wrap:wrap}
+.alert-item{display:flex;align-items:center;gap:8px;padding:8px 10px;background:rgba(255,255,255,.7);border-radius:8px;margin-bottom:4px;cursor:pointer;transition:.15s;border:1px solid rgba(220,38,38,.15);flex-wrap:wrap}
 .alert-item:hover{background:rgba(255,255,255,.95)}
 .alert-item.overdue{border-color:rgba(220,38,38,.4);background:#FFF5F5}
 .alert-item.urgent{border-color:rgba(217,119,6,.4);background:#FFFBEB}
@@ -397,7 +397,7 @@ function renderAlerts() {
     // ตรวจออเดอร์หลัก
     if (o.status !== 'sent') {
       const d = o.deliveryDate || o.dueDate;
-      if (d) { const dd=new Date(d);dd.setHours(0,0,0,0);const diff=Math.ceil((dd-now)/86400000);if(diff<=ALERT_DAYS) alerts.push({id:o.id,name:o.name,model:o.model,branch:o.branch||'',status:o.status,diff,date:d,itemLabel:'รายการที่ 1'}); }
+      if (d) { const dd=new Date(d);dd.setHours(0,0,0,0);const diff=Math.ceil((dd-now)/86400000);if(diff<=ALERT_DAYS) alerts.push({id:o.id,name:o.name,model:o.model,color:o.color||'',size:o.size||'',qty:o.qty||0,branch:o.branch||'',status:o.status,diff,date:d,itemLabel:'รายการที่ 1',img:(o.imgs&&o.imgs[0])||''}); }
     }
     // ตรวจ sub items
     (o.subs||[]).forEach((s,si) => {
@@ -405,7 +405,7 @@ function renderAlerts() {
       const d = s.deliveryDate || s.dueDate;
       if (!d) return;
       const dd=new Date(d);dd.setHours(0,0,0,0);const diff=Math.ceil((dd-now)/86400000);
-      if(diff<=ALERT_DAYS) alerts.push({id:o.id,name:o.name,model:s.model||o.model,branch:s.branch||o.branch||'',status:s.status||'wait',diff,date:d,itemLabel:'รายการที่ '+(si+2)});
+      if(diff<=ALERT_DAYS) alerts.push({id:o.id,name:o.name,model:s.model||o.model,color:s.color||o.color||'',size:s.size||o.size||'',qty:s.qty||0,branch:s.branch||o.branch||'',status:s.status||'wait',diff,date:d,itemLabel:'รายการที่ '+(si+2),img:(s.imgs&&s.imgs[0])||((o.imgs&&o.imgs[0])||'')});
     });
   });
   const banner = document.getElementById('alert-banner');
@@ -416,11 +416,16 @@ function renderAlerts() {
     const cls = a.diff < 0 ? 'overdue' : 'urgent';
     const daysTxt = a.diff < 0 ? `เกินกำหนด ${Math.abs(a.diff)} วัน` : a.diff === 0 ? 'วันนี้!' : `อีก ${a.diff} วัน`;
     const st = SL[a.status] || SL.wait;
+    const thumb = a.img ? `<img src="${a.img}" style="width:38px;height:38px;border-radius:6px;object-fit:cover;border:1px solid rgba(0,0,0,.1);flex-shrink:0">` : `<div style="width:38px;height:38px;border-radius:6px;background:#F3F4F6;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:16px">📷</div>`;
     return `<div class="alert-item ${cls}" onclick="goToOrder('${a.id}')">
+      ${thumb}
       <span class="alert-days ${cls}">${daysTxt}</span>
       <strong style="font-size:13px">${a.name}</strong>
       ${a.itemLabel?`<span style="font-size:11px;color:var(--t3)">${a.itemLabel}</span>`:''}
       <span class="tag tmod" style="font-size:11px">👕 ${a.model}</span>
+      ${a.color?`<span class="tag tcol" style="font-size:11px">🎨 ${a.color}</span>`:''}
+      ${a.size?`<span class="tag" style="font-size:11px">📏 ${a.size}</span>`:''}
+      <span class="tag tqty" style="font-size:11px">×${a.qty} ตัว</span>
       ${a.branch ? `<span class="tag tbranch" style="font-size:11px">🏪 ${a.branch}</span>` : ''}
       <span class="sp ${st.sp}" style="font-size:10px">${st.l}</span>
       <span style="font-size:11px;color:var(--t3)">📅 ${a.date}</span>
